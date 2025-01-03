@@ -12,143 +12,101 @@
   <div class="container">
     <h1>Explore Links</h1>
 
-<!-- Dynamic Filter Buttons -->
-<ul class="nav nav-tabs mb-3">
-  <li class="nav-item">
-    <button class="nav-link active" data-filter="favorites">Favorites</button>
-  </li>
-  <li class="nav-item">
-    <button class="nav-link" data-filter="all">All Links</button>
-  </li>
+<!-- Spinner for loading feedback -->
+<div id="loading-spinner" style="display: none;" class="mb-3">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
 
-  <!-- Dynamically generate filter buttons for unique tags -->
-  
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="activity">Activity</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="birthday">Birthday</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="camera">Camera</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="chooser">Chooser</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="clue">Clue</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="creative">Creative</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="daily">Daily</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="decision">Decision</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="dessert">Dessert</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="drawing">Drawing</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="fun">Fun</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="game">Game</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="helper">Helper</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="java">Java</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="learning">Learning</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="letterbox">Letterbox</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="math">Math</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="pascal">Pascal</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="planner">Planner</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="printable">Printable</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="project">Project</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="puzzle">Puzzle</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="radix">Radix</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="shake">Shake</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="solver">Solver</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="throw">Throw</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="tool">Tool</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="triangle">Triangle</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="weekend">Weekend</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="wordle">Wordle</button>
-    </li>
-  
-    <li class="nav-item">
-      <button class="nav-link" data-filter="zombie">Zombie</button>
-    </li>
-  
-</ul>
+<!-- Sorting Controls -->
+<div class="sorting-controls mb-3">
+  <label for="sort-select">Sort By:</label>
+  <select id="sort-select" class="form-select">
+    <option value="title">Title (A-Z)</option>
+    <option value="title-desc">Title (Z-A)</option>
+    <option value="rating">Rating (High to Low)</option>
+    <option value="rating-desc">Rating (Low to High)</option>
+  </select>
+</div>
+
+<!-- Dynamic Tag Selection -->
+<div class="filter-controls mb-3">
+  <label for="tag-select">Select Tags:</label>
+  <select id="tag-select" class="form-select" multiple>
+    
+    
+      <option value="activity">Activity</option>
+    
+      <option value="birthday">Birthday</option>
+    
+      <option value="camera">Camera</option>
+    
+      <option value="chooser">Chooser</option>
+    
+      <option value="clue">Clue</option>
+    
+      <option value="creative">Creative</option>
+    
+      <option value="daily">Daily</option>
+    
+      <option value="decision">Decision</option>
+    
+      <option value="dessert">Dessert</option>
+    
+      <option value="drawing">Drawing</option>
+    
+      <option value="fun">Fun</option>
+    
+      <option value="game">Game</option>
+    
+      <option value="helper">Helper</option>
+    
+      <option value="java">Java</option>
+    
+      <option value="learning">Learning</option>
+    
+      <option value="letterbox">Letterbox</option>
+    
+      <option value="math">Math</option>
+    
+      <option value="pascal">Pascal</option>
+    
+      <option value="planner">Planner</option>
+    
+      <option value="printable">Printable</option>
+    
+      <option value="project">Project</option>
+    
+      <option value="puzzle">Puzzle</option>
+    
+      <option value="radix">Radix</option>
+    
+      <option value="shake">Shake</option>
+    
+      <option value="solver">Solver</option>
+    
+      <option value="throw">Throw</option>
+    
+      <option value="tool">Tool</option>
+    
+      <option value="triangle">Triangle</option>
+    
+      <option value="weekend">Weekend</option>
+    
+      <option value="wordle">Wordle</option>
+    
+      <option value="zombie">Zombie</option>
+    
+  </select>
+
+  <button id="add-tag" class="btn btn-primary mt-2">Add Tag</button>
+  <button id="filter-btn" class="btn btn-success mt-2">Filter</button>
+
+  <!-- Predefined Filters -->
+  <button class="btn btn-secondary" data-filter="video+humor">Video + Humor</button>
+  <button class="btn btn-secondary" data-filter="video+trailer+humor">Video + Trailer + Humor</button>
+</div>
 
 <!-- Search Bar -->
 <input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
