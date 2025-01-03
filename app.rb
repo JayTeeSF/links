@@ -29,21 +29,22 @@ class StaticPageGenerator
         entry['full_image'] = full_path
       end
     end
-
-    def generate_html
-      layout = File.read('./view/layout.erb')
-      index = File.read('./view/index.erb')
-      erb = ERB.new(layout)
-
-      @data.sort_by! { |entry| Date.parse(entry['date_added']) }.reverse!
-
-      File.write('./index.html', erb.result_with_hash(content: ERB.new(index).result(binding)))
-    end
   end
 
-  if $PROGRAM_NAME == __FILE__
-    generator = StaticPageGenerator.new
-    generator.generate_thumbnails
-    generator.generate_html
-    puts "Static site generated successfully."
+  def generate_html
+    layout = File.read('./view/layout.erb')
+    index = File.read('./view/index.erb')
+    erb = ERB.new(layout)
+
+    @data.sort_by! { |entry| Date.parse(entry['date_added']) }.reverse!
+
+    File.write('./index.html', erb.result_with_hash(content: ERB.new(index).result(binding)))
   end
+end
+
+if $PROGRAM_NAME == __FILE__
+  generator = StaticPageGenerator.new
+  generator.generate_thumbnails
+  generator.generate_html
+  puts "Static site generated successfully."
+end

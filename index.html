@@ -11,42 +11,2913 @@
 <body>
   <div class="container">
     <h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
 <input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
 <div id="links">
   
     <div class="card mb-3 favorite">
-      <img src="./images/movie.png" class="card-img-top" alt="Amazing Movie">
+      <img src="./images/foosball_learner_thumb.png" class="card-img-top thumbnail" alt="Foosball learner" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
       <div class="card-body">
         <h5 class="card-title">
-          <a href="https://example.com/movie" target="_blank">Amazing Movie</a>
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://github.com/JayTeeSF/foosball_learner" target="_blank">Foosball learner</a>
           
             <span class="badge bg-warning text-dark">★ Favorite</span>
           
         </h5>
-        <p class="card-text">An amazing movie to watch.</p>
+        <p class="card-text">Get images from the camera.</p>
         <p class="card-text">
-          <strong>Rating:</strong> ⭐⭐⭐⭐⭐<br>
-          <strong>Category:</strong> Video<br>
-          <strong>Date Added:</strong> 2025-01-01<br>
-          <strong>Tags:</strong> inspiring, action
+          <strong>Rating:</strong> ⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Project<br>
+          <strong>Date Added:</strong> 2023-12-31<br>
+          <strong>Tags:</strong> learning, camera, game
         </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Foosball learner</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/foosball_learner.png" class="img-fluid" alt="Foosball learner">
+          </div>
+        </div>
       </div>
     </div>
   
     <div class="card mb-3 ">
-      <img src="./images/podcast.png" class="card-img-top" alt="Cool Podcast">
+      <img src="./images/clue_thumb.png" class="card-img-top thumbnail" alt="Cheat at Clue" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
       <div class="card-body">
         <h5 class="card-title">
-          <a href="https://example.com/podcast" target="_blank">Cool Podcast</a>
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/clue" target="_blank">Cheat at Clue</a>
           
         </h5>
-        <p class="card-text">A podcast worth listening to.</p>
+        <p class="card-text">Solve the game of Clue with this tool.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Game<br>
+          <strong>Date Added:</strong> 2023-11-15<br>
+          <strong>Tags:</strong> clue, solver
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Cheat at Clue</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/clue.png" class="img-fluid" alt="Cheat at Clue">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 ">
+      <img src="./images/age.html_thumb.png" class="card-img-top thumbnail" alt="Math Birthday" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/age.html" target="_blank">Math Birthday</a>
+          
+        </h5>
+        <p class="card-text">Make birthdays fun with math and radix.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐<br>
+          <strong>Category:</strong> Math<br>
+          <strong>Date Added:</strong> 2023-10-10<br>
+          <strong>Tags:</strong> birthday, math, radix
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Math Birthday</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/age.html.png" class="img-fluid" alt="Math Birthday">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 ">
+      <img src="./images/index.html_thumb.png" class="card-img-top thumbnail" alt="Java Fun" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/java_fun/index.html" target="_blank">Java Fun</a>
+          
+        </h5>
+        <p class="card-text">Java classes for communicating with ET.</p>
         <p class="card-text">
           <strong>Rating:</strong> ⭐⭐⭐⭐<br>
-          <strong>Category:</strong> Audio<br>
-          <strong>Date Added:</strong> 2024-12-25<br>
-          <strong>Tags:</strong> education, technology
+          <strong>Category:</strong> Project<br>
+          <strong>Date Added:</strong> 2023-09-20<br>
+          <strong>Tags:</strong> java, project, fun
         </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Java Fun</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/index.html.png" class="img-fluid" alt="Java Fun">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 favorite">
+      <img src="./images/new_thumb.png" class="card-img-top thumbnail" alt="Word(le) Helper" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/words/new" target="_blank">Word(le) Helper</a>
+          
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          
+        </h5>
+        <p class="card-text">Tool to help you with Wordle puzzles.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Game<br>
+          <strong>Date Added:</strong> 2023-08-05<br>
+          <strong>Tags:</strong> wordle, helper, puzzle
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Word(le) Helper</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/new.png" class="img-fluid" alt="Word(le) Helper">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 favorite">
+      <img src="./images/letter_box_thumb.png" class="card-img-top thumbnail" alt="Letterbox Solver" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/letter_box/" target="_blank">Letterbox Solver</a>
+          
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          
+        </h5>
+        <p class="card-text">Solve NYTimes Letterbox puzzles.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Game<br>
+          <strong>Date Added:</strong> 2023-07-18<br>
+          <strong>Tags:</strong> letterbox, solver, puzzle
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Letterbox Solver</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/letter_box.png" class="img-fluid" alt="Letterbox Solver">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 ">
+      <img src="./images/jj_draw.html_thumb.png" class="card-img-top thumbnail" alt="JJ Draw" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/jj_draw.html" target="_blank">JJ Draw</a>
+          
+        </h5>
+        <p class="card-text">Drawing tool for creative projects.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐<br>
+          <strong>Category:</strong> Art<br>
+          <strong>Date Added:</strong> 2023-06-01<br>
+          <strong>Tags:</strong> drawing, tool, creative
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">JJ Draw</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/jj_draw.html.png" class="img-fluid" alt="JJ Draw">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 favorite">
+      <img src="./images/can_i_have_dessert_thumb.png" class="card-img-top thumbnail" alt="Can I Have Dessert?" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/can_i_have_dessert" target="_blank">Can I Have Dessert?</a>
+          
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          
+        </h5>
+        <p class="card-text">Fun tool for deciding if dessert is allowed.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Fun<br>
+          <strong>Date Added:</strong> 2023-05-22<br>
+          <strong>Tags:</strong> dessert, decision, fun
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Can I Have Dessert?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/can_i_have_dessert.png" class="img-fluid" alt="Can I Have Dessert?">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 ">
+      <img src="./images/planner_thumb.png" class="card-img-top thumbnail" alt="Daily Planner" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/planner" target="_blank">Daily Planner</a>
+          
+        </h5>
+        <p class="card-text">Fill in and print your daily plan.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Productivity<br>
+          <strong>Date Added:</strong> 2023-04-15<br>
+          <strong>Tags:</strong> planner, daily, printable
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Daily Planner</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/planner.png" class="img-fluid" alt="Daily Planner">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 favorite">
+      <img src="./images/zombie_shake_and_throw_thumb.png" class="card-img-top thumbnail" alt="Zombie Shake & Throw" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/zombie_shake_and_throw" target="_blank">Zombie Shake & Throw</a>
+          
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          
+        </h5>
+        <p class="card-text">A fun zombie-themed game.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Game<br>
+          <strong>Date Added:</strong> 2023-03-10<br>
+          <strong>Tags:</strong> zombie, shake, throw
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Zombie Shake & Throw</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/zombie_shake_and_throw.png" class="img-fluid" alt="Zombie Shake & Throw">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 favorite">
+      <img src="./images/weekend_activity_chooser_thumb.png" class="card-img-top thumbnail" alt="Weekend Activity Chooser" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/weekend_activity_chooser/" target="_blank">Weekend Activity Chooser</a>
+          
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          
+        </h5>
+        <p class="card-text">Decide what to do this weekend.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Decision-making<br>
+          <strong>Date Added:</strong> 2023-02-25<br>
+          <strong>Tags:</strong> weekend, activity, chooser
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Weekend Activity Chooser</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/weekend_activity_chooser.png" class="img-fluid" alt="Weekend Activity Chooser">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card mb-3 favorite">
+      <img src="./images/pascals_triangle_thumb.png" class="card-img-top thumbnail" alt="Pascal's Triangle" data-bs-toggle="modal" data-bs-target="#imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="https://jayteesf.github.io/links/pascals_triangle" target="_blank">Pascal's Triangle</a>
+          
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          
+        </h5>
+        <p class="card-text">A nerdy math visualization tool.</p>
+        <p class="card-text">
+          <strong>Rating:</strong> ⭐⭐⭐⭐⭐<br>
+          <strong>Category:</strong> Math<br>
+          <strong>Date Added:</strong> 2023-01-01<br>
+          <strong>Tags:</strong> pascal, triangle, math
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" tabindex="-1" aria-labelledby="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+">Pascal's Triangle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="./images/pascals_triangle.png" class="img-fluid" alt="Pascal's Triangle">
+          </div>
+        </div>
       </div>
     </div>
   

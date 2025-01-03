@@ -11,7 +11,7 @@
   },
   {
     "link_text": "Cheat at Clue",
-    "url": "/clue",
+    "url": "https://jayteesf.github.io/links/clue",
     "rating": 5,
     "snippet": "Solve the game of Clue with this tool.",
     "category": "game",
@@ -21,7 +21,7 @@
   },
   {
     "link_text": "Math Birthday",
-    "url": "/age.html",
+    "url": "https://jayteesf.github.io/links/age.html",
     "rating": 3,
     "snippet": "Make birthdays fun with math and radix.",
     "category": "math",
@@ -31,7 +31,7 @@
   },
   {
     "link_text": "Java Fun",
-    "url": "/java_fun/index.html",
+    "url": "https://jayteesf.github.io/links/java_fun/index.html",
     "rating": 4,
     "snippet": "Java classes for communicating with ET.",
     "category": "project",
@@ -41,7 +41,7 @@
   },
   {
     "link_text": "Word(le) Helper",
-    "url": "/words/new",
+    "url": "https://jayteesf.github.io/links/words/new",
     "rating": 5,
     "snippet": "Tool to help you with Wordle puzzles.",
     "category": "game",
@@ -61,7 +61,7 @@
   },
   {
     "link_text": "JJ Draw",
-    "url": "/jj_draw.html",
+    "url": "https://jayteesf.github.io/links/jj_draw.html",
     "rating": 3,
     "snippet": "Drawing tool for creative projects.",
     "category": "art",
@@ -71,7 +71,7 @@
   },
   {
     "link_text": "Can I Have Dessert?",
-    "url": "/can_i_have_dessert",
+    "url": "https://jayteesf.github.io/links/can_i_have_dessert",
     "rating": 4,
     "snippet": "Fun tool for deciding if dessert is allowed.",
     "category": "fun",
@@ -81,7 +81,7 @@
   },
   {
     "link_text": "Daily Planner",
-    "url": "/planner",
+    "url": "https://jayteesf.github.io/links/planner",
     "rating": 4,
     "snippet": "Fill in and print your daily plan.",
     "category": "productivity",
@@ -91,7 +91,7 @@
   },
   {
     "link_text": "Zombie Shake & Throw",
-    "url": "/zombie_shake_and_throw",
+    "url": "https://jayteesf.github.io/links/zombie_shake_and_throw",
     "rating": 5,
     "snippet": "A fun zombie-themed game.",
     "category": "game",
@@ -111,7 +111,7 @@
   },
   {
     "link_text": "Pascal's Triangle",
-    "url": "/pascals_triangle",
+    "url": "https://jayteesf.github.io/links/pascals_triangle",
     "rating": 5,
     "snippet": "A nerdy math visualization tool.",
     "category": "math",
