@@ -1,0 +1,50 @@
+Hey nephews, especially Elijah. Since you asked me about Java, I found this online Java editor. Of course you can get editors and that's probably a whole conversation by itself.
+And then there's all sorts of details about programming languages that I don't know if you already know. So I'll just show you a quick program and then maybe you could tell me things that you do or don't know, as feedback to this.
+So as you can see, this program starts with this notation here. This is a block-comment you can write anything you want in the comment.
+Let me, just show you. So if you put forward slash star and then you end with a star forward-slash and anything you write in the middle won't influence the rest of the program, it'll be ignored by the compiler.
+So Java is a compiled language, which is another thing to know. Because, it compiles your language into these class files.
+So you have a file called Main-dot-java file. That's how you name them on your computer. If you were to do this on your own computer, as opposed to on the internet, and then it'll make a main dot class file that actually gets run by an interpreter, the Java interpreter.
+So it's technically interpreted, it-just-uses a-pre-compiler. Anyway, you have to put your code in, what's called a class, classes-are just a way-to-structure-code.
+So for-now you have classes. Eventually you make instances of classes, and, classes have class methods and they have instance methods.
+For any program to actually run, one-class, has to have a method called main and the main method has to have all of these keywords.
+That probably mean nothing to you. 'public' 'static', 'void'. The name of the method has to be 'main'. And, it accepts an array of strings.
+String is as a data type. You know, there's numbers, intergers-doubles-and-so-on and, then strings contain anything like, letters, and numbers. And, this is an array of them.
+Finally, this is the name of the variable. Which is a parameter to the function, it-captures strings you pass to the function when you run it.
+And then this here system dot out dot print line is how you print to the screen in Java. So, let's run this just so you see what happens.
+It first compiles the class file and then it will run it afterwhich you can see what it prints out. Welcome online ID E happy coding with a smiley face.
+So that is the string that gets, printed. We didn't pass any input to this program, but we could have. All right.
+So let me just give you another example. Let's name the class something different, like my first program. I know, there's an error here, but we'll just click run and it will tell us what the error-is so we can fix it, Right?
+It says, Hey, you can't have, my first program, unless it's in a file named, my first program.java. So before the class was called main and it was in a file called main dot-java.
+So now we can rename this to my first program. By, convention classes start with a capital letter. You can put numbers, but-not-spaces, in class names.
+So you can do like that, but you can't start with a number and by convention, you start with capital letter.
+You also use titlecase, notation where every word is capitalized for the class name. When it comes to variable names or function names, camelCase starts with a lowercase letter.
+But if it had two words, like if it was main function, the second word would be capitalized or the third word would also be capitalized.
+The compiler doesn't know about a function called main function. You could make a function that called that, but you need a main function so-that java knows where to start running your code.
+So you could make a bunch of functions in this file. And then from within main, you would call the other function.
+So I call other function and you could pass args, And then we'll make a public. I think this will work a static void Void.
+Um, what I call it, call other function, which also has to take a string array and we can call it anything.
+It doesn't have to be called 'args'. It can be called something else. And then inside here, we would just call the same system print line.
+Let's see if this works. Oh yeah, let's try this. It needs a semi-colon at the end of every line. So that's another thing.
+You'll figure out syntax errors. And this video is almost over. So I'm just showing you some random stuff. And as you can see it worked.
+So we wrote our own function. We use the main function to call our function. You can have functions called functions.
+You can have an even call from one class to another class, you know, functions on the other class. Uh, but these are, again, these are actually class methods.
+Meaning, anyway, we don't need to talk about that. Now there's class methods and instance methods. I hope this was at least useful, um, to get you started, I'm going to stop talking.
+Um, there's so many things we talk about, obviously, that's why you have a whole class on this topic. Oh, wait.
+Let's let's do one more thing. Let's pass in something. Let's change the message to actually say, all right, You must, you must be.
+And then we'll put a space followed by a plus sign followed by something else. Now I'm using this notation here with the square brackets in the zero to say so in Java arrays, we'll do this in a comment.
+Arrays are zero-based. So square brackets typically indicate in the Ray. The first element and array is always zero. Then one, then two, then three.
+So this is an array of numbers. We're doing an array of strings. So high. Are You? So the zero with element in this array is high.
+And the first element or the number one element is one is how, and then the number two element is, are in the three element is you in this case, this is an array of strings.
+This is an array of numbers. All right. So all that said, we're going to now pass in. Oh, you can see that.
+I already tried this. We're going to run the program. But this time we're going to pass in an argument, which will be at least one string.
+It could be an array of strings, but we'll just do one string. And we're only going to access the first string that we pass.
+That's why I did that square bracket zero. So Let's run the program and see how it acts this time. There you go.
+Hi, you must be enter boy. EEG was printed out. Cause you can see it, how you must be space. And then I added the value of the first entry in this string of this array of strings.
+So it's an array of strings. It only has one thing in it. I put more stuff, more Stuff. Um, but I'm only printing out the first one.
+So I'll maybe we'll print out this, Um, I need spaces. Otherwise it'll look weird. Um, A couple of things, something else.
+And by the way, the name of the variable is totally arbitrary. I could have named this something else I could have named it, whatever I want.
+I could have named it. Name. Let's do that now Because we actually know it's name and Um, Yeah, it's not actually named anyway.
+And then we call this ARG. It doesn't have to be called Aros. It could be called Stuff. These are bad variable names.
+Usually your name, the variable after what you're actually passing. So now as you can see, we're passing 1, 2, 3 strings. So it's an array of three strings and we're only accessing the zero with element and the number one element, I guess, which is actually the second element in the array.
+And here we go. We'll print those to the screen with you must be, You must be ender boy, E T more.
+All right. That was terrible example, but hopefully this is more than enough to get you to ask me some questions that we can, uh, now send videos back and forth about.

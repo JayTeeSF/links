@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Java Fun</title>
+  </head>
+
+  <body>
+    <h1>Java Fun</h1>
+
+    <ul>
+      <li> <a href="whoareyou.html">An example program that captures and prints the user's name (two versions)</a></li>
+    </ul>
+
+    <p>Below is 3 java classes I wrote</p>
+    <p>Each program has a "main" method, so that if I run that class by itself `java <program>`
+    it can "test" itself</p>
+    <p>The JtVerify.java program is the code I wrote to verify my assumptions</p>
+    <p>It helps me determine if a function does what I expect it to do</p>
+    <p>The Container.java program is the primary program I was working on.</p>
+    <p>Container.java is a class that uses "instance" methods, meaning I create 'new' objects of type Container</p>
+    <p>Each container then models an individual water-Containers</p>
+    <p>Finally, I then connect these water containers together in order force them to "share" their water equally</p>
+    <p>I use the UF.java class in order to track which water containers are connected</p>
+    <p>Specifically I pass the _same_ instance of UF (i.e. 'uf') to each container I create.</p>
+    <p>That way uf know which containers are connected</p>
+    <p>But uf only has a 'reference' to each container's 'id' (not the actual containers)</p>
+    <p>So once I figure out which to container id's are connected, I then have to modify the waterLevel in those containers</p>
+    <p>To do that, I pass a single instance of a HashMap that I call my 'symbolTable'</p>
+    <p>What's a symbolTable? It's just a key-value mapping that allows me to associate each container's id with a reference to each container</p>
+
+    <p>Container.java:</p>
+    <pre>
+<code>
+/*
+ * Compile:
+ *   javac UF.java
+ *   javac JtVerify.java
+ *   javac Container.java
+ *
+ * Run:
+ *  java Container
+ */
+
+
+// https://www.w3schools.com/java/default.asp
+
+// Importing utility classes
+import java.util.*;
+
+public class Container {
+  String name;
+  private UF uf;
+  private int id;
+  private int waterLevel = 0;
+  public int waterAddedDirectly = 0;
+  private Map<Integer, Container> symbolTable;
+
+  public Container(String inputName, UF inputUf, Map<Integer, Container> inputSymbolTable) {
+    name = inputName;
+    uf = inputUf;
+    id = uf.add();
+    symbolTable = inputSymbolTable;
+    symbolTable.put(id, this);
+  }
+
+  // TBD: make this atomic / thread-safe
+  private int calculateWaterLevel() {
+    System.out.printf("Calculating water in %s: %doz.%n", name, waterLevel);
+    int tmpWaterLevel = 0;
+
+    Set<Integer> cc = uf.cc(id); // use the connected-component
+    int numConnectedComponents = cc.size();
+
+    // System.out.println("cc["+id+"]: " + cc + " has " + numConnectedComponents + " connected Components");
+    if(cc.isEmpty()) {
+      tmpWaterLevel += waterAddedDirectly;
+    } else {
+      Iterator<Integer> i = cc.iterator();
+      while(i.hasNext()) {
+        int p = i.next(); // find the object...
+        //System.out.printf("Looking for compId: %d%n", p);
+        Container uC = symbolTable.get(p);
+        if((uC != null) && (uC.id == p)) {
+          //System.out.printf("\t*MATCH: uC(%s).id: %d%n", uC.name, uC.id);
+          tmpWaterLevel += uC.waterAddedDirectly;
+          // } else {
+          //System.out.printf("\tNO-MATCH: uC(%s).id: %d%n", uC.name, uC.id);
+        }
+      } // end-while
+      if (numConnectedComponents > 0) {
+        tmpWaterLevel /= numConnectedComponents;
+      }
+    }
+    return tmpWaterLevel;
+  }
+
+  public void addWater(int amount) { 
+    waterAddedDirectly += amount;
+    // just update the directlyAddedWater: let getAmount() worry about calculating water from connectedComponents
+    System.out.printf("Adding %doz of water to %s for a total of %d.%n", amount, name, getAmount());
+  }
+
+  public int getAmount() { 
+    //Calculate the waterLevel when it's read: ok for performance (because it relies on QuickFind alg), but bad for programmer
+    // must remember to do this for every new lookup method...
+    waterLevel = calculateWaterLevel(); //overwrite this object's waterLevel
+    return waterLevel; // do we need to update because of a connection ?!
+  }
+
+  // new thought: in connectTo and addWater, simply track the directConnections & waterAdditions
+  // in getAmount call the function to calculate the value (possibly with caching)
+
+  public void connectTo(Container other) { 
+    // opt1b: re-adjust the water-levels NOW ...when connections are made.
+    // slower performance: ...and for lookups that may never occur
+    // 
+    // Better: just update the connections ...let getAmount worry about reading from UF
+
+    uf.union(id, other.id);
+
+    System.out.printf("connecting %s's water to %s's.%n", name, other.name);
+  }
+
+  public static void main(String[] args) {
+    UF db = new UF();
+    Map<Integer, Container> st = new HashMap<>();
+    Container a = new Container("a", db, st);
+    //System.out.printf("SymbolTable w/ only 'a': " + st + "%n%n");
+    Container b = new Container("b", db, st),
+              c = new Container("c", db, st),
+              d = new Container("d", db, st);
+    //System.out.printf("SymbolTable w/ 'a, b, c & d': " + st + "%n%n");
+
+    a.addWater(12);
+    JtVerify.verify(a.getAmount() == 12, String.format("a should have 12oz of water, but only has %d", a.getAmount()));
+
+    d.addWater(8);
+    JtVerify.verify(d.getAmount() == 8, String.format("d should have 8oz of water, but only has %d", d.getAmount()));
+
+    a.connectTo(b);
+    JtVerify.verify(a.getAmount() == 6, String.format("a should have 6oz of water, but only has %d", a.getAmount()));
+    JtVerify.verify(a.getAmount() == b.getAmount(), String.format("a's %doz should be equivalent to b's %doz", a.getAmount(), b.getAmount()));
+
+    b.connectTo(c);
+    JtVerify.verify(a.getAmount() == 4, String.format("a should have 4oz of water, but only has %d", a.getAmount()));
+    JtVerify.verify(a.getAmount() == b.getAmount(), String.format("a's %doz should be equivalent to b's %doz", a.getAmount(), b.getAmount()));
+    JtVerify.verify(b.getAmount() == c.getAmount(), String.format("d should have 8oz of water"));
+
+    b.connectTo(d);
+    JtVerify.verify(a.getAmount() == 5, String.format("a should have 5oz of water, but only has %d", a.getAmount()));
+    JtVerify.verify(a.getAmount() == b.getAmount(), String.format("a's %doz should be equivalent to b's %doz", a.getAmount(), b.getAmount()));
+    JtVerify.verify(b.getAmount() == c.getAmount(), String.format("b's %doz should be equivalent to c's %doz", b.getAmount(), c.getAmount()));
+    JtVerify.verify(b.getAmount() == d.getAmount(), String.format("b's %doz should be equivalent to d's %doz", b.getAmount(), d.getAmount()));
+  }
+}
+</code>
+    </pre>
+
+    <br />
+    <br />
+    <br />
+
+    <p>UF.java:</p>
+    <pre>
+    <code>
+/*
+ * javac UF.java
+ * java UF
+ */
+
+// Importing utility classes
+import java.util.*;
+
+/* Class for implementing an efficient Dynamic connectivity algorithm
+ * i.e. QuickFind (not (yet) Quick Union)
+ * an integer array indexed by object
+ * objects p & q are connected if their entry in the arry has the same value
+ * Essentially Union-Find from Algorithms with Robert Sedgewick and Kevin Wayne
+ * algs4.cs.princeton.edu
+ */
+public class UF {
+  public static void main(String[] args) {
+    System.out.println("create an instance of UF(<no args required>)");
+    UF uf = new UF();
+    int id0 = uf.add();
+    System.out.printf("%nCall #add and store it's (int) return-value as your object's id: %d%n", id0);
+
+    int id1 = uf.add();
+    int id2 = uf.add();
+    int id3 = uf.add();
+    int id4 = uf.add();
+    System.out.printf("%nRepeat that a few more times: %d, %d, %d, %d%n", id1, id2, id3, id4);
+    Set<Integer> cc0 = uf.cc(id0);
+    Set<Integer> cc1 = uf.cc(id1);
+   
+    List<Integer> list0 = Arrays.asList(0);
+    Set<Integer> expectedCc0 = new HashSet<Integer>(list0);
+
+    List<Integer> list1 = Arrays.asList(1);
+    Set<Integer> expectedCc1 = new HashSet<Integer>(list1);
+
+    System.out.printf("%nNotice 0 & 1 have disconnected (isolated) component(s)...%n%n");
+
+    JtVerify.verify(cc0.equals(expectedCc0), "Expected cc0 to be " + expectedCc0 + ", got: " + cc0);
+    JtVerify.verify(cc1.equals(expectedCc1), "Expected cc1 to be " + expectedCc1 + ", got: " + cc1);
+
+    System.out.printf("%n%nUnion 0 & 1...");
+    uf.union(id0, id1);
+    cc0 = uf.cc(id0);
+    cc1 = uf.cc(id1);
+    System.out.printf("%nNotice 0 & 1 share a connected component...%n%n");
+    List<Integer> list01 = Arrays.asList(0,1);
+    Set<Integer> expectedCc0and1 = new HashSet<Integer>(list01);
+
+    JtVerify.verify(cc0.equals(expectedCc0and1), "Expected cc0 to be " + expectedCc0and1 + ", got: " + cc0);
+    JtVerify.verify(cc1.equals(expectedCc0and1), "Expected cc1 to be " + expectedCc0and1 + ", got: " + cc1);
+
+    System.out.printf("%n%nUnion 4 & 1 and 4 and 3...");
+    uf.union(id4, id1);
+    uf.union(id4, id3);
+    Set<Integer> cc3 = uf.cc(id3);
+    Set<Integer> cc4 = uf.cc(id4);
+    System.out.printf("%nNotice 0,1,3 and 4 all share a connected component...%n%n");
+    cc0 = uf.cc(id0);
+    cc1 = uf.cc(id1);
+    cc3 = uf.cc(id3);
+    cc4 = uf.cc(id4);
+    List<Integer> list013and4 = Arrays.asList(0,1,3,4);
+    Set<Integer> expectedCc013and4 = new HashSet<Integer>(list013and4);
+
+    JtVerify.verify(cc0.equals(expectedCc013and4), "Expected cc0 to be " + expectedCc013and4 + ", got: " + cc0);
+    JtVerify.verify(cc1.equals(expectedCc013and4), "Expected cc1 to be " + expectedCc013and4 + ", got: " + cc1);
+    JtVerify.verify(cc3.equals(expectedCc013and4), "Expected cc3 to be " + expectedCc013and4 + ", got: " + cc3);
+    JtVerify.verify(cc4.equals(expectedCc013and4), "Expected cc4 to be " + expectedCc013and4 + ", got: " + cc4);
+  }
+
+  ArrayList<Integer> array;
+  public UF() {
+    // tbd: add a symbol table: id => object mapping...
+    array = new ArrayList<Integer>(); //(size);
+  }
+
+  // default every value in the array to a negative number!
+  public int add() {
+    array.add(array.size()); // use it's value to keep it separate from all others
+    return array.size() - 1; // this index
+  }
+
+  // return the unique list of id(s) in this connectedComponent
+  public Set<Integer> cc(int p) {
+    Set<Integer> retVal = new HashSet<Integer>();
+    int ccId = find(p);
+
+    // TBD: stuff all entries from array with value == ccId, into retVal
+    for (int i = 0; i < array.size(); i++) {
+      if (array.get(i) == ccId) {
+        retVal.add(i);
+      }
+    }
+
+    return retVal;
+  }
+
+  public int find(int p) {
+    return array.get(p); // the "name/id" of the connectedComponent
+  }
+
+  public void union(int p, int q) {
+    int pVal = find(p);
+    int qVal = find(q);
+    // set all of p's and q's elements to p's value
+    Set<Integer> ccomp = cc(q);
+    Iterator<Integer> i = ccomp.iterator();
+    while(i.hasNext()) {
+      int l = i.next();
+      int ignore = array.set(l, pVal);
+    }
+  }
+}
+    </code>
+    </pre>
+
+    <br />
+    <br />
+    <br />
+
+    <p>JtVerify.java:</p>
+    <pre>
+    <code>
+import java.util.*;
+
+/*
+ * javac JtVerify.java
+ * java JtVerify
+ */
+public class JtVerify {
+  public static boolean verify(boolean expr) {
+    return verify(expr, "");
+  }
+
+  public static boolean verify(boolean expr, String message) {
+    if (expr == true) {
+      System.out.println("true");
+      return true;
+    } else {
+      if (message == null || message.isEmpty()) {
+        System.out.println("false");
+      } else {
+        System.out.printf("false: %s%n", message);
+      }
+      return false;
+    }
+  }
+
+  public static void main(String[] args) {
+    System.out.println("Confirm if true == true");
+    verify(true == true, "expected true to equal true");
+
+    System.out.println("\nConfirm if false == false");
+    verify(false == false, "expected false to equal false");
+
+    System.out.println("\nConfirm if true != false");
+    verify(true != false, "expected true NOT to equal false");
+
+    System.out.println("\nConfirm if false != true");
+    verify(false != true, "expected false NOT to equal true");
+
+    // expected failures:
+    System.out.println("\nFail checking if true == false");
+    verify(true == false, "expected true to (incorrectly) equal false");
+
+    System.out.println("\nFail checking if false == true");
+    verify(false == true, "expected false to (incorrectly) equal true");
+
+    //object comparison test(s):
+    List<Integer> list1 = Arrays.asList(0,1,3,5);
+    Set<Integer> obj1 = new HashSet<Integer>(list1);
+    List<Integer> list2 = Arrays.asList(1,3,5,0);
+    Set<Integer> obj2 = new HashSet<Integer>(list2);
+
+    System.out.println("\nConfirm obj1.equals(obj2)*");
+    verify(obj1.equals(obj2), "expected obj1 " + obj1 + " to equal obj2: " + obj2);
+    System.out.println("\nNote: obj1 == obj2 is not proper syntax");
+  }
+}
+    </code>
+    </pre>
+  </body>
+
+</html>

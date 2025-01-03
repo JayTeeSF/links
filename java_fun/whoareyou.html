@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Java Fun</title>
+</head>
+
+<body>
+    <h1>Java Fun</h1>
+
+<p>2nd Draft:
+I switched to a different dataType that required less work on my part.
+In a file named WhoAreYou.java:</p>
+<pre>
+<code>
+import java.util.Properties;    
+
+
+/*
+ * What is the purpose of a comment?
+ * this is a block-style comment
+ */
+
+public class WhoAreYou
+{
+    // this is a single-line comment
+    public static void main(String[] args) {
+        Properties nameInfo = extractName(args);
+        System.out.println("Hi you must be " + nameInfo.getProperty("fullName"));
+    }
+
+    // this class method does all the work...
+    public static Properties extractName(String[] name) {
+        Properties props = new Properties(); // special variable type (see below)
+        String fullName; // just create a variable, but do not give it a value, yet
+        // set default values for the name
+        String firstName = "Name";
+        String lastName = "Unknown";
+        String middleName = "";
+        
+        if (name.length > 1) { // remember name is an array of strings. I am counting how-many strings
+         if (name.length < 2) {
+            // if only 1 string then it is just a first name...
+            firstName = name[0];
+          } else if (name.length < 3) {
+            // if only 2 strings then it is first & last name
+            firstName = name[0];
+            lastName = name[1];
+          } else if (name.length < 4) {
+            // if all 3 strings then i am assuming it is first, middle & last name(s)
+            firstName = name[0];
+            middleName = name[1];
+            lastName = name[2];
+          }
+        }
+
+        // you can google for the "Java Property" class to learn how this works:
+        props.setProperty("firstName", firstName); // (key, value)
+        props.setProperty("lastName", lastName); // (key, value)
+        props.setProperty("middleName", middleName); // (key, value)
+        props.setProperty("fullName", firstName + " " + middleName + " " + lastName); // (key, value)
+
+		return props;
+    }
+}
+</code>
+</pre>
+
+<br />
+<br />
+<br />
+
+<p> First Draft in a file named "MyFirtProgram1.java":</p>
+    <pre>
+    <code>
+import java.util.HashMap;
+import java.util.Map;
+
+/*
+ * What is the purpose of a comment?
+ * this is a block-style comment
+ */
+
+
+
+public class MyFirstProgram1
+{
+    // this is a single-line comment
+    public static void main(String[] args) {
+        Map<String, String> nameInfo = extractName(args);
+        // System.out.println("Hi you must be " + nameInfo.fullName); // commented-out, because it's bad syntax
+        System.out.println("Hi you must be " + nameInfo.get("fullName"));
+    }
+
+    // this class method does all the work:
+    // the data-type I'm using (i.e. Map) is flexible, but more work than I need for this program...
+    public static Map<String, String> extractName(String[] name) {
+        Map<String, String> map = new HashMap<>();
+        String fullName;
+        String firstName = "Name";
+        String lastName = "Unknown";
+        String middleName = "";
+        
+        if(name.length < 2) {
+            firstName = name[0];
+        } else if (name.length < 3) {
+            firstName = name[0];
+            lastName = name[1];
+        } else if (name.length < 4) {
+            firstName = name[0];
+            middleName = name[1];
+            lastName = name[2];
+        }
+		map.put("fullName", firstName + " " + lastName);
+		map.put("firstName", firstName);
+		map.put("lastName", lastName);
+		map.put("middleName", middleName);
+		
+		return map;
+    }
+}
+    </code>
+    </pre>
+</body>
+
+</html>

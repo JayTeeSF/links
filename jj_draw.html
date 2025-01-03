@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>JJ Draw App</title>
+</head>
+
+<body ontouchend="cnvs_mouseUp(event)" onmouseup="cnvs_mouseUp(event)">
+    <!-- up events "clear", so they should be captured even if you go off the canvas -->
+    <h1>JJ Draw App</h1>
+
+    <canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;" ontouchstart="cnvs_mouseDown(event)" ontouchmove="cnvs_mouseMove(event)" onmousedown="cnvs_mouseDown(event)" onmousemove="cnvs_mouseMove(event)">
+        Your browser does not support the canvas element.
+    </canvas>
+    <button onclick="cnvs_clear()">Clear</button>
+
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        var moveToCoords = null;
+        var rect = canvas.getBoundingClientRect();
+        var offsetX = rect.left;
+        var offsetY = rect.top;
+        var isDrawing = false;
+        var lineToCoords = null;
+
+        function drawLine(fromX, fromY, toX, toY) {
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+        }
+
+        // FIXME: don't draw here, just capture state:
+        function cnvs_clear(e) {
+            clearStartingPosition();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // don't draw here, just capture state:
+        function cnvs_mouseMove(e) {
+            storeEndingPosition(e.clientX - offsetX, e.clientY - offsetY);
+        }
+
+        // don't draw here, just capture state:
+        function cnvs_mouseDown(e) {
+            isDrawing = true;
+            if (null == moveToCoords) {
+                storeStartingPosition(e.clientX - offsetX, e.clientY - offsetY)
+            }
+        }
+
+        // don't draw here, just capture state:
+        function cnvs_mouseUp(e) {
+            isDrawing = false;
+            clearEndingPosition()
+            clearStartingPosition()
+        }
+
+        function storeEndingPosition(x, y) {
+            //console.log("Storing ending coordinates: (x: " + x + " y: " + y + ")");
+            lineToCoords = [x, y];
+        }
+
+        function clearEndingPosition() {
+            //console.log("clearing ending coordinates...")
+            lineToCoords = null;
+        }
+
+        function storeStartingPosition(x, y) {
+            //console.log("Storing starting coordinates: (x: " + x + " y: " + y + ")");
+            moveToCoords = [x, y];
+        }
+
+        function clearStartingPosition() {
+            //console.log("clearing starting coordinates...")
+            moveToCoords = null;
+        }
+
+        // handle all drawing in the animationLoop:
+        function mainLoop(time) {
+            if (true == isDrawing) {
+                drawLine(moveToCoords[0], moveToCoords[1], lineToCoords[0], lineToCoords[1]);
+                clearStartingPosition();
+                storeStartingPosition(lineToCoords[0], lineToCoords[1]);
+            }
+            requestAnimationFrame(mainLoop); // get next frame
+        }
+        requestAnimationFrame(mainLoop); // start the app
+    </script>
+</body>
+
+</html>

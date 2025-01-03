@@ -1,22 +1,122 @@
 [
   {
-    "link_text": "Amazing Movie",
-    "url": "https://example.com/movie",
-    "rating": 5,
-    "snippet": "An amazing movie to watch.",
-    "category": "video",
-    "tags": ["inspiring", "action"],
-    "date_added": "2025-01-01",
+    "link_text": "Foosball learner",
+    "url": "https://github.com/JayTeeSF/foosball_learner",
+    "rating": 4,
+    "snippet": "Get images from the camera.",
+    "category": "project",
+    "tags": ["learning", "camera", "game"],
+    "date_added": "2023-12-31",
     "favorite": true
   },
   {
-    "link_text": "Cool Podcast",
-    "url": "https://example.com/podcast",
-    "rating": 4,
-    "snippet": "A podcast worth listening to.",
-    "category": "audio",
-    "tags": ["education", "technology"],
-    "date_added": "2024-12-25",
+    "link_text": "Cheat at Clue",
+    "url": "/clue",
+    "rating": 5,
+    "snippet": "Solve the game of Clue with this tool.",
+    "category": "game",
+    "tags": ["clue", "solver"],
+    "date_added": "2023-11-15",
     "favorite": false
+  },
+  {
+    "link_text": "Math Birthday",
+    "url": "/age.html",
+    "rating": 3,
+    "snippet": "Make birthdays fun with math and radix.",
+    "category": "math",
+    "tags": ["birthday", "math", "radix"],
+    "date_added": "2023-10-10",
+    "favorite": false
+  },
+  {
+    "link_text": "Java Fun",
+    "url": "/java_fun/index.html",
+    "rating": 4,
+    "snippet": "Java classes for communicating with ET.",
+    "category": "project",
+    "tags": ["java", "project", "fun"],
+    "date_added": "2023-09-20",
+    "favorite": false
+  },
+  {
+    "link_text": "Word(le) Helper",
+    "url": "/words/new",
+    "rating": 5,
+    "snippet": "Tool to help you with Wordle puzzles.",
+    "category": "game",
+    "tags": ["wordle", "helper", "puzzle"],
+    "date_added": "2023-08-05",
+    "favorite": true
+  },
+  {
+    "link_text": "Letterbox Solver",
+    "url": "https://jayteesf.github.io/letter_box/",
+    "rating": 5,
+    "snippet": "Solve NYTimes Letterbox puzzles.",
+    "category": "game",
+    "tags": ["letterbox", "solver", "puzzle"],
+    "date_added": "2023-07-18",
+    "favorite": true
+  },
+  {
+    "link_text": "JJ Draw",
+    "url": "/jj_draw.html",
+    "rating": 3,
+    "snippet": "Drawing tool for creative projects.",
+    "category": "art",
+    "tags": ["drawing", "tool", "creative"],
+    "date_added": "2023-06-01",
+    "favorite": false
+  },
+  {
+    "link_text": "Can I Have Dessert?",
+    "url": "/can_i_have_dessert",
+    "rating": 4,
+    "snippet": "Fun tool for deciding if dessert is allowed.",
+    "category": "fun",
+    "tags": ["dessert", "decision", "fun"],
+    "date_added": "2023-05-22",
+    "favorite": true
+  },
+  {
+    "link_text": "Daily Planner",
+    "url": "/planner",
+    "rating": 4,
+    "snippet": "Fill in and print your daily plan.",
+    "category": "productivity",
+    "tags": ["planner", "daily", "printable"],
+    "date_added": "2023-04-15",
+    "favorite": false
+  },
+  {
+    "link_text": "Zombie Shake & Throw",
+    "url": "/zombie_shake_and_throw",
+    "rating": 5,
+    "snippet": "A fun zombie-themed game.",
+    "category": "game",
+    "tags": ["zombie", "shake", "throw"],
+    "date_added": "2023-03-10",
+    "favorite": true
+  },
+  {
+    "link_text": "Weekend Activity Chooser",
+    "url": "https://jayteesf.github.io/weekend_activity_chooser/",
+    "rating": 4,
+    "snippet": "Decide what to do this weekend.",
+    "category": "decision-making",
+    "tags": ["weekend", "activity", "chooser"],
+    "date_added": "2023-02-25",
+    "favorite": true
+  },
+  {
+    "link_text": "Pascal's Triangle",
+    "url": "/pascals_triangle",
+    "rating": 5,
+    "snippet": "A nerdy math visualization tool.",
+    "category": "math",
+    "tags": ["pascal", "triangle", "math"],
+    "date_added": "2023-01-01",
+    "favorite": true
   }
 ]

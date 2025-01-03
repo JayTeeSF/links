@@ -1,0 +1,34 @@
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Age Defying Math</title>
+  </head>
+
+  <body>
+
+    <h1>Age Defying Math</h1>
+
+    <form method="javascript:void">
+      <b>Upcoming Age: <input id="dreadedAge" type="number" value="50"></b> <br/>
+      <b>Radix (/Mathematical Base): <input id="radix" type="number" value="21"></b> <br/>
+      <p>Choose a radix that is greater than 10.</p>
+      <p>If you're gonna be 40, then try a radix of 15</p>
+      <p>Or a radix of 21 if your gonna be 50</p>
+      <p>Feel free to try other age & radix values to learn about Mathematical bases</p>
+    </form>
+    <button onclick="calculate()">Click here to be young again...</button>
+
+    <script>
+      function calculate() {
+        var dreadedAge = parseInt(document.getElementById('dreadedAge').value);
+        var radix = parseInt(document.getElementById('radix').value);
+        //var desiredAge=28;
+        // alert(`Congrats ${parseInt(desiredAge,16)} is the new ${desiredAge}*\n\n*note: in base 16`)
+        alert(`Congratulations, ${dreadedAge} is the new ${dreadedAge.toString(radix)}*\n\n*Note: base ${radix}`)
+      }
+    </script>
+  </body>
+</html>

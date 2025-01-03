@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <style>
+            h1 {
+                font-size: 80%;
+            }
+
+            h2 {
+                font-size: 80%;
+            }
+
+            body {
+                text-transform: uppercase;
+                font-family:    sans-serif
+            }
+
+            input[type=text] {
+                width: 50%;
+                border: none;
+                border-bottom: 1px solid black;
+            }
+
+            input[type=text].lineless {
+                border-bottom: 0px;
+            }
+
+            hr {
+                width: 95%;
+            }
+
+            table {
+                width: 90%;
+                border-collapse: collapse;
+            }
+
+            td:first-child {
+                border-right: solid 1px black;
+            }
+
+            td {
+                padding: 5px 10px;
+                vertical-align: bottom;
+            }
+
+            /*
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            */
+            
+            tr:hover {
+               background-color: #f5f5f5; 
+            }
+            
+        </style>
+    <title>Planner Page</title>
+</head>
+
+<body>
+    <h1 id="dateLine"></h1>
+
+    <hr align="left" />
+    <form id="mainForm">
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="50%"><h2>Today's Top Three:</h2>
+        </tr>
+        <tr>
+            <td width="50%"><input type="checkbox" name="top_one"><input name="top_one_txt" type="text"></td>       <td width="50%"><input name="quote_one_txt" type="text" class="lineless"></td>
+        </tr>
+        <tr>
+            <td width="50%"><input type="checkbox" name="top_two"><input name="top_two_text" type="text"></td>      <td width="50%"><input name="quote_two_txt" type="text" class="lineless"></td>
+        </tr>
+        <tr>
+            <td width="50%"><input type="checkbox" name="top_three"><input name="top_three_text" type="text"></td>  <td width="50%"><input name="quote_sig_txt" type="text" class="lineless"></td>
+        </tr>
+
+
+        <tr>
+            <td width="50%"><hr align="left" /></td>                                                                <td width="50%"><hr align="left" /></td>
+        </tr>
+        <tr>
+            <td width="50%"><h2>Today's Schedule:</h2></td>                                                         <td width="50%"><h2>To Do:</h2></td>
+        </tr>
+        <tr>
+            <td width="50%">6:00<input name="six_am_txt" type="text"></td>                                          <td width="50%"><input type="checkbox" name="six_am"><input name="six_am_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">7:00<input name="seven_am_txt" type="text"></td>                                        <td width="50%"><input type="checkbox" name="seven_am"><input name="seven_am_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">8:00<input name="eight_am_txt" type="text"></td>                                        <td width="50%"><input type="checkbox" name="eight_am"><input name="eight_am_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">9:00<input name="nine_am_txt" type="text"></td>                                         <td width="50%"><input type="checkbox" name="nine_am"><input name="nine_am_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">10:00<input name="ten_am_txt" type="text"></td>                                         <td width="50%"><input type="checkbox" name="ten_am"><input name="ten_am_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">11:00<input name="eleven_am_txt" type="text"></td>                                      <td width="50%"><input type="checkbox" name="eleven_am"><input name="eleven_am_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">12:00<input name="twelve_pm_txt" type="text"></td>                                      <td width="50%"><input type="checkbox" name="twelve_pm"><input name="twelve_pm_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">1:00<input name="one_pm_txt" type="text"></td>                                          <td width="50%"><input type="checkbox" name="one_pm"><input name="one_pm_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">2:00<input name="two_pm_txt" type="text"></td>                                          <td width="50%"><input type="checkbox" name="two_pm"><input name="two_pm_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">3:00<input name="three_pm_txt" type="text"></td>                                        <td width="50%"><input type="checkbox" name="three_pm"><input name="three_pm_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">4:00<input name="four_pm_txt" type="text"></td>                                         <td width="50%"><input type="checkbox" name="four_pm"><input name="four_pm_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">5:00<input name="five_pm_txt" type="text"></td>                                         <td width="50%"><input type="checkbox" name="five_pm"><input name="five_pm_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">6:00<input name="six_pm_txt" type="text"></td>                                          <td width="50%"><input type="checkbox" name="six_pm"><input name="six_pm_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">7:00<input name="seven_pm_txt" type="text"></td>                                        <td width="50%"><input type="checkbox" name="seven_pm"><input name="seven_pm_todo_txt" type="text"></td>
+        </tr>
+        <tr>
+            <td width="50%">8:00<input name="eight_pm_txt" type="text"></td>                                        <td width="50%"><input type="checkbox" name="eight_pm"><input name="eight_pm_todo_txt" type="text"></td>
+        </tr>
+
+
+
+        <tr>
+            <td width="50%"><hr align="left" /></td>                                                                <td width="50%"><hr align="left" /></td>
+        </tr>
+        <tr>
+            <td width="50%"><h2>Tonight:</h2></td>                                                                  <td width="50%"><h2>Gratitude:</h2></td>
+        </tr>
+        <tr>
+            <td width="50%"><input name="tonight_one" type="text" class="lineless"></td>                            <td width="50%"><input name="gratitude_one" type="text" class="lineless"></td>
+        </tr>
+        <tr>
+            <td width="50%"><input name="tonight_two" type="text" class="lineless"></td>                            <td width="50%"><input name="gratitude_two" type="text" class="lineless"></td>
+        </tr>
+        <tr>
+            <td width="50%"><input name="tonight_three" type="text" class="lineless"></td>                          <td width="50%"><input name="gratitude_three" type="text" class="lineless"></td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <br />
+    <input type="submit" value="Submit">
+    </form>
+
+    <script src="/planner/script.js"></script>
+</body>
+
+</html>

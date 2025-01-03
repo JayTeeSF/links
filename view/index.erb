@@ -1,9 +1,22 @@
 <h1>Explore Links</h1>
+<!-- Navbar -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-tab" href="#">All Links</a>
+  </li>
+</ul>
+
+<!-- Search Bar -->
 <input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+
+<!-- Links Section -->
 <div id="links">
   <% @data.each do |link| %>
     <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
-      <img src="<%= link['thumbnail'] %>" class="card-img-top" alt="<%= link['link_text'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
       <div class="card-body">
         <h5 class="card-title">
           <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
@@ -18,6 +31,21 @@
           <strong>Date Added:</strong> <%= link['date_added'] %><br>
           <strong>Tags:</strong> <%= link['tags'].join(', ') %>
         </p>
+      </div>
+    </div>
+
+    <!-- Modal for Full-Size Image -->
+    <div class="modal fade" id="imageModal-<%= index %>" tabindex="-1" aria-labelledby="modalLabel-<%= index %>" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel-<%= index %>"><%= link['link_text'] %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img src="<%= link['full_image'] %>" class="img-fluid" alt="<%= link['link_text'] %>">
+          </div>
+        </div>
       </div>
     </div>
   <% end %>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Pascal's Triangle (JS)</title>
+     <style>
+        .container {
+            margin: 0 auto;
+        }
+ 
+        .block {
+            display: inline-block;
+            position: relative;
+            border: 1px solid grey;
+            text-align: center;
+            font-size: .8em;
+            width: 2em;
+        }
+ 
+        .divblock {
+            text-align: center;
+            vertical-align: middle;
+        }
+ 
+        #triangle {
+            margin: 0 auto;
+            text-align: center;
+        }
+ 
+        .block:nth-child(odd) {
+            background: cyan;
+        }
+ 
+        .block:nth-child(even) {
+            background: grey;
+        }
+    </style>
+  </head>
+
+  <body>
+    <h1>Pascal's Triangle (JS)</h1>
+    <script src="/pascals_triangle/script.js"></script>
+
+    How Many Rows of Pascal's Triangle Do You Want? <input id="numRowsToPrint" type="number" name="numRowsToPrint" min="1" max="100" onchange="printTriangle(this.value);"><br />
+      <a href="javascript:doPrint('center');">Print Centered</a> <br />
+      <a href="javascript:doPrint('left');">Print Left Aligned</a> <br />
+      <a href="javascript:sierpinskiTriangle('odd');">Dark Sierpinski Triangle</a> <br />
+      <a href="javascript:sierpinskiTriangle('even');">Light Sierpinski Triangle</a> <br />
+      <a href="javascript:clearTriangle();">Clear Triangle</a>
+
+      <div id="triangle" align="center">
+      </div>
+
+      <br />
+      <br />
+      <br />
+      <a href="https://medium.com/i-math/top-10-secrets-of-pascals-triangle-6012ba9c5e23">Secrets of the Triangle</a><br />
+      <a href="https://www.wikiwand.com/en/Sierpinski_triangle">Sierpinski Triangle</a><br />
+      <a href="https://raw.githubusercontent.com/JayTeeSF/djb2/master/pascal.rb">Original Ruby Script</a><br />
+      <a href="/pascals_triangle/script.js">This JS Script</a>
+  </body>
+</html>
