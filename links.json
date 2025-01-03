@@ -1,0 +1,22 @@
+[
+  {
+    "link_text": "Amazing Movie",
+    "url": "https://example.com/movie",
+    "rating": 5,
+    "snippet": "An amazing movie to watch.",
+    "category": "video",
+    "tags": ["inspiring", "action"],
+    "date_added": "2025-01-01",
+    "favorite": true
+  },
+  {
+    "link_text": "Cool Podcast",
+    "url": "https://example.com/podcast",
+    "rating": 4,
+    "snippet": "A podcast worth listening to.",
+    "category": "audio",
+    "tags": ["education", "technology"],
+    "date_added": "2024-12-25",
+    "favorite": false
+  }
+]

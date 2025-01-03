@@ -1,0 +1,13 @@
+.card.favorite {
+  border: 2px solid gold;
+  background-color: #fff7e6;
+}
+
+.card .badge {
+  margin-left: 10px;
+}
+
+.card .tags {
+  font-style: italic;
+  color: #555;
+}

@@ -1,0 +1,24 @@
+<h1>Explore Links</h1>
+<input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
+<div id="links">
+  <% @data.each do |link| %>
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+      <img src="<%= link['thumbnail'] %>" class="card-img-top" alt="<%= link['link_text'] %>">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="<%= link['url'] %>" target="_blank"><%= link['link_text'] %></a>
+          <% if link['favorite'] %>
+            <span class="badge bg-warning text-dark">★ Favorite</span>
+          <% end %>
+        </h5>
+        <p class="card-text"><%= link['snippet'] %></p>
+        <p class="card-text">
+          <strong>Rating:</strong> <%= "⭐" * link['rating'] %><br>
+          <strong>Category:</strong> <%= link['category'].capitalize %><br>
+          <strong>Date Added:</strong> <%= link['date_added'] %><br>
+          <strong>Tags:</strong> <%= link['tags'].join(', ') %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+</div>
