@@ -1,12 +1,21 @@
 <h1>Explore Links</h1>
-<!-- Navbar -->
+
+<!-- Dynamic Filter Buttons -->
 <ul class="nav nav-tabs mb-3">
   <li class="nav-item">
-    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+    <button class="nav-link active" data-filter="favorites">Favorites</button>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="all-tab" href="#">All Links</a>
+    <button class="nav-link" data-filter="all">All Links</button>
   </li>
+
+  <!-- Dynamically generate filter buttons for unique tags -->
+  <% unique_tags = @data.flat_map { |link| link['tags'] }.uniq.sort %>
+  <% unique_tags.each do |tag| %>
+    <li class="nav-item">
+      <button class="nav-link" data-filter="<%= tag.downcase %>"><%= tag.capitalize %></button>
+    </li>
+  <% end %>
 </ul>
 
 <!-- Search Bar -->
@@ -14,9 +23,8 @@
 
 <!-- Links Section -->
 <div id="links">
-<div id="links">
   <% @data.each_with_index do |link, index| %>
-    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
+    <div class="card mb-3 <%= 'favorite' if link['favorite'] %>" data-tags="<%= link['tags'].join(', ') %>">
       <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
       <div class="card-body">
         <h5 class="card-title">

@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const modals = document.querySelectorAll(".modal");
   const searchInput = document.getElementById("search");
   const cards = document.querySelectorAll(".card");
-  const favoriteTab = document.getElementById("favorites-tab");
-  const allTab = document.getElementById("all-tab");
+  const filterButtons = document.querySelectorAll("[data-filter]");
+  const modals = document.querySelectorAll(".modal");
 
   // Ensure modals handle focus and accessibility properly
   modals.forEach(modal => {
@@ -28,28 +27,30 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Initialize filters on page load (show only favorites by default)
+  // Apply filter logic
   const applyFilter = (filter) => {
     cards.forEach(card => {
+      const tags = card.dataset.tags.split(",").map(tag => tag.trim().toLowerCase());
       const isFavorite = card.classList.contains("favorite");
-      if (filter === "favorites" && !isFavorite) {
-        card.style.display = "none";
-      } else {
+
+      if (filter === "all") {
         card.style.display = "block";
+      } else if (filter === "favorites") {
+        card.style.display = isFavorite ? "block" : "none";
+      } else {
+        const filterTags = filter.split("+").map(tag => tag.trim().toLowerCase());
+        const matches = filterTags.every(tag => tags.includes(tag));
+        card.style.display = matches ? "block" : "none";
       }
     });
   };
 
-  // Apply favorites filter on load
-  applyFilter("favorites");
-
-  // Tab filtering logic
-  favoriteTab.addEventListener("click", function () {
-    applyFilter("favorites");
-  });
-
-  allTab.addEventListener("click", function () {
-    applyFilter("all");
+  // Filter cards based on button click
+  filterButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      const filter = button.dataset.filter;
+      applyFilter(filter);
+    });
   });
 
   // Search functionality
@@ -60,4 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
       card.style.display = text.includes(query) ? "block" : "none";
     });
   });
+
+  // Default filter on load (Favorites)
+  applyFilter("favorites");
 });
