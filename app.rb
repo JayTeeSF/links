@@ -22,8 +22,10 @@ class StaticPageGenerator
         page.goto(entry['url'])
         page.screenshot(path: full_path)
 
-        # Create thumbnail using ImageMagick
-        MiniMagick::Image.open(full_path).resize("300x300").write(thumb_path)
+        # Generate a separate thumbnail without modifying the original
+        thumbnail = MiniMagick::Image.open(full_path)
+        thumbnail.resize("300x300")
+        thumbnail.write(thumb_path)
 
         entry['thumbnail'] = thumb_path
         entry['full_image'] = full_path

@@ -11,3 +11,17 @@
   font-style: italic;
   color: #555;
 }
+
+.card .thumbnail {
+  width: 100%; /* Adjust to card width */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Crop to fit container if necessary */
+}
+
+/* Ensure modal image is displayed correctly */
+.modal-body img {
+  max-width: 100%; /* Fit within modal */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Ensure proper centering */
+  margin: 0 auto;
+}
