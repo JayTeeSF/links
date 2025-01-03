@@ -1,8 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const modals = document.querySelectorAll(".modal");
   const searchInput = document.getElementById("search");
   const cards = document.querySelectorAll(".card");
-  const filterButtons = document.querySelectorAll("[data-filter]");
-  const modals = document.querySelectorAll(".modal");
+  const filterBtn = document.getElementById("filter-btn");
+  const addTagBtn = document.getElementById("add-tag");
+  const tagSelect = document.getElementById("tag-select");
+  const sortSelect = document.getElementById("sort-select");
+  const spinner = document.getElementById("loading-spinner");
+  let selectedTags = [];
 
   // Ensure modals handle focus and accessibility properly
   modals.forEach(modal => {
@@ -27,7 +32,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Apply filter logic
+  // Show spinner during filtering
+  const showSpinner = () => {
+    spinner.style.display = "block";
+    setTimeout(() => {
+      spinner.style.display = "none";
+    }, 300); // Spinner duration
+  };
+
+  // Apply filter
   const applyFilter = (filter) => {
     cards.forEach(card => {
       const tags = card.dataset.tags.split(",").map(tag => tag.trim().toLowerCase());
@@ -45,10 +58,28 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   };
 
-  // Filter cards based on button click
-  filterButtons.forEach(button => {
+  // Add selected tag to the filter
+  addTagBtn.addEventListener("click", function () {
+    const selectedTag = tagSelect.value;
+    if (selectedTag && !selectedTags.includes(selectedTag)) {
+      selectedTags.push(selectedTag);
+      alert(`Added tag: ${selectedTag}`);
+    }
+  });
+
+  // Apply combined tag filter on button click
+  filterBtn.addEventListener("click", function () {
+    if (selectedTags.length > 0) {
+      showSpinner();
+      applyFilter(selectedTags.join("+"));
+    }
+  });
+
+  // Predefined filter buttons
+  document.querySelectorAll("[data-filter]").forEach(button => {
     button.addEventListener("click", function () {
       const filter = button.dataset.filter;
+      showSpinner();
       applyFilter(filter);
     });
   });
@@ -60,6 +91,24 @@ document.addEventListener("DOMContentLoaded", function () {
       const text = card.innerText.toLowerCase();
       card.style.display = text.includes(query) ? "block" : "none";
     });
+  });
+
+  // Sorting functionality
+  sortSelect.addEventListener("change", function () {
+    const sortBy = sortSelect.value;
+    const sortedCards = Array.from(cards).sort((a, b) => {
+      if (sortBy === "title") {
+        return a.querySelector(".card-title").innerText.localeCompare(b.querySelector(".card-title").innerText);
+      } else if (sortBy === "title-desc") {
+        return b.querySelector(".card-title").innerText.localeCompare(a.querySelector(".card-title").innerText);
+      } else if (sortBy === "rating") {
+        return b.querySelector(".card-text strong").innerText.length - a.querySelector(".card-text strong").innerText.length;
+      } else if (sortBy === "rating-desc") {
+        return a.querySelector(".card-text strong").innerText.length - b.querySelector(".card-text strong").innerText.length;
+      }
+    });
+
+    sortedCards.forEach(card => card.parentElement.appendChild(card));
   });
 
   // Default filter on load (Favorites)

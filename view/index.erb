@@ -1,22 +1,40 @@
 <h1>Explore Links</h1>
 
-<!-- Dynamic Filter Buttons -->
-<ul class="nav nav-tabs mb-3">
-  <li class="nav-item">
-    <button class="nav-link active" data-filter="favorites">Favorites</button>
-  </li>
-  <li class="nav-item">
-    <button class="nav-link" data-filter="all">All Links</button>
-  </li>
+<!-- Spinner for loading feedback -->
+<div id="loading-spinner" style="display: none;" class="mb-3">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
 
-  <!-- Dynamically generate filter buttons for unique tags -->
-  <% unique_tags = @data.flat_map { |link| link['tags'] }.uniq.sort %>
-  <% unique_tags.each do |tag| %>
-    <li class="nav-item">
-      <button class="nav-link" data-filter="<%= tag.downcase %>"><%= tag.capitalize %></button>
-    </li>
-  <% end %>
-</ul>
+<!-- Sorting Controls -->
+<div class="sorting-controls mb-3">
+  <label for="sort-select">Sort By:</label>
+  <select id="sort-select" class="form-select">
+    <option value="title">Title (A-Z)</option>
+    <option value="title-desc">Title (Z-A)</option>
+    <option value="rating">Rating (High to Low)</option>
+    <option value="rating-desc">Rating (Low to High)</option>
+  </select>
+</div>
+
+<!-- Dynamic Tag Selection -->
+<div class="filter-controls mb-3">
+  <label for="tag-select">Select Tags:</label>
+  <select id="tag-select" class="form-select" multiple>
+    <% unique_tags = @data.flat_map { |link| link['tags'] }.uniq.sort %>
+    <% unique_tags.each do |tag| %>
+      <option value="<%= tag.downcase %>"><%= tag.capitalize %></option>
+    <% end %>
+  </select>
+
+  <button id="add-tag" class="btn btn-primary mt-2">Add Tag</button>
+  <button id="filter-btn" class="btn btn-success mt-2">Filter</button>
+
+  <!-- Predefined Filters -->
+  <button class="btn btn-secondary" data-filter="video+humor">Video + Humor</button>
+  <button class="btn btn-secondary" data-filter="video+trailer+humor">Video + Trailer + Humor</button>
+</div>
 
 <!-- Search Bar -->
 <input type="search" id="search" class="form-control mb-3" placeholder="Search by keyword, tag, or category...">
