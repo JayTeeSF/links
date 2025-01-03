@@ -2,26 +2,11 @@
 
 require 'erb'
 require 'json'
-require 'sqlite3'
 require 'playwright'
 
 class StaticPageGenerator
   def initialize
     @data = JSON.parse(File.read('links.json'))
-    @db = SQLite3::Database.new('db/clicks.sqlite3')
-    setup_database
-  end
-
-  def setup_database
-    @db.execute <<-SQL
-      CREATE TABLE IF NOT EXISTS clicks (
-        id INTEGER PRIMARY KEY,
-        url TEXT,
-        clicks INTEGER DEFAULT 0,
-        rating INTEGER DEFAULT 0,
-        favorite BOOLEAN DEFAULT 0
-      );
-    SQL
   end
 
   def generate_thumbnails
@@ -39,21 +24,13 @@ class StaticPageGenerator
   end
 
   def generate_html
-    template = File.read('./view/layout.erb')
-    content_template = File.read('./view/index.erb')
-    erb = ERB.new(template)
+    layout = File.read('./view/layout.erb')
+    index = File.read('./view/index.erb')
+    erb = ERB.new(layout)
 
     @data.sort_by! { |entry| Date.parse(entry['date_added']) }.reverse!
 
-    File.write('./public/index.html', erb.result_with_hash(content: ERB.new(content_template).result(binding)))
-  end
-
-  def track_click(url)
-    @db.execute("INSERT INTO clicks (url, clicks) VALUES (?, 1) ON CONFLICT(url) DO UPDATE SET clicks = clicks + 1", [url])
-  end
-
-  def toggle_favorite(url)
-    @db.execute("UPDATE clicks SET favorite = NOT favorite WHERE url = ?", [url])
+    File.write('./public/index.html', erb.result_with_hash(content: ERB.new(index).result(binding)))
   end
 end
 

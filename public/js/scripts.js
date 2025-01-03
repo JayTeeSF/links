@@ -1,14 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const searchInput = document.getElementById("search");
-  const cards = document.querySelectorAll(".card");
+  // Track clicks on links
+  document.querySelectorAll(".card a").forEach(link => {
+    link.addEventListener("click", function () {
+      const payload = {
+        url: link.href,
+        timestamp: new Date().toISOString(),
+        action: "click"
+      };
+      navigator.sendBeacon("https://example.com/track", JSON.stringify(payload));
+    });
+  });
 
-  searchInput.addEventListener("input", function () {
-    const query = searchInput.value.toLowerCase();
-
-    cards.forEach(card => {
-      const text = card.innerText.toLowerCase();
-      const matches = text.includes(query);
-      card.style.display = matches ? "block" : "none";
+  // Track favorites
+  document.querySelectorAll(".favorite-toggle").forEach(button => {
+    button.addEventListener("click", function () {
+      const payload = {
+        url: button.dataset.url,
+        timestamp: new Date().toISOString(),
+        action: "favorite"
+      };
+      navigator.sendBeacon("https://example.com/track", JSON.stringify(payload));
     });
   });
 });
