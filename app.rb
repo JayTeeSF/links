@@ -30,7 +30,7 @@ class StaticPageGenerator
 
     @data.sort_by! { |entry| Date.parse(entry['date_added']) }.reverse!
 
-    File.write('./public/index.html', erb.result_with_hash(content: ERB.new(index).result(binding)))
+    File.write('./index.html', erb.result_with_hash(content: ERB.new(index).result(binding)))
   end
 end
 

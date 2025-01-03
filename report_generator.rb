@@ -25,7 +25,7 @@ class ReportGenerator
     template = File.read('./view/layout.erb')
     report = File.read('./view/report.erb')
     erb = ERB.new(template)
-    File.write('./public/report.html', erb.result_with_hash(content: ERB.new(report).result(binding), data: data))
+    File.write('./report.html', erb.result_with_hash(content: ERB.new(report).result(binding), data: data))
   end
 end
 
