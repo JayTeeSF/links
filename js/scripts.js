@@ -1,14 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
   const modals = document.querySelectorAll(".modal");
+  const searchInput = document.getElementById("search");
+  const cards = document.querySelectorAll(".card");
+  const favoriteTab = document.getElementById("favorites-tab");
+  const allTab = document.getElementById("all-tab");
 
+  // Ensure modals handle focus and accessibility properly
   modals.forEach(modal => {
     modal.addEventListener("shown.bs.modal", function () {
-      // Ensure focus is trapped inside the modal
       modal.removeAttribute("aria-hidden");
     });
 
     modal.addEventListener("hidden.bs.modal", function () {
-      // Reset the modal to prevent focus issues
       modal.setAttribute("aria-hidden", "true");
     });
   });
@@ -20,38 +23,41 @@ document.addEventListener("DOMContentLoaded", function () {
       const modal = document.querySelector(modalId);
 
       if (modal.classList.contains("show")) {
-        // Prevent reopening the already open modal
         e.stopImmediatePropagation();
       }
     });
   });
 
-  const searchInput = document.getElementById("search");
-  const cards = document.querySelectorAll(".card");
-
-  // Search and filter cards
-  searchInput.addEventListener("input", function () {
-    const query = searchInput.value.toLowerCase();
-
+  // Initialize filters on page load (show only favorites by default)
+  const applyFilter = (filter) => {
     cards.forEach(card => {
-      const text = card.innerText.toLowerCase();
-      card.style.display = text.includes(query) ? "block" : "none";
+      const isFavorite = card.classList.contains("favorite");
+      if (filter === "favorites" && !isFavorite) {
+        card.style.display = "none";
+      } else {
+        card.style.display = "block";
+      }
     });
-  });
+  };
 
-  // Tab switching logic
-  const favoriteTab = document.getElementById("favorites-tab");
-  const allTab = document.getElementById("all-tab");
+  // Apply favorites filter on load
+  applyFilter("favorites");
 
+  // Tab filtering logic
   favoriteTab.addEventListener("click", function () {
-    cards.forEach(card => {
-      card.style.display = card.classList.contains("favorite") ? "block" : "none";
-    });
+    applyFilter("favorites");
   });
 
   allTab.addEventListener("click", function () {
+    applyFilter("all");
+  });
+
+  // Search functionality
+  searchInput.addEventListener("input", function () {
+    const query = searchInput.value.toLowerCase();
     cards.forEach(card => {
-      card.style.display = "block";
+      const text = card.innerText.toLowerCase();
+      card.style.display = text.includes(query) ? "block" : "none";
     });
   });
 });

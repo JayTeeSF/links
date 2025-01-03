@@ -13,7 +13,7 @@ class StaticPageGenerator
   def generate_thumbnails
     Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
       browser = playwright.chromium.launch
-      context = browser.new_context
+      context = browser.new_context(viewport: { width: 1920, height: 1080 }) # High resolution
       @data.each do |entry|
         full_path = "./images/#{File.basename(entry['url'])}.png"
         thumb_path = "./images/#{File.basename(entry['url'])}_thumb.png"
@@ -22,7 +22,7 @@ class StaticPageGenerator
         page.goto(entry['url'])
         page.screenshot(path: full_path)
 
-        # Generate a separate thumbnail without modifying the original
+        # Create thumbnail without affecting the full-size image
         thumbnail = MiniMagick::Image.open(full_path)
         thumbnail.resize("300x300")
         thumbnail.write(thumb_path)

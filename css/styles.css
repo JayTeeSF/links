@@ -12,16 +12,17 @@
   color: #555;
 }
 
+/* Thumbnail in the card */
 .card .thumbnail {
   width: 100%; /* Adjust to card width */
   height: auto; /* Maintain aspect ratio */
-  object-fit: cover; /* Crop to fit container if necessary */
+  object-fit: cover; /* Crop to fit container */
 }
 
-/* Ensure modal image is displayed correctly */
+/* Full-size image in modal */
 .modal-body img {
-  max-width: 100%; /* Fit within modal */
-  height: auto; /* Maintain aspect ratio */
-  display: block; /* Ensure proper centering */
+  max-width: 100%;
+  height: auto;
+  display: block;
   margin: 0 auto;
 }
