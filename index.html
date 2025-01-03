@@ -11,14 +11,143 @@
 <body>
   <div class="container">
     <h1>Explore Links</h1>
-<!-- Navbar -->
+
+<!-- Dynamic Filter Buttons -->
 <ul class="nav nav-tabs mb-3">
   <li class="nav-item">
-    <a class="nav-link active" id="favorites-tab" href="#">Favorites</a>
+    <button class="nav-link active" data-filter="favorites">Favorites</button>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="all-tab" href="#">All Links</a>
+    <button class="nav-link" data-filter="all">All Links</button>
   </li>
+
+  <!-- Dynamically generate filter buttons for unique tags -->
+  
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="activity">Activity</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="birthday">Birthday</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="camera">Camera</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="chooser">Chooser</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="clue">Clue</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="creative">Creative</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="daily">Daily</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="decision">Decision</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="dessert">Dessert</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="drawing">Drawing</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="fun">Fun</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="game">Game</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="helper">Helper</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="java">Java</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="learning">Learning</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="letterbox">Letterbox</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="math">Math</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="pascal">Pascal</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="planner">Planner</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="printable">Printable</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="project">Project</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="puzzle">Puzzle</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="radix">Radix</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="shake">Shake</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="solver">Solver</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="throw">Throw</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="tool">Tool</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="triangle">Triangle</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="weekend">Weekend</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="wordle">Wordle</button>
+    </li>
+  
+    <li class="nav-item">
+      <button class="nav-link" data-filter="zombie">Zombie</button>
+    </li>
+  
 </ul>
 
 <!-- Search Bar -->
@@ -26,9 +155,8 @@
 
 <!-- Links Section -->
 <div id="links">
-<div id="links">
   
-    <div class="card mb-3 favorite">
+    <div class="card mb-3 favorite" data-tags="learning, camera, game">
       <img src="./images/foosball_learner_thumb.png" class="card-img-top thumbnail" alt="Foosball learner" data-bs-toggle="modal" data-bs-target="#imageModal-0">
       <div class="card-body">
         <h5 class="card-title">
@@ -62,7 +190,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 ">
+    <div class="card mb-3 " data-tags="clue, solver">
       <img src="./images/clue_thumb.png" class="card-img-top thumbnail" alt="Cheat at Clue" data-bs-toggle="modal" data-bs-target="#imageModal-1">
       <div class="card-body">
         <h5 class="card-title">
@@ -94,7 +222,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 ">
+    <div class="card mb-3 " data-tags="birthday, math, radix">
       <img src="./images/age.html_thumb.png" class="card-img-top thumbnail" alt="Math Birthday" data-bs-toggle="modal" data-bs-target="#imageModal-2">
       <div class="card-body">
         <h5 class="card-title">
@@ -126,7 +254,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 ">
+    <div class="card mb-3 " data-tags="java, project, fun">
       <img src="./images/index.html_thumb.png" class="card-img-top thumbnail" alt="Java Fun" data-bs-toggle="modal" data-bs-target="#imageModal-3">
       <div class="card-body">
         <h5 class="card-title">
@@ -158,7 +286,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 favorite">
+    <div class="card mb-3 favorite" data-tags="wordle, helper, puzzle">
       <img src="./images/new_thumb.png" class="card-img-top thumbnail" alt="Word(le) Helper" data-bs-toggle="modal" data-bs-target="#imageModal-4">
       <div class="card-body">
         <h5 class="card-title">
@@ -192,7 +320,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 favorite">
+    <div class="card mb-3 favorite" data-tags="letterbox, solver, puzzle">
       <img src="./images/letter_box_thumb.png" class="card-img-top thumbnail" alt="Letterbox Solver" data-bs-toggle="modal" data-bs-target="#imageModal-5">
       <div class="card-body">
         <h5 class="card-title">
@@ -226,7 +354,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 ">
+    <div class="card mb-3 " data-tags="drawing, tool, creative">
       <img src="./images/jj_draw.html_thumb.png" class="card-img-top thumbnail" alt="JJ Draw" data-bs-toggle="modal" data-bs-target="#imageModal-6">
       <div class="card-body">
         <h5 class="card-title">
@@ -258,7 +386,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 favorite">
+    <div class="card mb-3 favorite" data-tags="dessert, decision, fun">
       <img src="./images/can_i_have_dessert_thumb.png" class="card-img-top thumbnail" alt="Can I Have Dessert?" data-bs-toggle="modal" data-bs-target="#imageModal-7">
       <div class="card-body">
         <h5 class="card-title">
@@ -292,7 +420,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 ">
+    <div class="card mb-3 " data-tags="planner, daily, printable">
       <img src="./images/planner_thumb.png" class="card-img-top thumbnail" alt="Daily Planner" data-bs-toggle="modal" data-bs-target="#imageModal-8">
       <div class="card-body">
         <h5 class="card-title">
@@ -324,7 +452,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 favorite">
+    <div class="card mb-3 favorite" data-tags="zombie, shake, throw">
       <img src="./images/zombie_shake_and_throw_thumb.png" class="card-img-top thumbnail" alt="Zombie Shake & Throw" data-bs-toggle="modal" data-bs-target="#imageModal-9">
       <div class="card-body">
         <h5 class="card-title">
@@ -358,7 +486,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 favorite">
+    <div class="card mb-3 favorite" data-tags="weekend, activity, chooser">
       <img src="./images/weekend_activity_chooser_thumb.png" class="card-img-top thumbnail" alt="Weekend Activity Chooser" data-bs-toggle="modal" data-bs-target="#imageModal-10">
       <div class="card-body">
         <h5 class="card-title">
@@ -392,7 +520,7 @@
       </div>
     </div>
   
-    <div class="card mb-3 favorite">
+    <div class="card mb-3 favorite" data-tags="pascal, triangle, math">
       <img src="./images/pascals_triangle_thumb.png" class="card-img-top thumbnail" alt="Pascal's Triangle" data-bs-toggle="modal" data-bs-target="#imageModal-11">
       <div class="card-body">
         <h5 class="card-title">
