@@ -14,7 +14,8 @@
 
 <!-- Links Section -->
 <div id="links">
-  <% @data.each do |link| %>
+<div id="links">
+  <% @data.each_with_index do |link, index| %>
     <div class="card mb-3 <%= 'favorite' if link['favorite'] %>">
       <img src="<%= link['thumbnail'] %>" class="card-img-top thumbnail" alt="<%= link['link_text'] %>" data-bs-toggle="modal" data-bs-target="#imageModal-<%= index %>">
       <div class="card-body">

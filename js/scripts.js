@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("search");
   const cards = document.querySelectorAll(".card");
 
+  // Search and filter cards
   searchInput.addEventListener("input", function () {
     const query = searchInput.value.toLowerCase();
 
@@ -11,13 +12,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Initialize tabbed interface
+  // Tab switching logic
   const favoriteTab = document.getElementById("favorites-tab");
-  if (favoriteTab) {
-    favoriteTab.addEventListener("click", function () {
-      cards.forEach(card => {
-        card.style.display = card.classList.contains("favorite") ? "block" : "none";
-      });
+  const allTab = document.getElementById("all-tab");
+
+  favoriteTab.addEventListener("click", function () {
+    cards.forEach(card => {
+      card.style.display = card.classList.contains("favorite") ? "block" : "none";
     });
-  }
+  });
+
+  allTab.addEventListener("click", function () {
+    cards.forEach(card => {
+      card.style.display = "block";
+    });
+  });
 });
