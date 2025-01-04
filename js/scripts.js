@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cards = document.querySelectorAll(".card");
   const filterBtn = document.getElementById("filter-btn");
   const addTagBtn = document.getElementById("add-tag");
+  const clearFiltersBtn = document.getElementById("clear-filters");
   const tagSelect = document.getElementById("tag-select");
   const sortSelect = document.getElementById("sort-select");
   const spinner = document.getElementById("loading-spinner");
@@ -67,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Apply combined tag filter on button click
+  // Apply combined tag filter
   filterBtn.addEventListener("click", function () {
     if (selectedTags.length > 0) {
       showSpinner();
@@ -75,13 +76,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Predefined filter buttons
-  document.querySelectorAll("[data-filter]").forEach(button => {
-    button.addEventListener("click", function () {
-      const filter = button.dataset.filter;
-      showSpinner();
-      applyFilter(filter);
-    });
+  // Clear all filters
+  clearFiltersBtn.addEventListener("click", function () {
+    selectedTags = [];
+    searchInput.value = "";
+    sortSelect.value = "title";
+    applyFilter("all");
   });
 
   // Search functionality
