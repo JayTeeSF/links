@@ -1,3 +1,20 @@
+#==========
+# SCRIPT: enhance_links.sh
+#==========
+# Purpose:
+#   1. Replace your existing links.json with an expanded version that includes:
+#      - New fields (media_type, platform, notes, date_created)
+#      - Additional sample entries from your brainstorm
+#
+# Protocol instructions:
+#   - Copy and run this in your environment (bash shell).
+#   - It reads the expanded JSON below and overwrites your links.json.
+#
+#   NOTE: If you do not want to overwrite your links.json directly,
+#         modify the ">" target to some other file name.
+#==========
+
+cat << 'EOF' > links.json
 [
   {
     "link_text": "Foosball learner",
@@ -449,3 +466,6 @@
     "date_created": ""
   }
 ]
+EOF
+
+echo "Done! Your links.json has been replaced with the enhanced structure."
