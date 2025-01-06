@@ -1,0 +1,301 @@
+#!/usr/bin/env ruby
+
+#==========================================================
+# FILE: google_crawler.rb
+#==========================================================
+# Updated example that tries to:
+#  1) Fetch from the first page of Google only.
+#  2) Extract standard search results (div.g).
+#  3) Attempt to locate/parse the carousel widget.
+#  4) Debug (HTML + screenshot) if no results were found.
+#
+# REQUIREMENTS:
+#   gem 'playwright-ruby-client'
+#   require_relative 'link' (for Link model / DB)
+#==========================================================
+
+require 'fileutils'
+require_relative 'link'
+require 'playwright'
+require 'uri'
+
+class GoogleCrawler
+  #----------------------------------------
+  # You can tweak these settings
+  #----------------------------------------
+  QUERIES = [
+    "best shows to stream",
+    "best movies to stream"
+  ].freeze
+
+  def initialize
+    # Ensure your Link DB is ready (adjust as needed)
+    Link.init_db
+  end
+
+  def crawl
+    Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
+      browser = playwright.chromium.launch(headless: true)
+      context = browser.new_context
+      # Possibly set a higher default timeout
+      context.set_default_timeout(30_000)
+
+      page = context.new_page
+
+      QUERIES.each do |query|
+        fetch_search_results(page, query)
+      end
+
+      browser.close
+    end
+  end
+
+  private
+
+  #----------------------------------------------
+  # Only fetch page-1, parse any standard results,
+  # then parse the carousel widget.
+  #----------------------------------------------
+  def fetch_search_results(page, query)
+    puts "=== Searching for: \"#{query}\" ==="
+
+    # Build the Google SERP URL
+    url = "https://www.google.com/search?q=#{URI.encode_www_form_component(query)}"
+    puts "Navigating to: #{url}"
+
+    page.goto(url)
+    handle_cookie_banner(page)
+
+    # Wait for body to be visible so we (hopefully) have content
+    begin
+      page.wait_for_selector('body', state: :visible, timeout: 15_000)
+    rescue Playwright::TimeoutError => e
+      debug_failure(page, "Timed out waiting for body. No results for '#{query}'?")
+      raise e
+    end
+
+    # Optional scroll to ensure lazy-loaded content
+    4.times do
+      page.keyboard.press('PageDown')
+      page.wait_for_timeout(500)
+    end
+
+    4.times do
+      page.keyboard.press('PageUp')
+      page.wait_for_timeout(30)
+    end
+
+    all_results = []
+  # Wait for the "What to watch" heading to appear
+  # (in your real code, you might use a more robust wait or check)
+  page.wait_for_selector("div.kno-fb-ctx.gsmt.aTI8gc[role='heading']", timeout: 10_000)
+
+  # Locate the heading that reads "What to watch"
+  heading_selector = "div.kno-fb-ctx.gsmt.aTI8gc[role='heading'][aria-level='2']"
+  # heading_locator  = page.locator(heading_selector, has_text: "What to watch")
+  heading_locator = page.locator("#{heading_selector}").locator("text=What to watch")
+
+  # If found, locate the container that holds the movie/show tiles
+  if heading_locator.count == 0
+    puts "[!] Could not find the 'What to watch' heading."
+  else
+    puts "[+] Found the 'What to watch' heading!"
+    # Often the carousel or tile-container is near/under this heading.
+    # This is one approach: go *up* or *down* the DOM from the heading
+    # and find the relevant tiles. For instance:
+
+    container = heading_locator.evaluate_handle("node => node.closest('.q4fKxf')")
+    # The above tries to find the parent container that has the role="menu", etc.
+    # Alternatively, you can refine your DOM selection if the structure differs.
+
+    unless container.nil?
+      # tile_locator = container.locator("g-scrolling-carousel .aw7ZUb")
+      # tile_locator = container.as_element_handle.locator("g-scrolling-carousel .aw7ZUb")
+      # tile_locator = container.as_element.locator("g-scrolling-carousel .aw7ZUb")
+      container = page.locator("g-scrolling-carousel").first
+      tile_locator = container.locator(".aw7ZUb")
+
+      # This is an example. Adjust the CSS to match the actual tile elements
+      # that hold each movie/series. Then you can loop them:
+
+      tile_count = tile_locator.count
+      puts "[+] Found #{tile_count} potential tiles under 'What to watch'."
+
+      tile_count.times do |i|
+        nth_tile = tile_locator.nth(i)
+        # e.g., get the movie/show name
+        # Tile #0 => Title: nil; nth_tile.inspect: #<Playwright::Locator:0x000000012bc386e8 @impl=#<Playwright::LocatorImpl:0x000000012bc38850 @frame=#<frame@a235af64fd6d4acefd07664f7c92dc0c>, @timeout_settings=#<Playwright::TimeoutSettings:0x000000012bab3250 @parent=#<Playwright::TimeoutSettings:0x000000012bab6770 @parent=nil, @default_timeout=30000>>, @selector="g-scrolling-carousel >> nth=0 >> .aw7ZUb >> nth=0">>
+
+        title = nth_tile.locator("div.oLJ4Uc, .oLJ4Uc").inner_text rescue nil
+        # or handle images, watch links, etc.
+        puts "Tile ##{i} => Title: #{title.inspect}; nth_tile.inspect: #{nth_tile.inspect}"
+      end
+    end
+  end
+    #-----------------------------------
+    # 1) Attempt normal SERP results
+    #-----------------------------------
+    results = page.locator("#{heading_selector}").locator("text=What to watch").evaluate_all(<<~JS)
+      (nodes) => nodes.map(node => {
+        const titleEl   = node.querySelector('h3');
+        const linkEl    = node.querySelector('a');
+        const snippetEl = node.querySelector('.VwiC3b');
+
+        return {
+          title:   titleEl   ? titleEl.textContent : null,
+          url:     linkEl    ? linkEl.getAttribute('href') : null,
+          snippet: snippetEl ? snippetEl.textContent       : null
+        };
+      })
+    JS
+
+    results.compact!
+    results.reject! { |r| r[:title].to_s.strip.empty? || r[:url].nil? }
+    all_results.concat(results)
+
+    if results.empty?
+      puts "No standard SERP results found (div.g)."
+      debug_failure(page, "No standard results found for '#{query}'")
+    else
+      puts "Found #{results.size} standard SERP results."
+    end
+    #-----------------------------------
+    # 2) Attempt the "carousel" widget
+    #-----------------------------------
+    carousel_items = handle_carousel(page)
+    # Convert them into the same shape as standard results
+    carousel_data = carousel_items.map do |item|
+      {
+        title: item[:title],
+        url:   "",  # might not have a direct link
+        snippet: ""
+      }
+    end
+
+    if carousel_data.any?
+      puts "Found #{carousel_data.size} carousel items."
+      all_results.concat(carousel_data)
+    else
+      puts "No carousel items found."
+    end
+
+    #-----------------------------------
+    # 3) Store results in DB
+    #-----------------------------------
+    all_results.each do |r|
+      Link.upsert(
+        "link_text"   => r[:title],
+        "url"         => r[:url],
+        "rating"      => 3,
+        "snippet"     => r[:snippet] || "",
+        "category"    => "streaming",
+        "tags"        => ["google", "crawler", query],
+        "date_added"  => Time.now.strftime("%Y-%m-%d"),
+        "favorite"    => false,
+        "media_type"  => "",
+        "platform"    => "",
+        "notes"       => "Found via Google search: #{query}",
+        "date_created"=> "",
+        "thumbnail"   => nil,
+        "full_image"  => nil
+      )
+    end
+
+    puts "Crawled '#{query}', total upserted so far: #{all_results.size} links."
+    puts "-" * 60
+  end
+
+  #----------------------------------------------
+  # Attempt to handle the Google cookie banner
+  #----------------------------------------------
+  def handle_cookie_banner(page)
+    # Some possible selectors for google cookie acceptance
+    cookie_selectors = [
+      'button:has-text("I agree")',
+      'button:has-text("Accept all")',
+      'text="I agree"',
+      'text="Accept all"'
+    ]
+
+    cookie_selectors.each do |sel|
+      if page.locator(sel).count.positive?
+        page.click(sel)
+        page.wait_for_timeout(700)
+        break
+      end
+    end
+  end
+
+  #----------------------------------------------
+  # Example carousel parser
+  # NOTE: You must inspect your actual DOM to
+  # find the correct selectors for your region.
+  #----------------------------------------------
+  def handle_carousel(page)
+    # This is a sample, searching for a typical "g-scrolling-carousel" tag
+    carousel = page.locator('g-scrolling-carousel')
+    return [] unless carousel.count.positive?
+
+    puts "Found a g-scrolling-carousel. Attempting to parse items..."
+
+    # Optionally, try clicking the next arrow a few times:
+    next_btn = carousel.locator('g-right-button, div[aria-label="Next slide"]')
+    2.times do |i|
+      if next_btn.count.positive?
+        puts "Clicking carousel next button (#{i + 1})"
+        next_btn.click
+        page.wait_for_timeout(1000)
+      else
+        break
+      end
+    end
+
+    # Attempt to evaluate all item nodes within the carousel
+    items = carousel.locator('div[class*="ubGgZd"]')  # or .vl8wZc, or something else
+    data = items.evaluate_all(<<~JS)
+      (nodes) => nodes.map(node => {
+        // Example: might be a .sgocbe class for the title, or something else.
+        const titleEl = node.querySelector('.sgocbe') 
+                     || node.querySelector('.ellip');
+        return {
+          title: titleEl ? titleEl.textContent.trim() : null
+        };
+      })
+    JS
+
+    # Filter out empties
+    data.compact!
+    data.reject! { |x| x[:title].nil? || x[:title].empty? }
+
+    puts "Extracted #{data.size} carousel items."
+    data
+  end
+
+  #----------------------------------------------
+  # Debug method for timeouts or zero-results
+  #----------------------------------------------
+  def debug_failure(page, msg)
+    puts "DEBUG: #{msg}"
+    FileUtils.mkdir_p('debug')
+    ts = Time.now.strftime("%Y%m%d_%H%M%S")
+
+    screenshot_path = "debug/failure_#{ts}.png"
+    page.screenshot(path: screenshot_path)
+    puts "Saved screenshot => #{screenshot_path}"
+
+    html_path = "debug/failure_#{ts}.html"
+    File.write(html_path, page.content)
+    puts "Saved HTML => #{html_path}"
+
+    puts "Current URL => #{page.url}"
+  end
+end
+
+#----------------------------------------------
+# RUN if executed directly
+#----------------------------------------------
+if $PROGRAM_NAME == __FILE__
+  crawler = GoogleCrawler.new
+  crawler.crawl
+  puts "Done crawling queries: #{GoogleCrawler::QUERIES.join(', ')}"
+end
