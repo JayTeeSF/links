@@ -6,8 +6,8 @@ require 'playwright'
 require 'mini_magick'
 
 class StaticPageGenerator
-  def initialize
-    @data = JSON.parse(File.read('links.json'))
+  def initialize(input_file = 'links.json')
+    @data = JSON.parse(File.read(input_file))
   end
 
   def imageless_data
@@ -37,20 +37,26 @@ class StaticPageGenerator
     end
   end
 
-  def generate_html
+  def generate_html(output_file = 'index.html')
     layout = File.read('./view/layout.erb')
     index = File.read('./view/index.erb')
     erb = ERB.new(layout)
 
     @data.sort_by! { |entry| Date.parse(entry['date_added']) }.reverse!
 
-    File.write('./index.html', erb.result_with_hash(content: ERB.new(index).result(binding)))
+    File.write(output_file, erb.result_with_hash(content: ERB.new(index).result(binding)))
   end
 end
 
 if $PROGRAM_NAME == __FILE__
-  generator = StaticPageGenerator.new
+  input_file = 'links.json'
+  output_file = 'index.html'
+  if ARGV.length > 0
+    input_file = ARGV[0]
+    output_file = ARGV[1] if ARGV.length > 1
+  end
+  generator = StaticPageGenerator.new(input_file)
   generator.generate_thumbnails
-  generator.generate_html
+  generator.generate_html(output_file)
   puts "Static site generated successfully."
 end

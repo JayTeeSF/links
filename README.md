@@ -1,4 +1,14 @@
-Link Model Usage examples:
+## New Links Page Generation
+
+```
+./app <input_file> <output_file>
+```
+e.g.
+```
+  ./app links.json index.html
+```
+
+## Link Model Usage examples:
 1.	Initialize the DB and import from your existing links.json:
 
 ```
