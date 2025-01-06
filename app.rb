@@ -10,11 +10,15 @@ class StaticPageGenerator
     @data = JSON.parse(File.read('links.json'))
   end
 
+  def imageless_data
+    @data.select { |entry| entry['thumbnail'].nil? && entry['full_image'].nil? }
+  end
+
   def generate_thumbnails
     Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
       browser = playwright.chromium.launch
       context = browser.new_context(viewport: { width: 1920, height: 1080 }) # High resolution
-      @data.each do |entry|
+      imageless_data.each do |entry|
         full_path = "./images/#{File.basename(entry['url'])}.png"
         thumb_path = "./images/#{File.basename(entry['url'])}_thumb.png"
 
