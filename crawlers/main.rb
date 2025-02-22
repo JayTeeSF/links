@@ -17,4 +17,13 @@ crawlers = [
   AppleTVCrawler.new
 ]
 
-crawlers.each(&:fetch_and_store_items)
+crawlers.each do |crawler|
+  begin
+    puts "Running #{crawler.class.name}..."
+    crawler.fetch_and_store_items
+  rescue StandardError => e
+    puts "Error running #{crawler.class.name}: #{e.message}"
+    puts e.backtrace.first(5) # Print the first 5 lines of the backtrace for debugging
+    puts "-" * 60
+  end
+end
