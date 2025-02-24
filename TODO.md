@@ -1,5 +1,7 @@
 Add More Links:
 
+Article about building an event-driven (event-sourcing) system: "https://boringrails.substack.com/p/event-sourcing-for-smooth-brains"
+
 The best course I’ve ever seen on how LLM’s work (the only thing better, but not as detailed, is the presentation by the CO-President of Spotify - “https://www.youtube.com/watch?v=2eWuYf-aZE4”):
 
 “https://learn.deeplearning.ai/courses/how-transformer-llms-work/lesson/1/introduction”
