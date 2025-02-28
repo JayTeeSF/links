@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Periodic Table</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: #111; }
+    canvas { display: block; }
+    .tooltip {
+      position: absolute;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 8px;
+      border-radius: 4px;
+      pointer-events: none;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      max-width: 180px;
+    }
+  </style>
+</head>
+<body>
+  <div id="tooltip" class="tooltip" style="display: none;"></div>
+  <!-- p5.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <script>
+    // Global variables for table layout.
+    let elements = [];
+    let tooltip;
+    // We use 18 columns for the main grid.
+    const cols = 18, rows = 9; // rows: main table + lanthanides/actinides
+    let cellWidth, cellHeight;
+    const tableOffsetX = 20, tableOffsetY = 20;
+    
+    // Setup full periodic table data.
+    function setupElements() {
+      elements = [
+        // Period 1
+        { atomicNumber: 1,  symbol: "H",  name: "Hydrogen", electronConfig: "1s1",        row: 0, col: 0,  electrons: 1 },
+        { atomicNumber: 2,  symbol: "He", name: "Helium",   electronConfig: "1s2",        row: 0, col: 17, electrons: 2 },
+        // Period 2
+        { atomicNumber: 3,  symbol: "Li", name: "Lithium",  electronConfig: "1s2 2s1",    row: 1, col: 0,  electrons: 3 },
+        { atomicNumber: 4,  symbol: "Be", name: "Beryllium",electronConfig: "1s2 2s2",    row: 1, col: 1,  electrons: 4 },
+        { atomicNumber: 5,  symbol: "B",  name: "Boron",    electronConfig: "1s2 2s2 2p1", row: 1, col: 12, electrons: 5 },
+        { atomicNumber: 6,  symbol: "C",  name: "Carbon",   electronConfig: "1s2 2s2 2p2", row: 1, col: 13, electrons: 6 },
+        { atomicNumber: 7,  symbol: "N",  name: "Nitrogen", electronConfig: "1s2 2s2 2p3", row: 1, col: 14, electrons: 7 },
+        { atomicNumber: 8,  symbol: "O",  name: "Oxygen",   electronConfig: "1s2 2s2 2p4", row: 1, col: 15, electrons: 8 },
+        { atomicNumber: 9,  symbol: "F",  name: "Fluorine", electronConfig: "1s2 2s2 2p5", row: 1, col: 16, electrons: 9 },
+        { atomicNumber: 10, symbol: "Ne", name: "Neon",     electronConfig: "1s2 2s2 2p6", row: 1, col: 17, electrons: 10 },
+        // Period 3
+        { atomicNumber: 11, symbol: "Na", name: "Sodium",   electronConfig: "1s2 2s2 2p6 3s1",      row: 2, col: 0,  electrons: 11 },
+        { atomicNumber: 12, symbol: "Mg", name: "Magnesium",electronConfig: "1s2 2s2 2p6 3s2",      row: 2, col: 1,  electrons: 12 },
+        { atomicNumber: 13, symbol: "Al", name: "Aluminum", electronConfig: "1s2 2s2 2p6 3s2 3p1",  row: 2, col: 12, electrons: 13 },
+        { atomicNumber: 14, symbol: "Si", name: "Silicon",  electronConfig: "1s2 2s2 2p6 3s2 3p2",  row: 2, col: 13, electrons: 14 },
+        { atomicNumber: 15, symbol: "P",  name: "Phosphorus", electronConfig:"1s2 2s2 2p6 3s2 3p3",  row: 2, col: 14, electrons: 15 },
+        { atomicNumber: 16, symbol: "S",  name: "Sulfur",   electronConfig: "1s2 2s2 2p6 3s2 3p4",  row: 2, col: 15, electrons: 16 },
+        { atomicNumber: 17, symbol: "Cl", name: "Chlorine", electronConfig: "1s2 2s2 2p6 3s2 3p5",  row: 2, col: 16, electrons: 17 },
+        { atomicNumber: 18, symbol: "Ar", name: "Argon",    electronConfig: "1s2 2s2 2p6 3s2 3p6",  row: 2, col: 17, electrons: 18 },
+        // Period 4
+        { atomicNumber: 19, symbol: "K",  name: "Potassium", electronConfig: "1s2 2s2 2p6 3s2 3p6 4s1",  row: 3, col: 0,  electrons: 19 },
+        { atomicNumber: 20, symbol: "Ca", name: "Calcium",   electronConfig: "1s2 2s2 2p6 3s2 3p6 4s2",  row: 3, col: 1,  electrons: 20 },
+        { atomicNumber: 21, symbol: "Sc", name: "Scandium",  electronConfig: "[Ar] 3d1 4s2",               row: 3, col: 2,  electrons: 21 },
+        { atomicNumber: 22, symbol: "Ti", name: "Titanium",  electronConfig: "[Ar] 3d2 4s2",               row: 3, col: 3,  electrons: 22 },
+        { atomicNumber: 23, symbol: "V",  name: "Vanadium",  electronConfig: "[Ar] 3d3 4s2",               row: 3, col: 4,  electrons: 23 },
+        { atomicNumber: 24, symbol: "Cr", name: "Chromium",  electronConfig: "[Ar] 3d5 4s1",               row: 3, col: 5,  electrons: 24 },
+        { atomicNumber: 25, symbol: "Mn", name: "Manganese", electronConfig: "[Ar] 3d5 4s2",               row: 3, col: 6,  electrons: 25 },
+        { atomicNumber: 26, symbol: "Fe", name: "Iron",      electronConfig: "[Ar] 3d6 4s2",               row: 3, col: 7,  electrons: 26 },
+        { atomicNumber: 27, symbol: "Co", name: "Cobalt",    electronConfig: "[Ar] 3d7 4s2",               row: 3, col: 8,  electrons: 27 },
+        { atomicNumber: 28, symbol: "Ni", name: "Nickel",    electronConfig: "[Ar] 3d8 4s2",               row: 3, col: 9,  electrons: 28 },
+        { atomicNumber: 29, symbol: "Cu", name: "Copper",    electronConfig: "[Ar] 3d10 4s1",              row: 3, col: 10, electrons: 29 },
+        { atomicNumber: 30, symbol: "Zn", name: "Zinc",      electronConfig: "[Ar] 3d10 4s2",              row: 3, col: 11, electrons: 30 },
+        { atomicNumber: 31, symbol: "Ga", name: "Gallium",   electronConfig: "[Ar] 3d10 4s2 4p1",          row: 3, col: 12, electrons: 31 },
+        { atomicNumber: 32, symbol: "Ge", name: "Germanium", electronConfig: "[Ar] 3d10 4s2 4p2",          row: 3, col: 13, electrons: 32 },
+        { atomicNumber: 33, symbol: "As", name: "Arsenic",   electronConfig: "[Ar] 3d10 4s2 4p3",          row: 3, col: 14, electrons: 33 },
+        { atomicNumber: 34, symbol: "Se", name: "Selenium",  electronConfig: "[Ar] 3d10 4s2 4p4",          row: 3, col: 15, electrons: 34 },
+        { atomicNumber: 35, symbol: "Br", name: "Bromine",   electronConfig: "[Ar] 3d10 4s2 4p5",          row: 3, col: 16, electrons: 35 },
+        { atomicNumber: 36, symbol: "Kr", name: "Krypton",   electronConfig: "[Ar] 3d10 4s2 4p6",          row: 3, col: 17, electrons: 36 },
+        // Period 5
+        { atomicNumber: 37, symbol: "Rb", name: "Rubidium",  electronConfig: "[Kr] 5s1",                  row: 4, col: 0,  electrons: 37 },
+        { atomicNumber: 38, symbol: "Sr", name: "Strontium", electronConfig: "[Kr] 5s2",                  row: 4, col: 1,  electrons: 38 },
+        { atomicNumber: 39, symbol: "Y",  name: "Yttrium",   electronConfig: "[Kr] 4d1 5s2",              row: 4, col: 2,  electrons: 39 },
+        { atomicNumber: 40, symbol: "Zr", name: "Zirconium", electronConfig: "[Kr] 4d2 5s2",              row: 4, col: 3,  electrons: 40 },
+        { atomicNumber: 41, symbol: "Nb", name: "Niobium",   electronConfig: "[Kr] 4d4 5s1",              row: 4, col: 4,  electrons: 41 },
+        { atomicNumber: 42, symbol: "Mo", name: "Molybdenum",electronConfig: "[Kr] 4d5 5s1",              row: 4, col: 5,  electrons: 42 },
+        { atomicNumber: 43, symbol: "Tc", name: "Technetium",electronConfig: "[Kr] 4d5 5s2",              row: 4, col: 6,  electrons: 43 },
+        { atomicNumber: 44, symbol: "Ru", name: "Ruthenium", electronConfig: "[Kr] 4d7 5s1",              row: 4, col: 7,  electrons: 44 },
+        { atomicNumber: 45, symbol: "Rh", name: "Rhodium",   electronConfig: "[Kr] 4d8 5s1",              row: 4, col: 8,  electrons: 45 },
+        { atomicNumber: 46, symbol: "Pd", name: "Palladium", electronConfig: "[Kr] 4d10",                 row: 4, col: 9,  electrons: 46 },
+        { atomicNumber: 47, symbol: "Ag", name: "Silver",    electronConfig: "[Kr] 4d10 5s1",             row: 4, col: 10, electrons: 47 },
+        { atomicNumber: 48, symbol: "Cd", name: "Cadmium",   electronConfig: "[Kr] 4d10 5s2",             row: 4, col: 11, electrons: 48 },
+        { atomicNumber: 49, symbol: "In", name: "Indium",    electronConfig: "[Kr] 4d10 5s2 5p1",         row: 4, col: 12, electrons: 49 },
+        { atomicNumber: 50, symbol: "Sn", name: "Tin",       electronConfig: "[Kr] 4d10 5s2 5p2",         row: 4, col: 13, electrons: 50 },
+        { atomicNumber: 51, symbol: "Sb", name: "Antimony",  electronConfig: "[Kr] 4d10 5s2 5p3",         row: 4, col: 14, electrons: 51 },
+        { atomicNumber: 52, symbol: "Te", name: "Tellurium", electronConfig: "[Kr] 4d10 5s2 5p4",         row: 4, col: 15, electrons: 52 },
+        { atomicNumber: 53, symbol: "I",  name: "Iodine",    electronConfig: "[Kr] 4d10 5s2 5p5",         row: 4, col: 16, electrons: 53 },
+        { atomicNumber: 54, symbol: "Xe", name: "Xenon",     electronConfig: "[Kr] 4d10 5s2 5p6",         row: 4, col: 17, electrons: 54 },
+        // Period 6 (Main block; note La is in the main table)
+        { atomicNumber: 55, symbol: "Cs", name: "Cesium",    electronConfig: "[Xe] 6s1",                  row: 5, col: 0,  electrons: 55 },
+        { atomicNumber: 56, symbol: "Ba", name: "Barium",    electronConfig: "[Xe] 6s2",                  row: 5, col: 1,  electrons: 56 },
+        { atomicNumber: 57, symbol: "La", name: "Lanthanum", electronConfig: "[Xe] 5d1 6s2",              row: 5, col: 2,  electrons: 57 },
+        { atomicNumber: 72, symbol: "Hf", name: "Hafnium",   electronConfig: "[Xe] 4f14 5d2 6s2",         row: 5, col: 3,  electrons: 72 },
+        { atomicNumber: 73, symbol: "Ta", name: "Tantalum",  electronConfig: "[Xe] 4f14 5d3 6s2",         row: 5, col: 4,  electrons: 73 },
+        { atomicNumber: 74, symbol: "W",  name: "Tungsten",  electronConfig: "[Xe] 4f14 5d4 6s2",         row: 5, col: 5,  electrons: 74 },
+        { atomicNumber: 75, symbol: "Re", name: "Rhenium",   electronConfig: "[Xe] 4f14 5d5 6s2",         row: 5, col: 6,  electrons: 75 },
+        { atomicNumber: 76, symbol: "Os", name: "Osmium",    electronConfig: "[Xe] 4f14 5d6 6s2",         row: 5, col: 7,  electrons: 76 },
+        { atomicNumber: 77, symbol: "Ir", name: "Iridium",   electronConfig: "[Xe] 4f14 5d7 6s2",         row: 5, col: 8,  electrons: 77 },
+        { atomicNumber: 78, symbol: "Pt", name: "Platinum",  electronConfig: "[Xe] 4f14 5d9 6s1",         row: 5, col: 9,  electrons: 78 },
+        { atomicNumber: 79, symbol: "Au", name: "Gold",      electronConfig: "[Xe] 4f14 5d10 6s1",        row: 5, col: 10, electrons: 79 },
+        { atomicNumber: 80, symbol: "Hg", name: "Mercury",   electronConfig: "[Xe] 4f14 5d10 6s2",        row: 5, col: 11, electrons: 80 },
+        { atomicNumber: 81, symbol: "Tl", name: "Thallium",  electronConfig: "[Xe] 4f14 5d10 6s2 6p1",    row: 5, col: 12, electrons: 81 },
+        { atomicNumber: 82, symbol: "Pb", name: "Lead",      electronConfig: "[Xe] 4f14 5d10 6s2 6p2",    row: 5, col: 13, electrons: 82 },
+        { atomicNumber: 83, symbol: "Bi", name: "Bismuth",   electronConfig: "[Xe] 4f14 5d10 6s2 6p3",    row: 5, col: 14, electrons: 83 },
+        { atomicNumber: 84, symbol: "Po", name: "Polonium",  electronConfig: "[Xe] 4f14 5d10 6s2 6p4",    row: 5, col: 15, electrons: 84 },
+        { atomicNumber: 85, symbol: "At", name: "Astatine",  electronConfig: "[Xe] 4f14 5d10 6s2 6p5",    row: 5, col: 16, electrons: 85 },
+        { atomicNumber: 86, symbol: "Rn", name: "Radon",     electronConfig: "[Xe] 4f14 5d10 6s2 6p6",    row: 5, col: 17, electrons: 86 },
+        // Period 7 (Main table; Actinides start with Ac)
+        { atomicNumber: 87, symbol: "Fr", name: "Francium",  electronConfig: "[Rn] 7s1",                  row: 6, col: 0,  electrons: 87 },
+        { atomicNumber: 88, symbol: "Ra", name: "Radium",    electronConfig: "[Rn] 7s2",                  row: 6, col: 1,  electrons: 88 },
+        { atomicNumber: 89, symbol: "Ac", name: "Actinium",  electronConfig: "[Rn] 6d1 7s2",              row: 6, col: 2,  electrons: 89 },
+        { atomicNumber: 104, symbol: "Rf", name: "Rutherfordium", electronConfig: "[Rn] 5f14 6d2 7s2",      row: 6, col: 3,  electrons: 104 },
+        { atomicNumber: 105, symbol: "Db", name: "Dubnium",   electronConfig: "[Rn] 5f14 6d3 7s2",         row: 6, col: 4,  electrons: 105 },
+        { atomicNumber: 106, symbol: "Sg", name: "Seaborgium",electronConfig: "[Rn] 5f14 6d4 7s2",         row: 6, col: 5,  electrons: 106 },
+        { atomicNumber: 107, symbol: "Bh", name: "Bohrium",   electronConfig: "[Rn] 5f14 6d5 7s2",         row: 6, col: 6,  electrons: 107 },
+        { atomicNumber: 108, symbol: "Hs", name: "Hassium",   electronConfig: "[Rn] 5f14 6d6 7s2",         row: 6, col: 7,  electrons: 108 },
+        { atomicNumber: 109, symbol: "Mt", name: "Meitnerium",electronConfig: "[Rn] 5f14 6d7 7s2",         row: 6, col: 8,  electrons: 109 },
+        { atomicNumber: 110, symbol: "Ds", name: "Darmstadtium",electronConfig: "[Rn] 5f14 6d8 7s2",         row: 6, col: 9,  electrons: 110 },
+        { atomicNumber: 111, symbol: "Rg", name: "Roentgenium", electronConfig: "[Rn] 5f14 6d9 7s2",         row: 6, col: 10, electrons: 111 },
+        { atomicNumber: 112, symbol: "Cn", name: "Copernicium", electronConfig: "[Rn] 5f14 6d10 7s2",        row: 6, col: 11, electrons: 112 },
+        { atomicNumber: 113, symbol: "Nh", name: "Nihonium",  electronConfig: "[Rn] 5f14 6d10 7s2 7p1",      row: 6, col: 12, electrons: 113 },
+        { atomicNumber: 114, symbol: "Fl", name: "Flerovium", electronConfig: "[Rn] 5f14 6d10 7s2 7p2",      row: 6, col: 13, electrons: 114 },
+        { atomicNumber: 115, symbol: "Mc", name: "Moscovium", electronConfig: "[Rn] 5f14 6d10 7s2 7p3",      row: 6, col: 14, electrons: 115 },
+        { atomicNumber: 116, symbol: "Lv", name: "Livermorium",electronConfig: "[Rn] 5f14 6d10 7s2 7p4",      row: 6, col: 15, electrons: 116 },
+        { atomicNumber: 117, symbol: "Ts", name: "Tennessine", electronConfig: "[Rn] 5f14 6d10 7s2 7p5",      row: 6, col: 16, electrons: 117 },
+        { atomicNumber: 118, symbol: "Og", name: "Oganesson", electronConfig: "[Rn] 5f14 6d10 7s2 7p6",      row: 6, col: 17, electrons: 118 },
+        // Lanthanides (Period 6, extra row)
+        { atomicNumber: 58, symbol: "Ce", name: "Cerium",      electronConfig: "[Xe] 4f1 5d1 6s2", row: 7, col: 3,  electrons: 58 },
+        { atomicNumber: 59, symbol: "Pr", name: "Praseodymium",electronConfig: "[Xe] 4f3 6s2",     row: 7, col: 4,  electrons: 59 },
+        { atomicNumber: 60, symbol: "Nd", name: "Neodymium",   electronConfig: "[Xe] 4f4 6s2",     row: 7, col: 5,  electrons: 60 },
+        { atomicNumber: 61, symbol: "Pm", name: "Promethium",  electronConfig: "[Xe] 4f5 6s2",     row: 7, col: 6,  electrons: 61 },
+        { atomicNumber: 62, symbol: "Sm", name: "Samarium",    electronConfig: "[Xe] 4f6 6s2",     row: 7, col: 7,  electrons: 62 },
+        { atomicNumber: 63, symbol: "Eu", name: "Europium",    electronConfig: "[Xe] 4f7 6s2",     row: 7, col: 8,  electrons: 63 },
+        { atomicNumber: 64, symbol: "Gd", name: "Gadolinium",  electronConfig: "[Xe] 4f7 5d1 6s2",  row: 7, col: 9,  electrons: 64 },
+        { atomicNumber: 65, symbol: "Tb", name: "Terbium",     electronConfig: "[Xe] 4f9 6s2",     row: 7, col: 10, electrons: 65 },
+        { atomicNumber: 66, symbol: "Dy", name: "Dysprosium",  electronConfig: "[Xe] 4f10 6s2",    row: 7, col: 11, electrons: 66 },
+        { atomicNumber: 67, symbol: "Ho", name: "Holmium",     electronConfig: "[Xe] 4f11 6s2",    row: 7, col: 12, electrons: 67 },
+        { atomicNumber: 68, symbol: "Er", name: "Erbium",      electronConfig: "[Xe] 4f12 6s2",    row: 7, col: 13, electrons: 68 },
+        { atomicNumber: 69, symbol: "Tm", name: "Thulium",     electronConfig: "[Xe] 4f13 6s2",    row: 7, col: 14, electrons: 69 },
+        { atomicNumber: 70, symbol: "Yb", name: "Ytterbium",   electronConfig: "[Xe] 4f14 6s2",    row: 7, col: 15, electrons: 70 },
+        { atomicNumber: 71, symbol: "Lu", name: "Lutetium",    electronConfig: "[Xe] 4f14 5d1 6s2", row: 7, col: 16, electrons: 71 },
+        // Actinides (Period 7, extra row)
+        { atomicNumber: 90, symbol: "Th", name: "Thorium",      electronConfig: "[Rn] 6d2 7s2 5f2", row: 8, col: 3,  electrons: 90 },
+        { atomicNumber: 91, symbol: "Pa", name: "Protactinium", electronConfig: "[Rn] 6d1 7s2 5f2", row: 8, col: 4,  electrons: 91 },
+        { atomicNumber: 92, symbol: "U",  name: "Uranium",      electronConfig: "[Rn] 5f3 6d1 7s2", row: 8, col: 5,  electrons: 92 },
+        { atomicNumber: 93, symbol: "Np", name: "Neptunium",    electronConfig: "[Rn] 5f4 6d1 7s2", row: 8, col: 6,  electrons: 93 },
+        { atomicNumber: 94, symbol: "Pu", name: "Plutonium",    electronConfig: "[Rn] 5f6 7s2",     row: 8, col: 7,  electrons: 94 },
+        { atomicNumber: 95, symbol: "Am", name: "Americium",    electronConfig: "[Rn] 5f7 7s2",     row: 8, col: 8,  electrons: 95 },
+        { atomicNumber: 96, symbol: "Cm", name: "Curium",       electronConfig: "[Rn] 5f7 6d1 7s2", row: 8, col: 9,  electrons: 96 },
+        { atomicNumber: 97, symbol: "Bk", name: "Berkelium",    electronConfig: "[Rn] 5f9 6d1 7s2", row: 8, col: 10, electrons: 97 },
+        { atomicNumber: 98, symbol: "Cf", name: "Californium",  electronConfig: "[Rn] 5f10 7s2",    row: 8, col: 11, electrons: 98 },
+        { atomicNumber: 99, symbol: "Es", name: "Einsteinium",  electronConfig: "[Rn] 5f11 7s2",    row: 8, col: 12, electrons: 99 },
+        { atomicNumber: 100, symbol: "Fm", name: "Fermium",     electronConfig: "[Rn] 5f12 7s2",    row: 8, col: 13, electrons: 100 },
+        { atomicNumber: 101, symbol: "Md", name: "Mendelevium", electronConfig: "[Rn] 5f13 7s2",    row: 8, col: 14, electrons: 101 },
+        { atomicNumber: 102, symbol: "No", name: "Nobelium",    electronConfig: "[Rn] 5f14 7s2",    row: 8, col: 15, electrons: 102 },
+        { atomicNumber: 103, symbol: "Lr", name: "Lawrencium",  electronConfig: "[Rn] 5f14 7s2 7p1",  row: 8, col: 16, electrons: 103 }
+      ];
+    }
+    
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      cellWidth = (width - tableOffsetX * 2) / cols;
+      cellHeight = (height - tableOffsetY * 2) / rows;
+      setupElements();
+      tooltip = select('#tooltip');
+      textAlign(CENTER, CENTER);
+      rectMode(CORNER);
+    }
+    
+    function draw() {
+      background(20);
+      drawTable();
+      handleHover();
+    }
+    
+    // Draw the grid and each element cell.
+    function drawTable() {
+      stroke(100);
+      noFill();
+      // Vertical grid lines.
+      for (let i = 0; i <= cols; i++) {
+        line(tableOffsetX + i * cellWidth, tableOffsetY, tableOffsetX + i * cellWidth, tableOffsetY + rows * cellHeight);
+      }
+      // Horizontal grid lines.
+      for (let j = 0; j <= rows; j++) {
+        line(tableOffsetX, tableOffsetY + j * cellHeight, tableOffsetX + cols * cellWidth, tableOffsetY + j * cellHeight);
+      }
+      // Draw element cells.
+      for (let el of elements) {
+        let x = tableOffsetX + el.col * cellWidth;
+        let y = tableOffsetY + el.row * cellHeight;
+        fill(50);
+        rect(x, y, cellWidth, cellHeight);
+        fill(255);
+        textSize(16);
+        text(el.symbol, x + cellWidth / 2, y + cellHeight / 2 - 10);
+        textSize(10);
+        text(el.atomicNumber, x + 20, y + 15);
+      }
+    }
+    
+    // Check mouse hover over a cell and position tooltip accordingly.
+    function handleHover() {
+      let hoveredElement = null;
+      for (let el of elements) {
+        let x = tableOffsetX + el.col * cellWidth;
+        let y = tableOffsetY + el.row * cellHeight;
+        if (mouseX > x && mouseX < x + cellWidth && mouseY > y && mouseY < y + cellHeight) {
+          hoveredElement = el;
+          break;
+        }
+      }
+      if (hoveredElement) {
+        tooltip.style('display', 'block');
+        tooltip.html(
+          "<strong>" + hoveredElement.name + "</strong><br>" +
+          "Symbol: " + hoveredElement.symbol + "<br>" +
+          "Atomic Number: " + hoveredElement.atomicNumber + "<br>" +
+          "Electron Config: " + hoveredElement.electronConfig
+        );
+        // Determine horizontal position.
+        let xPos = (hoveredElement.col >= cols - 3) ? mouseX - 200 : mouseX + 15;
+        // Determine vertical position.
+        let yPos = (hoveredElement.row >= rows - 1) ? mouseY - 60 : mouseY + 15;
+        tooltip.position(xPos, yPos);
+        // Always draw the atomic structure centered on the canvas.
+        drawAtomicStructure(hoveredElement, width / 2, height / 2);
+      } else {
+        tooltip.style('display', 'none');
+      }
+    }
+    
+    // Draw an animated atomic structure.
+    function drawAtomicStructure(el, posX, posY) {
+      push();
+      translate(posX, posY);
+      noStroke();
+      // Draw nucleus.
+      fill(200, 50, 50);
+      ellipse(0, 0, 30, 30);
+      
+      let totalElectrons = el.electrons;
+      let electronsDrawn = 0;
+      let layer = 1;
+      // For each orbital layer.
+      while (electronsDrawn < totalElectrons) {
+        let maxInOrbit = floor(TWO_PI * layer / 30) + 1;
+        let electronsInOrbit = min(totalElectrons - electronsDrawn, maxInOrbit);
+        let offset = ((el.atomicNumber + layer) * 0.73) % TWO_PI;
+        let angleStep = TWO_PI / electronsInOrbit;
+        for (let i = 0; i < electronsInOrbit && electronsDrawn < totalElectrons; i++) {
+          let rotationSpeed = millis() / (500 * layer);
+          let wiggle = sin(millis() / 200 + i) * 0.1;
+          let angle = offset + angleStep * i + rotationSpeed + wiggle;
+          let ex = layer * 20 * cos(angle);
+          let ey = layer * 20 * sin(angle);
+          fill(100, 200, 255);
+          ellipse(ex, ey, 10, 10);
+          electronsDrawn++;
+        }
+        noFill();
+        stroke(150, 150, 150, 100);
+        ellipse(0, 0, layer * 40, layer * 40);
+        layer++;
+      }
+      pop();
+    }
+    
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+      cellWidth = (width - tableOffsetX * 2) / cols;
+      cellHeight = (height - tableOffsetY * 2) / rows;
+    }
+  </script>
+</body>
+</html>
