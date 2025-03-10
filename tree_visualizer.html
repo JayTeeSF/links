@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tree Visualizer: BST vs B-Tree vs B+ Tree</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- D3.js CDN -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    /* Custom styles for the SVG container */
+    .node circle {
+      fill: #4A90E2;
+      stroke: #333;
+      stroke-width: 1.5px;
+    }
+    .node text {
+      font: 12px sans-serif;
+      fill: #fff;
+      text-anchor: middle;
+    }
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 1.5px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="max-w-5xl mx-auto p-4">
+    <h1 class="text-3xl font-bold text-center mb-6">Tree Visualizer: BST vs B-Tree vs B+ Tree</h1>
+    
+    <!-- Controls -->
+    <div class="flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0">
+      <div class="flex space-x-4">
+        <button id="bst-btn" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Binary Search Tree</button>
+        <button id="btree-btn" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded">B-Tree</button>
+        <button id="bplustree-btn" class="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded">B+ Tree</button>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input id="input-values" type="text" placeholder="Enter comma separated numbers" 
+               class="px-2 py-1 border border-gray-300 rounded w-64" />
+        <button id="update-btn" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded">Update Tree</button>
+      </div>
+    </div>
+    
+    <!-- Visualization Area -->
+    <div id="viz" class="bg-white shadow rounded p-4">
+      <svg width="100%" height="500"></svg>
+    </div>
+    
+    <!-- Info Section -->
+    <div class="mt-6 p-4 bg-white shadow rounded">
+      <h2 class="text-xl font-semibold mb-2">Pros/Cons</h2>
+      <div id="tree-info" class="text-gray-700">
+        <p>Select a tree type to see its details.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global state
+    let currentTreeType = 'bst'; // 'bst', 'btree', or 'bplustree'
+    let inputValues = [50, 30, 70, 20, 40, 60, 80];
+
+    // D3 SVG setup
+    const svg = d3.select("svg"),
+          width = svg.node().getBoundingClientRect().width,
+          height = svg.node().getBoundingClientRect().height,
+          g = svg.append("g").attr("transform", "translate(40,40)");
+
+    // Tree layout
+    const treeLayout = d3.tree().size([width - 80, height - 80]);
+
+    // Update info section based on tree type
+    function updateInfo() {
+      const infoDiv = document.getElementById('tree-info');
+      if (currentTreeType === 'bst') {
+        infoDiv.innerHTML = `<strong>Binary Search Tree:</strong>
+          <ul class="list-disc pl-5">
+            <li>Simple structure; at most two children per node.</li>
+            <li>Efficient for in-memory operations.</li>
+            <li>Can become unbalanced.</li>
+          </ul>`;
+      } else if (currentTreeType === 'btree') {
+        infoDiv.innerHTML = `<strong>B-Tree:</strong>
+          <ul class="list-disc pl-5">
+            <li>Nodes can have multiple children.</li>
+            <li>Optimized for disk-based storage systems.</li>
+            <li>All leaves are at the same depth.</li>
+          </ul>`;
+      } else if (currentTreeType === 'bplustree') {
+        infoDiv.innerHTML = `<strong>B+ Tree:</strong>
+          <ul class="list-disc pl-5">
+            <li>All records are stored in the leaves.</li>
+            <li>Internal nodes only store keys for navigation.</li>
+            <li>Ideal for range queries and sequential access.</li>
+          </ul>`;
+      }
+    }
+
+    // Utility to parse input values
+    function parseInput() {
+      const raw = document.getElementById('input-values').value;
+      if(raw.trim() === ""){
+        return inputValues;
+      }
+      return raw.split(',').map(d => +d.trim()).filter(d => !isNaN(d));
+    }
+
+    // Binary Search Tree insertion and data structure
+    function buildBST(values) {
+      // BST node constructor
+      function Node(value) {
+        this.name = value;
+        this.children = [];
+        this.left = null;
+        this.right = null;
+      }
+      let root = null;
+      function insert(node, value) {
+        if (value < node.name) {
+          if (node.left === null) {
+            node.left = new Node(value);
+            node.children.push(node.left);
+          } else {
+            insert(node.left, value);
+          }
+        } else {
+          if (node.right === null) {
+            node.right = new Node(value);
+            node.children.push(node.right);
+          } else {
+            insert(node.right, value);
+          }
+        }
+      }
+      values.forEach(val => {
+        if (root === null) {
+          root = new Node(val);
+        } else {
+          insert(root, val);
+        }
+      });
+      return d3.hierarchy(root);
+    }
+
+    // B-Tree builder (simplified, order 3: max 2 keys per node)
+    function buildBTree(values) {
+      const order = 3;
+      let root = { keys: [], children: [] };
+
+      function insertKey(node, key) {
+        // If leaf
+        if (node.children.length === 0) {
+          node.keys.push(key);
+          node.keys.sort((a, b) => a - b);
+          if (node.keys.length === order) {
+            splitNode(node);
+          }
+        } else {
+          // Find correct child
+          let i = 0;
+          while (i < node.keys.length && key > node.keys[i]) i++;
+          insertKey(node.children[i], key);
+        }
+      }
+
+      function splitNode(node) {
+        // Only split if node is not root or handle root separately
+        let midIndex = Math.floor(node.keys.length / 2);
+        let midKey = node.keys[midIndex];
+        let left = { keys: node.keys.slice(0, midIndex), children: [] };
+        let right = { keys: node.keys.slice(midIndex + 1), children: [] };
+        if (node.children.length > 0) {
+          // Distribute children evenly
+          left.children = node.children.slice(0, midIndex + 1);
+          right.children = node.children.slice(midIndex + 1);
+        }
+        // If node is root
+        if (node === root) {
+          root = { keys: [midKey], children: [left, right] };
+        } else {
+          // This simplified version does not bubble up beyond root.
+          // In a full implementation, we would propagate the split.
+          node.keys = [midKey];
+          node.children = [left, right];
+        }
+      }
+
+      values.forEach(val => {
+        if (root.keys.length === 0 && root.children.length === 0) {
+          root.keys.push(val);
+        } else {
+          insertKey(root, val);
+        }
+      });
+
+      // Convert our structure to a d3.hierarchy format for visualization
+      function convert(node) {
+        let name = node.keys.join(',');
+        let children = node.children.map(convert);
+        return { name: name, children: children.length > 0 ? children : undefined };
+      }
+      return d3.hierarchy(convert(root));
+    }
+
+    // B+ Tree builder (simplified, order 3 for leaves)
+    function buildBPlusTree(values) {
+      const order = 3;
+      // For simplicity, we build leaves and one root level
+      let sorted = values.sort((a,b) => a-b);
+      let leaves = [];
+      for (let i = 0; i < sorted.length; i += order) {
+        leaves.push({ keys: sorted.slice(i, i + order) });
+      }
+      let rootKeys = leaves.slice(1).map(leaf => leaf.keys[0]);
+      let root = { keys: rootKeys, children: leaves };
+      // For visualization, convert the structure
+      function convert(node) {
+        if (!node.children) {
+          return { name: node.keys.join(','), children: [] };
+        } else {
+          return { name: node.keys.join('|'), children: node.children.map(convert) };
+        }
+      }
+      return d3.hierarchy(convert(root));
+    }
+
+    // Render tree using D3
+    function renderTree(rootData) {
+      // Clear previous svg group content
+      g.selectAll("*").remove();
+
+      // Generate tree layout
+      const treeData = treeLayout(rootData);
+      const nodes = treeData.descendants();
+      const links = treeData.links();
+
+      // Add links between nodes
+      g.selectAll('.link')
+        .data(links)
+        .join('path')
+        .attr('class', 'link')
+        .attr("d", d3.linkVertical()
+                      .x(d => d.x)
+                      .y(d => d.y))
+        .attr("opacity", 0)
+        .transition()
+        .duration(500)
+        .attr("opacity", 1);
+
+      // Add nodes
+      const nodeEnter = g.selectAll('.node')
+        .data(nodes)
+        .join('g')
+        .attr('class', 'node')
+        .attr("transform", d => `translate(${d.x},${d.y})`)
+        .attr("opacity", 0);
+
+      nodeEnter.append("circle")
+        .attr("r", 20);
+
+      nodeEnter.append("text")
+        .attr("dy", 4)
+        .text(d => d.data.name);
+
+      // Animate nodes
+      nodeEnter.transition()
+        .duration(500)
+        .attr("opacity", 1);
+    }
+
+    // Update tree based on current selection and input
+    function updateTree() {
+      inputValues = parseInput();
+      let rootData;
+      if (currentTreeType === 'bst') {
+        rootData = buildBST(inputValues);
+      } else if (currentTreeType === 'btree') {
+        rootData = buildBTree(inputValues);
+      } else if (currentTreeType === 'bplustree') {
+        rootData = buildBPlusTree(inputValues);
+      }
+      renderTree(rootData);
+      updateInfo();
+    }
+
+    // Button click handlers
+    document.getElementById('bst-btn').addEventListener('click', () => {
+      currentTreeType = 'bst';
+      updateTree();
+    });
+    document.getElementById('btree-btn').addEventListener('click', () => {
+      currentTreeType = 'btree';
+      updateTree();
+    });
+    document.getElementById('bplustree-btn').addEventListener('click', () => {
+      currentTreeType = 'bplustree';
+      updateTree();
+    });
+    document.getElementById('update-btn').addEventListener('click', updateTree);
+
+    // Initialize input box with default values
+    document.getElementById('input-values').value = inputValues.join(', ');
+
+    // Initial render
+    updateTree();
+  </script>
+</body>
+</html>

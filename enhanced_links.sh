@@ -4,7 +4,7 @@
 # Purpose:
 #   1. Replace your existing links.json with an expanded version that includes:
 #      - New fields (media_type, platform, notes, date_created)
-#      - Additional sample entries from your brainstorm
+#      - Additional sample entries from your brainstorm, plus the new URLs.
 #
 # Protocol instructions:
 #   - Copy and run this in your environment (bash shell).
@@ -184,7 +184,6 @@ cat << 'EOF' > links.json
     "notes": "",
     "date_created": ""
   },
-
   {
     "link_text": "How-to use Big Easy Turkey Fryer",
     "url": "https://www.youtube.com/watch?v=g2fgTWZESSY",
@@ -462,6 +461,34 @@ cat << 'EOF' > links.json
     "favorite": false,
     "media_type": "series",
     "platform": "Paramount+",
+    "notes": "",
+    "date_created": ""
+  },
+  {
+    "link_text": "Tree Visualizer",
+    "url": "https://jayteesf.github.io/links/tree_visualizer.html",
+    "rating": 5,
+    "snippet": "Visualize various tree data structures interactively.",
+    "category": "tool",
+    "tags": ["visualization", "d3", "data structures", "interactive"],
+    "date_added": "2025-03-10",
+    "favorite": true,
+    "media_type": "tool",
+    "platform": "GitHub Pages",
+    "notes": "",
+    "date_created": ""
+  },
+  {
+    "link_text": "Periodic Table",
+    "url": "https://jayteesf.github.io/links/periodic_table.html",
+    "rating": 5,
+    "snippet": "Interactive periodic table of elements.",
+    "category": "education",
+    "tags": ["periodic table", "chemistry", "interactive"],
+    "date_added": "2025-03-10",
+    "favorite": true,
+    "media_type": "tool",
+    "platform": "GitHub Pages",
     "notes": "",
     "date_created": ""
   }

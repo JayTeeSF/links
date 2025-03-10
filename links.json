@@ -5,19 +5,13 @@
     "rating": 4,
     "snippet": "Get images from the camera.",
     "category": "project",
-    "tags": [
-      "learning",
-      "camera",
-      "game"
-    ],
+    "tags": ["learning", "camera", "game"],
     "date_added": "2023-12-31",
     "favorite": true,
     "media_type": "project",
     "platform": "GitHub",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Cheat at Clue",
@@ -25,18 +19,13 @@
     "rating": 5,
     "snippet": "Solve the game of Clue with this tool.",
     "category": "game",
-    "tags": [
-      "clue",
-      "solver"
-    ],
+    "tags": ["clue", "solver"],
     "date_added": "2023-11-15",
-    "favorite": true,
+    "favorite": false,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Math Birthday",
@@ -44,19 +33,13 @@
     "rating": 3,
     "snippet": "Make birthdays fun with math and radix.",
     "category": "math",
-    "tags": [
-      "birthday",
-      "math",
-      "radix"
-    ],
+    "tags": ["birthday", "math", "radix"],
     "date_added": "2023-10-10",
-    "favorite": true,
+    "favorite": false,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Java Fun",
@@ -64,19 +47,13 @@
     "rating": 4,
     "snippet": "Java classes for communicating with ET.",
     "category": "project",
-    "tags": [
-      "java",
-      "project",
-      "fun"
-    ],
+    "tags": ["java", "project", "fun"],
     "date_added": "2023-09-20",
-    "favorite": true,
+    "favorite": false,
     "media_type": "project",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Word(le) Helper",
@@ -84,19 +61,13 @@
     "rating": 5,
     "snippet": "Tool to help you with Wordle puzzles.",
     "category": "game",
-    "tags": [
-      "wordle",
-      "helper",
-      "puzzle"
-    ],
+    "tags": ["wordle", "helper", "puzzle"],
     "date_added": "2023-08-05",
     "favorite": true,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Letterbox Solver",
@@ -104,19 +75,13 @@
     "rating": 5,
     "snippet": "Solve NYTimes Letterbox puzzles.",
     "category": "game",
-    "tags": [
-      "letterbox",
-      "solver",
-      "puzzle"
-    ],
+    "tags": ["letterbox", "solver", "puzzle"],
     "date_added": "2023-07-18",
     "favorite": true,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "JJ Draw",
@@ -124,19 +89,13 @@
     "rating": 3,
     "snippet": "Drawing tool for creative projects.",
     "category": "art",
-    "tags": [
-      "drawing",
-      "tool",
-      "creative"
-    ],
+    "tags": ["drawing", "tool", "creative"],
     "date_added": "2023-06-01",
-    "favorite": true,
+    "favorite": false,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Can I Have Dessert?",
@@ -144,19 +103,13 @@
     "rating": 4,
     "snippet": "Fun tool for deciding if dessert is allowed.",
     "category": "fun",
-    "tags": [
-      "dessert",
-      "decision",
-      "fun"
-    ],
+    "tags": ["dessert", "decision", "fun"],
     "date_added": "2023-05-22",
     "favorite": true,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Daily Planner",
@@ -164,19 +117,13 @@
     "rating": 4,
     "snippet": "Fill in and print your daily plan.",
     "category": "productivity",
-    "tags": [
-      "planner",
-      "daily",
-      "printable"
-    ],
+    "tags": ["planner", "daily", "printable"],
     "date_added": "2023-04-15",
-    "favorite": true,
+    "favorite": false,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Zombie Shake & Throw",
@@ -184,19 +131,13 @@
     "rating": 5,
     "snippet": "A fun zombie-themed game.",
     "category": "game",
-    "tags": [
-      "zombie",
-      "shake",
-      "throw"
-    ],
+    "tags": ["zombie", "shake", "throw"],
     "date_added": "2023-03-10",
     "favorite": true,
     "media_type": "game",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Weekend Activity Chooser",
@@ -204,19 +145,13 @@
     "rating": 4,
     "snippet": "Decide what to do this weekend.",
     "category": "decision-making",
-    "tags": [
-      "weekend",
-      "activity",
-      "chooser"
-    ],
+    "tags": ["weekend", "activity", "chooser"],
     "date_added": "2023-02-25",
     "favorite": true,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Pascal's Triangle",
@@ -224,19 +159,13 @@
     "rating": 5,
     "snippet": "A nerdy math visualization tool.",
     "category": "math",
-    "tags": [
-      "pascal",
-      "triangle",
-      "math"
-    ],
+    "tags": ["pascal", "triangle", "math"],
     "date_added": "2023-01-01",
     "favorite": true,
     "media_type": "tool",
     "platform": "GitHub Pages",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "How-to use Big Easy Turkey Fryer",
@@ -244,22 +173,13 @@
     "rating": 4,
     "snippet": "Video demonstration of frying a turkey.",
     "category": "how-to",
-    "tags": [
-      "Educational",
-      "Appliance",
-      "Manual",
-      "How-to",
-      "Turkey Fryer",
-      "Annual"
-    ],
+    "tags": ["Educational", "Appliance", "Manual", "How-to", "Turkey Fryer", "Annual"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Stuart Briscoe Explaining Romans 8:1-4",
@@ -267,20 +187,13 @@
     "rating": 5,
     "snippet": "A helpful sermon on Romans 8:1-4.",
     "category": "sermon",
-    "tags": [
-      "Bible Study",
-      "Reveal",
-      "video",
-      "educational"
-    ],
+    "tags": ["Bible Study", "Reveal", "video", "educational"],
     "date_added": "2025-01-04",
     "favorite": true,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "Focus on condemnation vs. justification in Christ.",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Stuart Briscoe 'Peace with God'",
@@ -288,20 +201,13 @@
     "rating": 5,
     "snippet": "A sermon about peace in Romans 5.",
     "category": "sermon",
-    "tags": [
-      "Bible Study",
-      "Reveal",
-      "video",
-      "educational"
-    ],
+    "tags": ["Bible Study", "Reveal", "video", "educational"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Bible Project video on Matthew ch(s) 1-13",
@@ -309,20 +215,13 @@
     "rating": 5,
     "snippet": "Overview of Matthew chapters 1-13.",
     "category": "sermon",
-    "tags": [
-      "Bible Study",
-      "Reveal",
-      "video",
-      "educational"
-    ],
+    "tags": ["Bible Study", "Reveal", "video", "educational"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "Bible Project",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Bible Project video on Matthew ch(s) 14-28",
@@ -330,20 +229,13 @@
     "rating": 5,
     "snippet": "Overview of Matthew chapters 14-28.",
     "category": "sermon",
-    "tags": [
-      "Bible Study",
-      "Reveal",
-      "video",
-      "educational"
-    ],
+    "tags": ["Bible Study", "Reveal", "video", "educational"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "Bible Project",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "I Trust in God; O Come To The Altar; The Blessing; Who You Say I Am; What A Beautiful Name",
@@ -351,20 +243,13 @@
     "rating": 4,
     "snippet": "Worship music playlist.",
     "category": "music",
-    "tags": [
-      "video",
-      "playlist",
-      "worship",
-      "music"
-    ],
+    "tags": ["video", "playlist", "worship", "music"],
     "date_added": "2025-01-04",
     "favorite": true,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "make it stick book tips",
@@ -372,20 +257,13 @@
     "rating": 4,
     "snippet": "Tips from the 'Make It Stick' book on learning.",
     "category": "education",
-    "tags": [
-      "educational",
-      "cognitive science",
-      "learning",
-      "learning-to-learn"
-    ],
+    "tags": ["educational", "cognitive science", "learning", "learning-to-learn"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "make your own icloud",
@@ -393,23 +271,13 @@
     "rating": 3,
     "snippet": "Tutorial on building a self-hosted cloud.",
     "category": "tech",
-    "tags": [
-      "educational",
-      "tech",
-      "IT",
-      "cloud",
-      "in-home",
-      "server",
-      "storage"
-    ],
+    "tags": ["educational", "tech", "IT", "cloud", "in-home", "server", "storage"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "ai guide substack",
@@ -417,22 +285,13 @@
     "rating": 4,
     "snippet": "Melanie Mitchell's Substack on AI topics.",
     "category": "blog",
-    "tags": [
-      "educational",
-      "ai",
-      "substack",
-      "newsletter",
-      "ai guide",
-      "melanie mitchell"
-    ],
+    "tags": ["educational", "ai", "substack", "newsletter", "ai guide", "melanie mitchell"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "blog",
     "platform": "Substack",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "evaluating llms; counterfactual; how-their-reasoning differs",
@@ -440,21 +299,13 @@
     "rating": 4,
     "snippet": "Article on LLM reasoning and counterfactuals.",
     "category": "blog",
-    "tags": [
-      "educational",
-      "ai",
-      "substack",
-      "newsletter",
-      "ai guide"
-    ],
+    "tags": ["educational", "ai", "substack", "newsletter", "ai guide"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "blog",
     "platform": "Substack",
-    "notes": "Wrong placeholder URL here; replace with actual Apple TV link if desired.",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "notes": "",
+    "date_created": ""
   },
   {
     "link_text": "The nature of intelligence podcast trailer",
@@ -462,21 +313,13 @@
     "rating": 4,
     "snippet": "Intro to 'The Nature of Intelligence' series from Santa Fe Institute.",
     "category": "podcast",
-    "tags": [
-      "educational",
-      "complexity",
-      "nature of intelligence",
-      "ai",
-      "santa fe institute"
-    ],
+    "tags": ["educational", "complexity", "nature of intelligence", "ai", "santa fe institute"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "podcast",
     "platform": "Simplecast",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Data Science Course",
@@ -484,22 +327,13 @@
     "rating": 4,
     "snippet": "FreeCodeCamp data science course.",
     "category": "education",
-    "tags": [
-      "educational",
-      "tech",
-      "machine learning",
-      "python",
-      "data science",
-      "freecodecamp"
-    ],
+    "tags": ["educational", "tech", "machine learning", "python", "data science", "freecodecamp"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "How to Learn Python for Ai/ML",
@@ -507,20 +341,13 @@
     "rating": 4,
     "snippet": "Beginner's guide to Python for ML/AI.",
     "category": "education",
-    "tags": [
-      "educational",
-      "tech",
-      "machine learning",
-      "python"
-    ],
+    "tags": ["educational", "tech", "machine learning", "python"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Stanford's Free Data Science Book",
@@ -528,22 +355,27 @@
     "rating": 4,
     "snippet": "An explanation of 'Elements of Statistical Learning'.",
     "category": "education",
-    "tags": [
-      "educational",
-      "tech",
-      "machine learning",
-      "python",
-      "data science",
-      "freecodecamp"
-    ],
+    "tags": ["educational", "tech", "machine learning", "python", "data science", "freecodecamp"],
     "date_added": "2025-01-04",
-    "favorite": true,
+    "favorite": false,
     "media_type": "video",
     "platform": "YouTube",
     "notes": "Official PDF link: https://www.statlearning.com/",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
+  },
+  {
+    "link_text": "Slow Horses",
+    "url": "https://aiguide.substack.com/p/evaluating-large-language-models",
+    "rating": 4,
+    "snippet": "A British spy thriller series starring Gary Oldman.",
+    "category": "entertainment",
+    "tags": ["videos", "shows", "series", "best-shows", "appletv"],
+    "date_added": "2025-01-04",
+    "favorite": false,
+    "media_type": "series",
+    "platform": "AppleTV",
+    "notes": "Wrong placeholder URL here; replace with actual Apple TV link if desired.",
+    "date_created": ""
   },
   {
     "link_text": "Prison Break",
@@ -551,21 +383,13 @@
     "rating": 5,
     "snippet": "Classic FOX drama about a prison escape plot.",
     "category": "entertainment",
-    "tags": [
-      "videos",
-      "shows",
-      "series",
-      "best-shows",
-      "netflix"
-    ],
+    "tags": ["videos", "shows", "series", "best-shows", "netflix"],
     "date_added": "2025-01-04",
     "favorite": true,
     "media_type": "series",
     "platform": "Netflix",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "White Collar",
@@ -573,21 +397,13 @@
     "rating": 4,
     "snippet": "A clever con-artist helps the FBI solve white-collar crimes.",
     "category": "entertainment",
-    "tags": [
-      "videos",
-      "shows",
-      "series",
-      "best-shows",
-      "netflix"
-    ],
+    "tags": ["videos", "shows", "series", "best-shows", "netflix"],
     "date_added": "2025-01-04",
     "favorite": false,
     "media_type": "series",
     "platform": "Netflix",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Only Murders In the Building",
@@ -595,21 +411,13 @@
     "rating": 5,
     "snippet": "Amateur sleuths investigate murders in their apartment building.",
     "category": "entertainment",
-    "tags": [
-      "videos",
-      "shows",
-      "series",
-      "best-shows",
-      "hulu"
-    ],
+    "tags": ["videos", "shows", "series", "best-shows", "hulu"],
     "date_added": "2025-01-04",
     "favorite": true,
     "media_type": "series",
     "platform": "Hulu",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Lioness",
@@ -617,21 +425,13 @@
     "rating": 4,
     "snippet": "CIA operations drama featuring Zoe Saldana.",
     "category": "entertainment",
-    "tags": [
-      "videos",
-      "shows",
-      "series",
-      "best-shows",
-      "paramount+"
-    ],
+    "tags": ["videos", "shows", "series", "best-shows", "paramount+"],
     "date_added": "2025-01-04",
     "favorite": false,
     "media_type": "series",
     "platform": "Paramount+",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
   },
   {
     "link_text": "Matlock",
@@ -639,20 +439,40 @@
     "rating": 4,
     "snippet": "Classic legal drama with Andy Griffith.",
     "category": "entertainment",
-    "tags": [
-      "videos",
-      "shows",
-      "series",
-      "best-shows",
-      "paramount+"
-    ],
+    "tags": ["videos", "shows", "series", "best-shows", "paramount+"],
     "date_added": "2025-01-04",
     "favorite": false,
     "media_type": "series",
     "platform": "Paramount+",
     "notes": "",
-    "date_created": "",
-    "thumbnail": null,
-    "full_image": null
+    "date_created": ""
+  },
+  {
+    "link_text": "Tree Visualizer",
+    "url": "https://jayteesf.github.io/links/tree_visualizer.html",
+    "rating": 5,
+    "snippet": "Visualize various tree data structures interactively.",
+    "category": "tool",
+    "tags": ["visualization", "d3", "data structures", "interactive"],
+    "date_added": "2025-03-10",
+    "favorite": true,
+    "media_type": "tool",
+    "platform": "GitHub Pages",
+    "notes": "",
+    "date_created": ""
+  },
+  {
+    "link_text": "Periodic Table",
+    "url": "https://jayteesf.github.io/links/periodic_table.html",
+    "rating": 5,
+    "snippet": "Interactive periodic table of elements.",
+    "category": "education",
+    "tags": ["periodic table", "chemistry", "interactive"],
+    "date_added": "2025-03-10",
+    "favorite": true,
+    "media_type": "tool",
+    "platform": "GitHub Pages",
+    "notes": "",
+    "date_created": ""
   }
 ]
