@@ -1,6 +1,8 @@
 ## New Links Page Generation
 
 ```
+./enhanced_links.sh # <-- if you update the data-structure with more links
+
 ./app.rb <input_file> <output_file>
 ```
 e.g.
