@@ -23,6 +23,7 @@ class StaticPageGenerator
         thumb_path = "./images/#{File.basename(entry['url'])}_thumb.png"
 
         page = context.new_page
+        begin
         page.goto(entry['url'])
         page.screenshot(path: full_path)
 
@@ -33,6 +34,9 @@ class StaticPageGenerator
 
         entry['thumbnail'] = thumb_path
         entry['full_image'] = full_path
+        rescue Playwright::Error => e
+          puts "Error: #{e}"
+        end
       end
     end
   end
