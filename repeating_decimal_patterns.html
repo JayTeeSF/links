@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Repeating Decimal Patterns</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- p5.js for visualizations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans leading-relaxed">
+
+  <header class="bg-indigo-600 text-white py-6 text-center shadow-md">
+    <h1 class="text-3xl font-bold">Repeating Decimal Patterns</h1>
+    <p class="text-md mt-2">Explore mathematical beauty in fractional form</p>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold mb-4">Select a Fraction Pattern</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <button class="pattern-btn bg-white shadow hover:bg-indigo-100 py-2 px-4 rounded border" data-type="n9">n / 9</button>
+        <button class="pattern-btn bg-white shadow hover:bg-indigo-100 py-2 px-4 rounded border" data-type="n99">n / 99</button>
+        <button class="pattern-btn bg-white shadow hover:bg-indigo-100 py-2 px-4 rounded border" data-type="n999">n / 999</button>
+        <button class="pattern-btn bg-white shadow hover:bg-indigo-100 py-2 px-4 rounded border" data-type="n90">n / 90</button>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-xl font-semibold mb-2">Pattern Output</h2>
+      <div class="bg-white p-4 rounded shadow border">
+        <label for="numerator" class="block mb-2 font-medium">Numerator (1-999)</label>
+        <input id="numerator" type="number" min="1" max="999" value="1" class="w-full p-2 border rounded mb-4">
+
+        <p id="fraction-output" class="text-lg font-mono text-indigo-600 mb-2"></p>
+        <canvas id="viz-canvas" class="w-full border rounded bg-white" style="height: 200px;"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-center text-sm text-gray-600 py-4 border-t">
+    Built with Tailwind & p5.js | Explore math patterns
+  </footer>
+
+  <script>
+    const output = document.getElementById('fraction-output');
+    const numeratorInput = document.getElementById('numerator');
+    let selectedType = 'n9';
+    let canvas;
+
+    document.querySelectorAll('.pattern-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedType = btn.dataset.type;
+        updateOutput();
+      });
+    });
+
+    numeratorInput.addEventListener('input', updateOutput);
+
+    function updateOutput() {
+      let n = parseInt(numeratorInput.value);
+      if (isNaN(n) || n <= 0 || n > 999) return;
+      let d;
+
+      switch (selectedType) {
+        case 'n9': d = 9; break;
+        case 'n99': d = 99; break;
+        case 'n999': d = 999; break;
+        case 'n90': d = 90; break;
+      }
+
+      let value = (n / d).toFixed(20);
+      let clean = value.replace(/(0{5,}|9{5,})$/, '...');
+      output.textContent = `${n} / ${d} = ${clean}`;
+      if (window.redrawPattern) window.redrawPattern(n, d);
+    }
+
+    // p5.js sketch
+    let sketch = (p) => {
+      let circles = [];
+
+      p.setup = () => {
+        let c = p.createCanvas(p.windowWidth < 600 ? 300 : 500, 200);
+        c.parent('viz-canvas');
+        p.noStroke();
+        window.redrawPattern = drawPattern;
+        drawPattern(1, 9); // default
+      };
+
+      function drawPattern(n, d) {
+        p.clear();
+        circles = [];
+        const rep = ((n / d).toFixed(20) + '').split('.')[1].replace(/(0{5,}|9{5,})$/, '').slice(0, 9);
+        const centerY = p.height / 2;
+        const spacing = p.width / (rep.length + 1);
+
+        for (let i = 0; i < rep.length; i++) {
+          let digit = parseInt(rep[i]);
+          let x = spacing * (i + 1);
+          let y = centerY;
+          let size = 20 + digit * 5;
+
+          circles.push({ x, y, size, digit });
+        }
+      }
+
+      p.draw = () => {
+        p.clear();
+        circles.forEach(c => {
+          p.fill(100 + c.digit * 15, 100, 255 - c.digit * 15);
+          p.ellipse(c.x, c.y, c.size);
+          p.fill(0);
+          p.textAlign(p.CENTER, p.CENTER);
+          p.text(c.digit, c.x, c.y);
+        });
+      };
+    };
+
+    new p5(sketch);
+    updateOutput();
+  </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Visualization Libraries Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .modal { display: none; }
+    .modal.active { display: flex; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-6 text-center">Visualization Libraries Showcase</h1>
+    <div class="overflow-x-auto">
+      <table class="table-auto w-full bg-white shadow-md rounded-lg">
+        <thead class="bg-gray-200 text-left text-sm font-semibold uppercase">
+          <tr>
+            <th class="p-4">Type</th>
+            <th class="p-4">Library</th>
+            <th class="p-4">Description</th>
+            <th class="p-4">Use Cases</th>
+            <th class="p-4">Demo</th>
+          </tr>
+        </thead>
+        <tbody id="lib-table" class="text-sm">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="demo-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-4 relative">
+      <button id="close-modal" class="absolute top-2 right-4 text-gray-500 hover:text-black text-xl">&times;</button>
+      <h2 class="text-xl font-semibold mb-2" id="modal-title">Demo</h2>
+      <div id="modal-content" class="overflow-auto max-h-[70vh]"></div>
+    </div>
+  </div>
+
+  <script>
+    const libraries = [
+      {
+        type: "Charts & Graphs",
+        name: "Chart.js",
+        url: "https://cdn.jsdelivr.net/npm/chart.js",
+        description: "Simple, responsive charts with minimal config",
+        useCases: "Dashboards, analytics, educational stats",
+        demo: `<canvas id="chartjs-demo" width="400" height="200"></canvas>
+<script>
+const ctx = document.getElementById('chartjs-demo').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['A', 'B', 'C'],
+    datasets: [{ label: 'Demo Data', data: [12, 19, 3], backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'] }]
+  }
+});
+</script>`
+      },
+      {
+        type: "Charts & Graphs",
+        name: "D3.js",
+        url: "https://d3js.org/d3.v7.min.js",
+        description: "Low-level control of SVG/DOM; powerful data binding",
+        useCases: "Custom graphing, network diagrams",
+        demo: `<svg width="400" height="100"></svg>
+<script>
+const svg = d3.select("svg");
+svg.selectAll("circle")
+  .data([32, 57, 112])
+  .enter().append("circle")
+  .attr("cy", 50)
+  .attr("cx", (d, i) => i * 100 + 50)
+  .attr("r", d => Math.sqrt(d))
+  .attr("fill", "#3b82f6");
+</script>`
+      },
+      {
+        type: "Animations",
+        name: "Animate.css",
+        url: "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css",
+        description: "CSS animations triggered via class names",
+        useCases: "Revealing charts, hover effects",
+        demo: `<div class="animate__animated animate__bounce text-center text-2xl font-bold text-blue-600">Bounce!</div>`
+      },
+      {
+        type: "Physics-Based",
+        name: "Matter.js",
+        url: "https://cdn.jsdelivr.net/npm/matter-js",
+        description: "2D rigid body physics engine (JS-driven)",
+        useCases: "Physics simulations, educational visualizations",
+        demo: `<canvas id="matter-demo" width="400" height="200"></canvas>
+<script>
+const { Engine, Render, Bodies, World } = Matter;
+const engine = Engine.create();
+const render = Render.create({
+  canvas: document.getElementById('matter-demo'),
+  engine: engine,
+  options: { width: 400, height: 200, wireframes: false }
+});
+World.add(engine.world, [
+  Bodies.rectangle(200, 0, 400, 20, { isStatic: true }),
+  Bodies.circle(200, 50, 30, { restitution: 0.8 })
+]);
+Engine.run(engine);
+Render.run(render);
+</script>`
+      }
+    ];
+
+    const tableBody = document.getElementById('lib-table');
+    libraries.forEach((lib, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="p-4">${lib.type}</td>
+        <td class="p-4 font-semibold">${lib.name}</td>
+        <td class="p-4">${lib.description}</td>
+        <td class="p-4">${lib.useCases}</td>
+        <td class="p-4">
+          <button class="text-blue-600 underline hover:text-blue-800" onclick="openDemo(${i})">Demo</button>
+        </td>
+      `;
+      tableBody.appendChild(tr);
+    });
+
+    function openDemo(index) {
+      const lib = libraries[index];
+      const modal = document.getElementById("demo-modal");
+      const content = document.getElementById("modal-content");
+      const title = document.getElementById("modal-title");
+      title.textContent = `${lib.name} Demo`;
+
+      // Clear & inject
+      content.innerHTML = '';
+      const style = lib.url.endsWith('.css')
+        ? `<link rel="stylesheet" href="${lib.url}">`
+        : `<script src="${lib.url}"></script>`;
+      content.innerHTML = style + lib.demo;
+
+      modal.classList.add("active");
+    }
+
+    document.getElementById("close-modal").addEventListener("click", () => {
+      document.getElementById("demo-modal").classList.remove("active");
+    });
+  </script>
+</body>
+</html>

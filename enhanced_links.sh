@@ -491,8 +491,38 @@ cat << 'EOF' > links.json
     "platform": "GitHub Pages",
     "notes": "",
     "date_created": ""
+  },
+  {
+    "link_text": "Visualization Libraries",
+    "url": "https://jayteesf.github.io/links/visualization_libraries_showcase.html",
+    "rating": 5,
+    "snippet": "Visualization Libraries Showcase.",
+    "category": "education",
+    "tags": ["javascript", "css", "html", "visualization", "libraries"],
+    "date_added": "2025-03-10",
+    "favorite": true,
+    "media_type": "tool",
+    "platform": "GitHub Pages",
+    "notes": "",
+    "date_created": ""
+  },
+  {
+    "link_text": "Repeating Decimal Patterns",
+    "url": "https://jayteesf.github.io/links/repeating_decimal_patterns.html",
+    "rating": 5,
+    "snippet": "Explore repeating decimal patterns.",
+    "category": "education",
+    "tags": ["math", "decimals", "patterns"],
+    "date_added": "2025-03-10",
+    "favorite": true,
+    "media_type": "tool",
+    "platform": "GitHub Pages",
+    "notes": "",
+    "date_created": ""
   }
 ]
 EOF
+
+
 
 echo "Done! Your links.json has been replaced with the enhanced structure."
