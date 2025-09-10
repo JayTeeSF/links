@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Little's Law — Restaurant (Async Kitchen) Simulator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-from:#6d28d9; /* purple-700 */
+      --bg-to:#9333ea;   /* purple-600 */
+      --ink:#0f172a;     /* slate-900 */
+      --ink-sub:#475569; /* slate-600 */
+      --muted:#f8fafc;   /* slate-50 */
+      --card:#ffffff;
+      --accent:#a78bfa;  /* violet-300 */
+      --good:#16a34a;    /* green-600 */
+      --warn:#ea580c;    /* orange-600 */
+      --bad:#dc2626;     /* red-600 */
+      --line:#e2e8f0;    /* slate-200 */
+      --shadow: 0 10px 30px rgba(17, 24, 39, 0.12), 0 2px 6px rgba(17, 24, 39, 0.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      margin:0; color:var(--ink); background:
+        radial-gradient(1200px 800px at -10% -10%, #ede9fe 0%, transparent 50%),
+        radial-gradient(1000px 600px at 110% -10%, #f5f3ff 0%, transparent 50%),
+        #fff;
+    }
+    .container{max-width:1200px; margin:0 auto; padding:40px 20px 80px}
+    header{
+      background: linear-gradient(135deg, var(--bg-from), var(--bg-to));
+      color:white; border-radius:28px; padding:36px; box-shadow:var(--shadow);
+    }
+    header .title{display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap}
+    h1{margin:0; font-weight:800; letter-spacing:-0.02em}
+    .formula{display:inline-flex; align-items:center; gap:10px; background:rgba(255,255,255,0.14); padding:10px 14px; border-radius:14px; font-weight:600}
+    .pill{display:inline-flex; align-items:center; gap:8px; font-size:14px; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.18)}
+    .wrap{display:grid; grid-template-columns:320px 1fr; gap:24px; margin-top:24px}
+    .card{background:var(--card); border-radius:22px; padding:18px; box-shadow:var(--shadow)}
+    .card h3{margin:0 0 8px 0; font-size:16px; letter-spacing:0.02em; color:var(--ink-sub); font-weight:600}
+    .big{font-size:36px; font-weight:800; letter-spacing:-0.02em}
+    .sub{color:var(--ink-sub); font-size:13px}
+    .grid-3{display:grid; grid-template-columns:repeat(3, 1fr); gap:14px}
+    .grid-2{display:grid; grid-template-columns:repeat(2, 1fr); gap:14px}
+    .controls label{display:block; font-size:12px; color:var(--ink-sub); margin-bottom:6px}
+    .controls .row{margin-bottom:14px}
+    .controls input[type=range]{width:100%}
+    .value{font-variant-numeric:tabular-nums; font-weight:700}
+    .btns{display:flex; gap:10px}
+    button{border:0; border-radius:12px; padding:10px 14px; font-weight:600; box-shadow:var(--shadow); cursor:pointer}
+    .primary{background:linear-gradient(135deg, var(--bg-from), var(--bg-to)); color:white}
+    .ghost{background:white}
+    .legend{display:flex; flex-wrap:wrap; gap:12px; margin-top:8px}
+    .legend .key{display:flex; align-items:center; gap:8px; padding:8px 12px; background:#f6f5ff; border-radius:12px; border:1px solid #ede9fe; font-size:12px; color: var(--ink);} 
+    .legend .key strong{color: var(--ink);}
+    .dot{width:12px; height:12px; border-radius:999px}
+    .dot.customer{background:#7c3aed}
+    .dot.order{background:#f59e0b}
+    .dot.chef{background:#10b981}
+    .muted{opacity:0.9}
+    .svg-wrap{background:white; border-radius:22px; box-shadow:var(--shadow); padding:8px}
+
+    /* Badges for health */
+    .health{display:flex; gap:8px; align-items:center}
+    .badge{border-radius:999px; padding:6px 10px; font-size:12px; font-weight:700; color:white}
+    .ok{background:var(--good)}
+    .warn{background:var(--warn)}
+    .bad{background:var(--bad)}
+
+    footer{margin-top:20px; color:var(--ink-sub); font-size:12px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    .note{padding:12px; background:#faf5ff; border:1px dashed #e9d5ff; border-radius:12px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title">
+        <h1 class="big">Little's Law</h1>
+        <div class="formula mono">L = λ × W &nbsp;<span class="sub">(WIP = Throughput × Lead&nbsp;Time)</span></div>
+      </div>
+      <div class="legend" aria-label="Mapping of variables to diagram">
+        <div class="key"><span class="dot customer"></span><strong>Customers</strong> in line at counter</div>
+        <div class="key"><span class="dot order"></span><strong>Order tickets</strong> flowing to kitchen</div>
+        <div class="key"><span class="dot chef"></span><strong>Chefs</strong> cooking asynchronously</div>
+      </div>
+    </header>
+
+    <section class="wrap" style="margin-top:30px">
+      <!-- Controls Panel -->
+      <aside class="card controls">
+        <h3>Levers</h3>
+        <div class="row">
+          <label for="arrival">Arrival rate λ (orders/min)</label>
+          <input id="arrival" type="range" min="1" max="60" step="1" value="12" />
+          <div class="sub">Current: <span id="arrivalVal" class="value">12</span> /min</div>
+        </div>
+        <div class="row">
+          <label for="speed">Chef speed μ (orders/min per chef)</label>
+          <input id="speed" type="range" min="1" max="30" step="1" value="6" />
+          <div class="sub">Current: <span id="speedVal" class="value">6</span> /min/chef</div>
+        </div>
+        <div class="row grid-2">
+          <div>
+            <label for="chefs"># of chefs</label>
+            <input id="chefs" type="range" min="1" max="6" step="1" value="2" />
+            <div class="sub">Current: <span id="chefsVal" class="value">2</span></div>
+          </div>
+          <div>
+            <label for="wip">WIP limit L (max orders in system)</label>
+            <input id="wip" type="range" min="2" max="40" step="1" value="12" />
+            <div class="sub">Current: <span id="wipVal" class="value">12</span></div>
+          </div>
+        </div>
+        <div class="btns" style="margin-top:8px">
+          <button class="primary" id="toggle">⏸︎ Pause</button>
+          <button class="ghost" id="reset">↺ Reset</button>
+        </div>
+
+        <div class="note" style="margin-top:16px">
+          <strong>Tip:</strong> Increase <em>chef speed</em> or <em>chefs</em> to raise <span class="mono">Throughput</span>. Lower the <span class="mono">WIP limit</span> to reduce <span class="mono">Lead Time</span>—up to the point where it starts throttling throughput.
+        </div>
+      </aside>
+
+      <!-- Visualization + Metrics -->
+      <main>
+        <div class="grid-3" style="margin-bottom:16px">
+          <div class="card">
+            <h3>WIP (L)</h3>
+            <div class="big" id="wipLive">0</div>
+            <div class="sub">Orders currently in system</div>
+          </div>
+          <div class="card">
+            <h3>Throughput (λ)</h3>
+            <div class="big"><span id="tpLive">0.0</span> <span class="sub">/min</span></div>
+            <div class="sub">Completions per minute (last 2 min)</div>
+          </div>
+          <div class="card">
+            <h3>Lead Time (W)</h3>
+            <div class="big"><span id="ltLive">0.0</span> <span class="sub">min</span></div>
+            <div class="sub">Avg arrival → done (last 20 orders)</div>
+          </div>
+        </div>
+
+        <div class="card health">
+          <span class="sub">Capacity:</span>
+          <span class="mono value" id="capacity">0</span>
+          <span class="sub">/min &nbsp;•&nbsp; Status:</span>
+          <span id="healthBadge" class="badge ok">Stable</span>
+          <span class="sub">&nbsp;•&nbsp; Check: L ≈ λ × W →</span>
+          <span class="mono value" id="llCheck">0 ≈ 0 × 0</span>
+        </div>
+
+        <div class="svg-wrap" style="margin-top:16px">
+          <svg id="scene" viewBox="0 0 1100 360" width="100%" height="360" aria-label="Restaurant simulation scene">
+            <!-- Background zones -->
+            <defs>
+              <linearGradient id="counterGrad" x1="0" x2="1">
+                <stop offset="0%" stop-color="#ede9fe"/>
+                <stop offset="100%" stop-color="#ddd6fe"/>
+              </linearGradient>
+              <linearGradient id="kitchenGrad" x1="0" x2="1">
+                <stop offset="0%" stop-color="#ecfccb"/>
+                <stop offset="100%" stop-color="#d1fae5"/>
+              </linearGradient>
+              <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.12"/>
+              </filter>
+            </defs>
+
+            <!-- Counter -->
+            <g id="counter" transform="translate(40,40)">
+              <rect x="0" y="0" width="300" height="280" rx="20" fill="url(#counterGrad)" stroke="#c4b5fd" />
+              <text x="20" y="30" font-size="16" font-weight="700" fill="#6d28d9">Counter</text>
+              <rect x="20" y="220" width="260" height="40" rx="10" fill="#7c3aed" filter="url(#soft)"/>
+              <text x="150" y="245" text-anchor="middle" fill="white" font-weight="700">Order Here</text>
+              <g id="queue"></g>
+            </g>
+
+            <!-- Pass window & Kitchen -->
+            <g id="kitchen" transform="translate(400,40)">
+              <rect x="0" y="0" width="660" height="280" rx="20" fill="url(#kitchenGrad)" stroke="#86efac" />
+              <text x="20" y="30" font-size="16" font-weight="700" fill="#0f766e">Kitchen</text>
+              <!-- Pass window -->
+              <rect x="-40" y="120" width="40" height="60" rx="8" fill="#fde68a" stroke="#f59e0b" />
+              <text x="-20" y="115" text-anchor="middle" font-size="12" fill="#b45309">Pass</text>
+              <g id="tickets"></g>
+              <g id="stations" transform="translate(20,70)"></g>
+            </g>
+          </svg>
+        </div>
+
+        <footer>
+          This is a conceptual simulation. In steady-state and with consistent units, <strong>L ≈ λ × W</strong>. If arrivals exceed capacity for long, queues (and lead time) will grow.
+        </footer>
+      </main>
+    </section>
+  </div>
+
+  <script>
+    // ===== Utility =====
+    const nowMs = () => performance.now();
+    function expRand(mean){
+      // Exponential with given mean (in seconds)
+      const u = Math.random();
+      return -Math.log(1 - u) * mean;
+    }
+    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+    // ===== State =====
+    const state = {
+      running:true,
+      // Controls (orders/min)
+      lambdaIn: 12, // arrival rate
+      muPerChef: 6, // service rate per chef
+      chefs: 2,
+      wipLimit: 12,
+      // Entities
+      customers: [], // visual people heading to counter
+      orders: [],    // order tickets from counter to kitchen system
+      kitchenQueue: [],
+      inService: [], // {orderId, chefId, startMs, durMs}
+      completed: [], // completed orders with timestamps & lead time
+      idSeq: 1,
+      // time
+      lastTick: nowMs(),
+      nextArrivalAt: 0,
+      // metrics rolling
+      doneHistory: [], // [{tDoneMs, leadMin}]
+    };
+
+    // ===== SVG Handles =====
+    const svg = document.getElementById('scene');
+    const gQueue = document.getElementById('queue');
+    const gTickets = document.getElementById('tickets');
+    const gStations = document.getElementById('stations');
+
+    // ===== Stations (Chefs) UI =====
+    function drawStations(){
+      gStations.innerHTML = '';
+      const pad = 14; const w = 200; const h = 60; const cols = 3;
+      for(let i=0;i<state.chefs;i++){
+        const col = i % cols; const row = Math.floor(i/cols);
+        const x = col*(w+pad); const y = row*(h+12);
+        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+        g.setAttribute('transform',`translate(${x},${y})`);
+        g.innerHTML = `
+          <rect x="0" y="0" width="${w}" height="${h}" rx="12" fill="#fff" stroke="#a7f3d0" filter="url(#soft)"/>
+          <circle cx="22" cy="30" r="10" fill="#10b981" />
+          <text x="40" y="20" font-size="12" fill="#065f46" font-weight="700">Chef ${i+1}</text>
+          <rect x="40" y="30" width="${w-60}" height="12" rx="6" fill="#ecfeff" stroke="#99f6e4" />
+          <rect id="bar-${i}" x="40" y="30" width="0" height="12" rx="6" fill="#34d399" />
+        `;
+        gStations.appendChild(g);
+      }
+    }
+    drawStations();
+
+    // ===== Controls wiring =====
+    const arrivalEl = document.getElementById('arrival');
+    const speedEl = document.getElementById('speed');
+    const chefsEl = document.getElementById('chefs');
+    const wipEl = document.getElementById('wip');
+    const arrivalVal = document.getElementById('arrivalVal');
+    const speedVal = document.getElementById('speedVal');
+    const chefsVal = document.getElementById('chefsVal');
+    const wipVal = document.getElementById('wipVal');
+
+    function syncControlViews(){
+      arrivalVal.textContent = state.lambdaIn;
+      speedVal.textContent = state.muPerChef;
+      chefsVal.textContent = state.chefs;
+      wipVal.textContent = state.wipLimit;
+    }
+    function onChange(){
+      state.lambdaIn = parseInt(arrivalEl.value,10);
+      state.muPerChef = parseInt(speedEl.value,10);
+      state.chefs = parseInt(chefsEl.value,10);
+      state.wipLimit = parseInt(wipEl.value,10);
+      syncControlViews();
+      drawStations();
+    }
+    arrivalEl.oninput = onChange; speedEl.oninput = onChange; chefsEl.oninput = onChange; wipEl.oninput = onChange;
+    syncControlViews();
+
+    // ===== Metrics UI =====
+    const wipLive = document.getElementById('wipLive');
+    const tpLive = document.getElementById('tpLive');
+    const ltLive = document.getElementById('ltLive');
+    const capacityEl = document.getElementById('capacity');
+    const healthBadge = document.getElementById('healthBadge');
+    const llCheck = document.getElementById('llCheck');
+
+    function updateHealth(){
+      const capacity = state.muPerChef * state.chefs; // per min
+      capacityEl.textContent = capacity.toFixed(1);
+      // Throughput from last 2 minutes
+      const now = nowMs();
+      const horizon = 120000; // 2 min
+      state.doneHistory = state.doneHistory.filter(d => now - d.tDoneMs <= horizon);
+      const tp = state.doneHistory.length / (horizon/60000); // per min
+      // Lead time from last 20 orders
+      const last20 = state.completed.slice(-20);
+      const avgLead = last20.length ? last20.reduce((a,b)=>a+b.leadMin,0)/last20.length : 0;
+      const L = state.orders.length + state.kitchenQueue.length + state.inService.length + state.customers.length; // visual, whole system
+      const status = tp <= capacity*0.97 ? 'ok' : 'warn';
+      const stable = state.lambdaIn <= capacity + 0.01; // rough
+      const health = stable ? (status==='ok'?'Stable':'Near capacity') : 'Overloaded';
+      const badgeClass = stable ? (status==='ok'?'ok':'warn') : 'bad';
+      healthBadge.className = `badge ${badgeClass}`;
+      healthBadge.textContent = health;
+
+      wipLive.textContent = L;
+      tpLive.textContent = tp.toFixed(1);
+      ltLive.textContent = avgLead.toFixed(2);
+      llCheck.textContent = `${L.toFixed(1)} ≈ ${(tp).toFixed(1)} × ${(avgLead).toFixed(2)}`;
+    }
+
+    // ===== Entities Drawing =====
+    function personSVG(id,x,y){
+      return `
+        <g id="cust-${id}" transform="translate(${x},${y})">
+          <circle cx="8" cy="6" r="6" fill="#7c3aed" />
+          <rect x="2" y="12" width="12" height="16" rx="6" fill="#a78bfa" />
+        </g>`
+    }
+    function ticketSVG(id,x,y,label){
+      return `
+        <g id="order-${id}" transform="translate(${x},${y})">
+          <rect x="0" y="0" width="36" height="22" rx="4" fill="#f59e0b" stroke="#b45309" />
+          <text x="18" y="15" text-anchor="middle" font-size="12" fill="#3f2c04" font-weight="800">${label}</text>
+        </g>`
+    }
+
+    function redraw(){
+      // Queue customers (left)
+      const spacing = 26; const baseX = 40; const baseY = 180;
+      let s = '';
+      for(let i=0;i<state.customers.length;i++){
+        const p = state.customers[i];
+        const x = baseX + i*spacing; const y = baseY;
+        p.x = x; p.y = y;
+        s += personSVG(p.id, x, y);
+      }
+      gQueue.innerHTML = s;
+
+      // Tickets: pass window + kitchen queue
+      let t = '';
+      for(const o of state.orders){
+        t += ticketSVG(o.id, o.x, o.y, o.label);
+      }
+      gTickets.innerHTML = t;
+
+      // Service bars
+      for(let i=0;i<state.chefs;i++){
+        const bar = document.getElementById(`bar-${i}`);
+        if(!bar) continue;
+        const job = state.inService.find(s=>s.chefId===i);
+        if(job){
+          const pct = clamp((nowMs()-job.startMs)/job.durMs,0,1);
+          const w = 200 - 60; // width from drawing
+          bar.setAttribute('width', (w*pct).toFixed(1));
+        }else{
+          bar.setAttribute('width', 0);
+        }
+      }
+    }
+
+    // ===== Simulation =====
+    function scheduleNextArrival(){
+      const interarrivalSec = 60 / state.lambdaIn; // mean seconds between arrivals
+      const dt = expRand(interarrivalSec) * 1000; // ms
+      state.nextArrivalAt = nowMs() + dt;
+    }
+    scheduleNextArrival();
+
+    function spawnCustomer(){
+      const id = state.idSeq++;
+      state.customers.push({id});
+      // Immediately place order (visual: they are just part of the queue)
+      const ticketId = state.idSeq++;
+      const order = {
+        id: ticketId,
+        label: ticketId % 100,
+        tArrivalMs: nowMs(),
+        x: 330, y: 170, // start near counter edge
+        state: 'toPass',
+      };
+      state.orders.push(order);
+    }
+
+    function tryMoveTickets(){
+      // Move tickets from counter to pass window, then into kitchen queue respecting WIP limit
+      const passX = 360, passY = 170;
+      for(const o of state.orders){
+        if(o.state==='toPass'){
+          // slide to pass
+          o.x += (passX - o.x)*0.08; o.y += (passY - o.y)*0.1;
+          if(Math.hypot(passX-o.x, passY-o.y) < 1){ o.state='atPass'; }
+        }
+        if(o.state==='atPass'){
+          const Lsys = state.orders.length + state.kitchenQueue.length + state.inService.length + state.customers.length;
+          const canEnter = (state.kitchenQueue.length + state.inService.length) < state.wipLimit;
+          if(canEnter){
+            o.state='queue';
+            // place at end of kitchen queue
+            state.kitchenQueue.push(o);
+          }
+        }
+      }
+      // Remove any in queue from main list for simpler drawing positions management
+      state.orders = state.orders.filter(o=>o.state!=='queue');
+
+      // Position tickets at pass window & queue rail
+      // Draw pass tickets (those still at counter/pass)
+      for(const o of state.orders){ o.x += 0; }
+
+      // Arrange kitchen queue visually
+      const qBaseX = 10; const qBaseY = 150; const qSpacing = 40;
+      for(let i=0;i<state.kitchenQueue.length;i++){
+        const o = state.kitchenQueue[i];
+        o.x = 400 + qBaseX + i*qSpacing; o.y = 190;
+      }
+    }
+
+    function serviceLoop(){
+      // Assign to free chefs
+      for(let chefId=0; chefId<state.chefs; chefId++){
+        const busy = state.inService.find(s=>s.chefId===chefId);
+        if(busy) continue;
+        const next = state.kitchenQueue.shift();
+        if(!next) continue;
+        const meanSec = 60 / state.muPerChef; // service time mean
+        const durMs = expRand(meanSec) * 1000;
+        state.inService.push({orderId: next.id, chefId, startMs: nowMs(), durMs, order: next});
+        next.state='service';
+      }
+
+      // Advance & complete services
+      const now = nowMs();
+      for(let i=state.inService.length-1;i>=0;i--){
+        const job = state.inService[i];
+        if(now - job.startMs >= job.durMs){
+          // Done
+          const idx = state.inService.findIndex(s=>s===job);
+          state.inService.splice(idx,1);
+          const leadMin = (now - job.order.tArrivalMs)/60000;
+          state.completed.push({id: job.orderId, leadMin});
+          state.doneHistory.push({tDoneMs: now, leadMin});
+          // Tiny exit animation (fly right)
+          job.order.x = 1080; job.order.y = 100 + Math.random()*120; job.order.state='done';
+          // Also prune older completions to keep memory bounded
+          if(state.completed.length>2000){ state.completed.splice(0,500); }
+        }
+      }
+    }
+
+    function tick(){
+      if(!state.running){ requestAnimationFrame(tick); return; }
+      const t = nowMs();
+
+      // Arrivals
+      if(t >= state.nextArrivalAt){
+        spawnCustomer();
+        scheduleNextArrival();
+      }
+
+      // Customers visual decay (line doesn’t grow infinitely visually)
+      // After a short time, remove the visual customer to keep scene tidy
+      if(state.customers.length>0 && Math.random()<0.05){ state.customers.shift(); }
+
+      tryMoveTickets();
+      serviceLoop();
+      redraw();
+      updateHealth();
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // Buttons
+    document.getElementById('toggle').onclick = (e)=>{
+      state.running = !state.running;
+      e.target.textContent = state.running ? '⏸︎ Pause' : '▶︎ Play';
+    };
+    document.getElementById('reset').onclick = ()=>{
+      state.customers.length = 0;
+      state.orders.length = 0;
+      state.kitchenQueue.length = 0;
+      state.inService.length = 0;
+      state.completed.length = 0;
+      state.doneHistory.length = 0;
+      state.idSeq = 1;
+      scheduleNextArrival();
+    };
+  </script>
+</body>
+</html>
