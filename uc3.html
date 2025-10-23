@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Uncommon Wisdom Consulting LLC — Executive Coaching, Strategy & Implementation</title>
+  <meta name="description" content="Uncommon Wisdom Consulting LLC partners with leaders to clarify strategy, align teams, and deliver outcomes. Executive coaching, strategy facilitation, and implementation support." />
+  <meta name="theme-color" content="#0e1a2b" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Uncommon Wisdom Consulting LLC" />
+  <meta property="og:description" content="Executive coaching, strategy, and implementation to help leaders create uncommon outcomes." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><rect width='100%' height='100%' fill='%230e1a2b'/><text x='50%' y='52%' fill='%23f3f4f6' font-size='64' text-anchor='middle' font-family='system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial'>Uncommon Wisdom</text></svg>" />
+  <meta property="og:url" content="https://uncommonwisdom.example" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Favicon (inline emoji) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='85'%3E%F0%9F%92%A1%3C/text%3E%3C/svg%3E" />
+
+  <style>
+    /* =========================
+       Minimal Reset / Base
+       ========================= */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji; line-height: 1.6; background: var(--bg); color: var(--text); }
+    img, svg, video { display: block; max-width: 100%; }
+    a { color: inherit; text-underline-offset: 0.2em; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* =========================
+       Theme Tokens
+       ========================= */
+    :root {
+      /* Light (default) */
+      --bg: #f7f7fb;           /* page background */
+      --surface: #ffffff;      /* cards, header */
+      --text: #0f172a;         /* primary text */
+      --muted: #475569;        /* secondary text */
+      --line: #e5e7eb;         /* borders */
+      --accent: #c89b3c;       /* warm gold */
+      --accent-ink: #0f172a;   /* text on accent */
+      --shadow: 0 10px 30px rgba(2, 6, 23, .08);
+      --radius: 16px;
+      --container: 1100px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;         /* deep navy */
+        --surface: #0f172a;     /* slate 900 */
+        --text: #e5e7eb;        /* gray 200 */
+        --muted: #94a3b8;       /* slate 400 */
+        --line: #1f2937;        /* gray 800 */
+        --accent: #d6b25e;      /* softened gold */
+        --accent-ink: #0b1120;  /* text on accent */
+        --shadow: 0 14px 38px rgba(0, 0, 0, .35);
+      }
+    }
+
+    /* Allow manual override via data-theme */
+    html[data-theme="light"] { --bg:#f7f7fb; --surface:#ffffff; --text:#0f172a; --muted:#475569; --line:#e5e7eb; --accent:#c89b3c; --accent-ink:#0f172a; --shadow:0 10px 30px rgba(2,6,23,.08); }
+    html[data-theme="dark"]  { --bg:#0b1120; --surface:#0f172a; --text:#e5e7eb; --muted:#94a3b8; --line:#1f2937; --accent:#d6b25e; --accent-ink:#0b1120; --shadow:0 14px 38px rgba(0,0,0,.35); }
+
+    /* =========================
+       Layout Utilities
+       ========================= */
+    .container { width: min(100% - 2rem, var(--container)); margin-inline: auto; }
+    .stack > * + * { margin-top: var(--stack, 1rem); }
+    .grid { display: grid; gap: 1rem; }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
+
+    /* =========================
+       Header / Nav
+       ========================= */
+    .header { position: sticky; top: 0; z-index: 50; background: color-mix(in oklab, var(--surface), transparent 8%); backdrop-filter: saturate(160%) blur(10px); border-bottom: 1px solid var(--line); }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: .9rem 0; }
+    .brand { display: flex; align-items: center; gap: .6rem; font-weight: 700; letter-spacing: .2px; color: var(--text); text-decoration: none; }
+    .brand-logo { width: 28px; height: 28px; border-radius: 8px; background: radial-gradient(60% 60% at 30% 30%, #fff6 0 40%, transparent 41%), conic-gradient(from 200deg, var(--accent) 0 70%, color-mix(in oklab, var(--accent), black 18%) 71% 100%); box-shadow: inset 0 0 0 1px #0002; }
+    .brand small { color: var(--muted); font-weight: 600; display: block; font-size: .72rem; letter-spacing: .4px; margin-top: -2px; }
+
+    .menu { display: flex; gap: 1.2rem; align-items: center; }
+    .menu a { text-decoration: none; color: var(--muted); font-weight: 600; font-size: .95rem; }
+    .menu a:hover { color: var(--text); }
+
+    .cta { display: inline-flex; align-items: center; gap: .5rem; background: var(--accent); color: var(--accent-ink); border: none; border-radius: 999px; padding: .65rem 1rem; font-weight: 700; text-decoration: none; box-shadow: var(--shadow); }
+    .cta:active { transform: translateY(1px); }
+
+    .burger { display: none; background: none; border: 0; padding: .4rem; }
+    @media (max-width: 900px) {
+      .menu { display: none; }
+      .burger { display: block; }
+      .mobile-panel { display: none; position: fixed; inset: 60px 0 0 0; background: var(--surface); border-top: 1px solid var(--line); padding: 1rem; }
+      .mobile-panel.open { display: block; }
+      .mobile-panel a { display: block; padding: .8rem 0; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line); }
+      .mobile-panel .cta { margin-top: 1rem; width: 100%; justify-content: center; }
+    }
+
+    /* Theme toggle */
+    .theme-toggle { display: inline-flex; align-items: center; gap: .5rem; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: .35rem .6rem; }
+    .theme-toggle button { border: 0; background: none; padding: .35rem .5rem; border-radius: 999px; color: var(--muted); font-weight: 700; }
+    .theme-toggle button[aria-pressed="true"] { background: var(--line); color: var(--text); }
+
+    /* =========================
+       Hero
+       ========================= */
+    .hero { position: relative; background: radial-gradient(1200px 600px at 70% -10%, color-mix(in oklab, var(--accent), transparent 85%), transparent 60%), linear-gradient(180deg, color-mix(in oklab, var(--bg), var(--surface) 30%) 0%, var(--bg) 60%); }
+    .hero .inner { padding: clamp(3rem, 7vw, 6rem) 0; }
+    .eyebrow { color: var(--muted); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .8rem; }
+    h1 { font-size: clamp(2rem, 4.5vw, 3.4rem); line-height: 1.15; margin: .6rem 0 1rem; }
+    .lead { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--muted); max-width: 55ch; }
+    .hero-ctas { display: flex; gap: .8rem; margin-top: 1.25rem; flex-wrap: wrap; }
+    .link-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem .9rem; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-weight: 700; color: var(--text); background: var(--surface); }
+
+    /* Decorative rings */
+    .rings { position: absolute; inset: 0; pointer-events: none; }
+    .ring { position: absolute; border-radius: 999px; border: 1px dashed color-mix(in oklab, var(--accent), transparent 75%); }
+    .ring.r1 { width: 700px; height: 700px; right: -200px; top: -260px; }
+    .ring.r2 { width: 480px; height: 480px; left: -160px; top: 120px; }
+
+    /* =========================
+       Sections
+       ========================= */
+    section { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-bottom: .6rem; }
+    .section-lead { color: var(--muted); max-width: 65ch; }
+
+    /* Cards */
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.2rem; box-shadow: var(--shadow); }
+    .card h3 { margin-top: .2rem; margin-bottom: .4rem; }
+    .badge { display: inline-block; font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent-ink); background: var(--accent); padding: .28rem .5rem; border-radius: 6px; }
+
+    /* List checkmarks */
+    .checklist { list-style: none; padding: 0; margin: .6rem 0 0; }
+    .checklist li { display: grid; grid-template-columns: 20px 1fr; gap: .6rem; align-items: start; padding: .35rem 0; color: var(--muted); }
+    .checklist svg { margin-top: .2rem; }
+
+    /* Testimonials */
+    .quote { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.2rem; box-shadow: var(--shadow); }
+    .quote p { margin: .2rem 0 .6rem; font-size: 1.05rem; }
+    .quote footer { color: var(--muted); font-weight: 700; }
+
+    /* Modal (for embedded Google Form) */
+    dialog.modal { border: 0; padding: 0; background: transparent; }
+    .modal-card { width: min(100% - 2rem, 900px); height: min(80vh, 800px); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
+    .modal-head { display:flex; align-items:center; justify-content: space-between; padding: .6rem .8rem; border-bottom: 1px solid var(--line); }
+    .modal-title { font-weight: 800; }
+    .modal-close { border: 0; background: none; font-size: 1.4rem; line-height: 1; color: var(--muted); cursor: pointer; }
+    .modal-frame { width: 100%; height: 100%; border: 0; background: var(--surface); }
+    dialog::backdrop { backdrop-filter: blur(2px); background: color-mix(in oklab, #000, transparent 55%); }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--line); background: color-mix(in oklab, var(--surface), transparent 6%); }
+    .footer-grid { display: grid; grid-template-columns: 1.3fr .7fr; gap: 2rem; padding: 2rem 0; }
+    @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr; } }
+    .copy { color: var(--muted); font-size: .95rem; }
+
+    /* Buttons & links minor tweaks */
+    .muted-link { color: var(--muted); text-decoration: none; }
+    .muted-link:hover { color: var(--text); text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="#top">
+        <span class="brand-logo" aria-hidden="true"></span>
+        <span>
+          Uncommon Wisdom
+          <small>Consulting LLC</small>
+        </span>
+      </a>
+      <nav class="menu" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#approach">Approach</a>
+        <a href="#about">About</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact">Contact</a>
+        <a class="cta" data-cta href="#">Book a Call</a>
+        <span class="theme-toggle" role="group" aria-label="Theme">
+          <button id="themeSystem" aria-pressed="true" title="System">Sys</button>
+          <button id="themeLight" aria-pressed="false" title="Light">Light</button>
+          <button id="themeDark" aria-pressed="false" title="Dark">Dark</button>
+        </span>
+      </nav>
+      <button class="burger" id="burger" aria-controls="mobilePanel" aria-expanded="false" aria-label="Open menu">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div id="mobilePanel" class="mobile-panel" role="dialog" aria-modal="true" aria-label="Mobile Menu">
+      <div class="container stack" style="--stack: .2rem;">
+        <a href="#services">Services</a>
+        <a href="#approach">Approach</a>
+        <a href="#about">About</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact">Contact</a>
+        <a class="cta" data-cta href="#">Book a Call</a>
+        <div class="theme-toggle" style="margin-top:.4rem">
+          <button id="mThemeSystem" aria-pressed="true" title="System">Sys</button>
+          <button id="mThemeLight" aria-pressed="false" title="Light">Light</button>
+          <button id="mThemeDark" aria-pressed="false" title="Dark">Dark</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="rings" aria-hidden="true">
+        <span class="ring r1"></span>
+        <span class="ring r2"></span>
+      </div>
+      <div class="container inner">
+        <div class="eyebrow">Executive Coaching • Strategy • Implementation</div>
+        <h1>Uncommon wisdom for <em>uncommon outcomes</em>.</h1>
+        <p class="lead">We help founders and executives clarify direction, align teams, and deliver results. Practical guidance, calm facilitation, and sleeves‑rolled‑up support from strategy through implementation.</p>
+        <div class="hero-ctas">
+          <a class="cta" data-cta href="#">Start the conversation</a>
+          <a class="link-btn" href="#services">Explore services</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+      <div class="container stack" style="--stack: .6rem;">
+        <h2 class="section-title">How we can help</h2>
+        <p class="section-lead">Engagements shaped to your context—short, focused sprints or ongoing advisory. Always confidential, outcome‑oriented, and bias‑free.</p>
+        <div class="grid grid-3">
+          <article class="card">
+            <span class="badge">Executive Coaching</span>
+            <h3>Clarity, confidence, cadence</h3>
+            <p>One‑to‑one and small‑team coaching to sharpen decisions, strengthen communication, and build sustainable leadership habits.</p>
+            <ul class="checklist">
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Focus blocks, decision audits, and feedback loops
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Communication and stakeholder alignment
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Transition support for new roles or scaling phases
+              </li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="badge">Strategy</span>
+            <h3>Decisions that travel</h3>
+            <p>Structured facilitation to turn signal into strategy—and strategy into focus. We make trade‑offs explicit and executable.</p>
+            <ul class="checklist">
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Offsites and decision sprints
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Portfolio & prioritization frameworks
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Operating model & KPI architecture
+              </li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="badge">Implementation</span>
+            <h3>From deck to done</h3>
+            <p>Hands‑on support to stand up programs, run change, and build momentum with your team—not around it.</p>
+            <ul class="checklist">
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                PMO setup & governance rhythms
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Change communication & enablement
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Outcome dashboards & review cadences
+              </li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Approach -->
+    <section id="approach">
+      <div class="container stack">
+        <h2 class="section-title">A steady, simple approach</h2>
+        <p class="section-lead">We design light‑weight engagements that move quickly and respect your team’s time. Three moves, repeated as needed.</p>
+        <div class="grid grid-3">
+          <article class="card">
+            <span class="badge">1. Discover</span>
+            <h3>See it clearly</h3>
+            <p>Short interviews, data snapshots, and alignment checks. We surface what’s true and what matters.</p>
+          </article>
+          <article class="card">
+            <span class="badge">2. Decide</span>
+            <h3>Choose the few</h3>
+            <p>Co‑create a crisp plan with owners, outputs, and guardrails. Decisions that are easy to communicate.</p>
+          </article>
+          <article class="card">
+            <span class="badge">3. Deliver</span>
+            <h3>Make it real</h3>
+            <p>Rhythms, reviews, and communications that build momentum. We stay until it sticks.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- About / Credibility -->
+    <section id="about">
+      <div class="container grid" style="grid-template-columns: 1.2fr .8fr; gap: 2rem;">
+        <div class="stack" style="--stack: .8rem;">
+          <h2 class="section-title">About Uncommon Wisdom</h2>
+          <p class="section-lead">We’re operators first and consultants second. We’ve led teams through growth, resets, and reinvention. Our work is quiet, candid, and grounded in practice.</p>
+          <ul class="checklist">
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Private & confidential—no promotional case studies without permission
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Flexible: retainers, project sprints, or fractional leadership
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Remote‑first, on‑site when valuable
+            </li>
+          </ul>
+        </div>
+        <aside class="card stack" style="--stack:.6rem;">
+          <h3 style="margin:0">Who we work with</h3>
+          <p class="copy">Founder‑led companies, PE‑backed operators, and exec teams at growth‑stage organizations.</p>
+          <h3 style="margin:.4rem 0 0">Typical outcomes</h3>
+          <ul class="checklist">
+            <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> A 6‑quarter plan that the team believes in</li>
+            <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Clear roles, fewer meetings, faster decisions</li>
+            <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Change that sticks—because people own it</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+      <div class="container stack" style="--stack: 1rem;">
+        <h2 class="section-title">Quiet praise</h2>
+        <p class="section-lead">We don’t trade on logos. Here’s what leaders say when the dust settles.</p>
+        <div class="grid grid-3">
+          <figure class="quote">
+            <p>“The hardest thing wasn’t the strategy—it was getting the team to believe the plan. You gave us both.”</p>
+            <footer>COO, Growth‑Stage Services Company</footer>
+          </figure>
+          <figure class="quote">
+            <p>“Candid, calm, and trusted by my entire exec team. We made three big decisions in two weeks.”</p>
+            <footer>Founder‑CEO, Software Company</footer>
+          </figure>
+          <figure class="quote">
+            <p>“Our meetings are shorter, our priorities are clearer, and our culture feels lighter.”</p>
+            <footer>President, PE‑backed Portfolio Co.</footer>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="container grid" style="grid-template-columns: .9fr 1.1fr; gap: 2rem;">
+        <div class="stack" style="--stack: .8rem;">
+          <h2 class="section-title">Let’s talk</h2>
+          <p class="section-lead">A short conversation is the best way to see if we’re a fit. We’ll ask a few questions, offer a perspective, and suggest next steps.</p>
+          <a class="cta" data-cta href="#">Open the contact form</a>
+          <p class="copy">This button opens our Google Form in a new tab (or an embedded window). No accounts required.</p>
+        </div>
+        <div class="card stack" style="--stack:.6rem;">
+          <h3 style="margin:0">Prefer email?</h3>
+          <p class="copy">Use the form for the fastest response. If you’d rather email, reach us at
+            <a class="muted-link" href="mailto:hello@uncommonwisdom.example">hello@uncommonwisdom.example</a>.
+          </p>
+          <p class="copy">When your Google Form is ready, paste its link into the <code>GOOGLE_FORM_URL</code> constant in the script below.
+          Optionally set <code>EMBED_IN_MODAL = true</code> to display the form in a modal.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="stack" style="--stack:.6rem;">
+        <div class="brand" style="font-size:1.05rem;">
+          <span class="brand-logo" aria-hidden="true"></span>
+          <span>
+            Uncommon Wisdom
+            <small>Consulting LLC</small>
+          </span>
+        </div>
+        <p class="copy">© <span id="year"></span> Uncommon Wisdom Consulting LLC. All rights reserved.</p>
+        <p class="copy">This site doesn’t use cookies or trackers. Accessibility matters—if anything here is hard to use, <a class="muted-link" href="mailto:hello@uncommonwisdom.example?subject=Accessibility">tell us</a>.</p>
+      </div>
+      <div class="stack" style="--stack:.4rem;">
+        <strong>Contact</strong>
+        <a class="muted-link" data-cta href="#">Inquiry form</a>
+        <a class="muted-link" href="#">LinkedIn</a>
+        <a class="muted-link" href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal for embedded Google Form (optional) -->
+  <dialog id="formModal" class="modal" aria-label="Contact form">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">Contact — Uncommon Wisdom</div>
+        <button id="formClose" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <iframe id="formFrame" class="modal-frame" title="Google Form" loading="lazy"></iframe>
+    </div>
+  </dialog>
+
+  <script>
+    // =========================
+    // Configuration — paste your Google Form link here
+    // Example: "https://docs.google.com/forms/d/e/FORM_ID/viewform"
+    // A short link like https://forms.gle/XXXX works too.
+    const GOOGLE_FORM_URL = "https://forms.gle/YOUR_FORM_ID"; // ← REPLACE
+    const EMBED_IN_MODAL = true; // true = show in modal; false = open in new tab
+
+    // =========================
+    // Small helpers
+    const UW = {
+      qs: (sel, root=document) => root.querySelector(sel),
+      qsa: (sel, root=document) => [...root.querySelectorAll(sel)],
+    };
+
+    // Year
+    UW.qs('#year').textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const burger = UW.qs('#burger');
+    const panel = UW.qs('#mobilePanel');
+    burger.addEventListener('click', () => {
+      const open = panel.classList.toggle('open');
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    UW.qsa('#mobilePanel a').forEach(a => a.addEventListener('click', () => {
+      panel.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+    }));
+
+    // Smooth scroll for hash links
+    UW.qsa('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href').slice(1);
+        if (!id) return; // ignore '#'
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.pushState(null, '', '#' + id);
+        }
+      });
+    });
+
+    // Theme handling
+    const applyTheme = (mode) => {
+      // mode: 'system' | 'light' | 'dark'
+      const html = document.documentElement;
+      if (mode === 'system') {
+        html.removeAttribute('data-theme');
+      } else {
+        html.setAttribute('data-theme', mode);
+      }
+      localStorage.setItem('uw-theme', mode);
+      // Update buttons
+      const setPressed = (id, pressed) => UW.qs(id)?.setAttribute('aria-pressed', String(pressed));
+      setPressed('#themeSystem', mode === 'system');
+      setPressed('#themeLight', mode === 'light');
+      setPressed('#themeDark',  mode === 'dark');
+      setPressed('#mThemeSystem', mode === 'system');
+      setPressed('#mThemeLight', mode === 'light');
+      setPressed('#mThemeDark',  mode === 'dark');
+    };
+
+    applyTheme(localStorage.getItem('uw-theme') || 'system');
+
+    const wire = (id, mode) => UW.qs(id)?.addEventListener('click', () => applyTheme(mode));
+    wire('#themeSystem', 'system'); wire('#themeLight', 'light'); wire('#themeDark', 'dark');
+    wire('#mThemeSystem', 'system'); wire('#mThemeLight', 'light'); wire('#mThemeDark', 'dark');
+
+    // =========================
+    // Google Form integration
+    function openForm(ev) {
+      ev?.preventDefault?.();
+      if (!GOOGLE_FORM_URL || !/^https?:\/\//.test(GOOGLE_FORM_URL)) {
+        alert('Set your Google Form URL in the GOOGLE_FORM_URL constant.');
+        return;
+      }
+      if (EMBED_IN_MODAL && 'showModal' in UW.qs('#formModal')) {
+        const iframe = UW.qs('#formFrame');
+        // Ensure embedded mode for nice fit
+        const url = GOOGLE_FORM_URL.includes('embedded=true')
+          ? GOOGLE_FORM_URL
+          : GOOGLE_FORM_URL + (GOOGLE_FORM_URL.includes('?') ? '&' : '?') + 'embedded=true';
+        iframe.src = url;
+        UW.qs('#formModal').showModal();
+      } else {
+        window.open(GOOGLE_FORM_URL, '_blank', 'noopener');
+      }
+    }
+
+    UW.qsa('[data-cta]').forEach(el => {
+      el.addEventListener('click', openForm);
+      if (GOOGLE_FORM_URL && /^https?:\/\//.test(GOOGLE_FORM_URL)) {
+        el.setAttribute('href', GOOGLE_FORM_URL);
+        el.setAttribute('rel', 'noopener');
+        el.setAttribute('target', '_blank');
+      }
+    });
+
+    UW.qs('#formClose')?.addEventListener('click', () => UW.qs('#formModal').close());
+    UW.qs('#formModal')?.addEventListener('click', (e) => {
+      const dlg = e.currentTarget;
+      const rect = dlg.querySelector('.modal-card').getBoundingClientRect();
+      const inCard = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+      if (!inCard) dlg.close();
+    });
+  </script>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Uncommon Wisdom Consulting LLC",
+    "url": "https://uncommonwisdom.example",
+    "description": "Executive coaching, strategy facilitation, and implementation support.",
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "Business development",
+      "email": "hello@uncommonwisdom.example",
+      "url": "https://forms.gle/YOUR_FORM_ID"
+    }]
+  }
+  </script>
+</body>
+</html>
