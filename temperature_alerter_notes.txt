@@ -1,0 +1,116 @@
+# given a file like https://www.jayteesf.com/w1_slave
+# write a program (e.g. in javascript) that reads that file (which is pretending to be the output of a 'thermometer' device)
+# on some regular interval (i.e. once every minute or every 30 seconds)
+# extracts the temperature value
+# converts it to celcius
+# converts it to fahrenheit
+# and reports the current device, the current date/time (in seconds since epoch), and the current temperature
+
+# The main idea: your raspberry pi, would do this, and then send those values to some central database
+(see restdb.io)
+# Your app (running on some central website) could then read from the database and determine when to send alerts: to PG&E, the fire-dept, your phones, etc
+# (i.e. anyone who registered to receive alerts) <-- assuming you configure some alerts (i.e. when temperature is > x or < y)
+
+# references:
+# https://www.youtube.com/embed/8grooZWbH9Y?autoplay=1&rel=0 <-- how-to setup raspberry-pi i.e. get Raspbian installed:w
+# https://www.youtube.com/watch?v=j7LLVkPpQ78 # <-- how to setup thermometer on raspberry-pi
+
+
+# Queries that might help you write your code (using the basic linux shell)
+# Obviously if you want to use Python or some other language (NodeJS or Ruby) you can alter these Google Queries:
+
+-1)  How to get the last line of a file in bash (consider 'tail')
+
+0)  How to extract a portion of a line of data in bash (consider 'awk' or 'sed')
+
+1) how to make a loop, so your program keeps running:
+# https://www.cyberciti.biz/faq/bash-cycle-loop-forever/
+
+2) how to pause your program (i.e. at the end of every loop): think 'sleep'
+
+3) How to use "functions" to do pieces of the calculation (you could also just make separate commands)
+ # (Why do this? So your code is modular and easier to debug)
+
+# https://stackoverflow.com/questions/1809899/how-can-i-assign-the-output-of-a-function-to-a-variable-using-bash
+
+4) how to get the current date/time as an integer (that's easy to pass-across the internet and store in a db):
+# https://serverfault.com/questions/151109/how-do-i-get-the-current-unix-time-in-milliseconds-in-bash
+# (You can always convert it to a human readable format when you display it on your website)
+
+5) how to do math in shell-scripting (adding, multiplying, dividing, etc..):
+# https://unix.stackexchange.com/questions/66766/float-operation-with-bc
+
+6) How to send data to a central database (i.e. restdb.io):
+# See the restdb.io docs for how-to format these urls: https://restdb.io/docs/rest-api#restdb
+
+# A) Set some variables:
+export API_KEY="..." # <-- get this from your account on the restdb.io website...
+
+# typically your program will set these values:
+export device="Dev1"
+export current_temperature="72"
+export timestamp=`date +%s`
+
+# finally, send data to your program -- notice that each attribute starts with an upper-case letter
+curl -k -H "Content-Type: application/json" -H "x-apikey: ${API_KEY}" -X POST 'https://firewire-dc22.restdb.io/rest/temperatures' -d "{\"Device\": \"${device}\", \"Temperature\": ${current_temperature}, \"Timestamp\": ${timestamp}, \"Alert\": false}"
+
+
+# B) How to read (all the) data from the database:
+curl -H "Content-Type: application/json" -H "x-apikey: ${API_KEY}" -X GET 'https://firewire-dc22.restdb.io/rest/temperatures'
+
+# sample output:
+# [
+#  {"_id":"5e19341a688c77570003788c","Device":"Dev1","Temperature":72,"Timestamp":1578707288}
+# ]
+
+# How to mark an existing record in your database as an alert (using the "_id" value above):
+curl -H "Content-Type: application/json" -H "x-apikey: ${API_KEY}" -X PUT 'https://firewire-dc22.restdb.io/rest/temperatures/5e19341a688c77570003788c' -d "{\"Device\": \"${device}\", \"Temperature\": ${current_temperature}, \"Timestamp\": ${timestamp}, \"Alert\": true}"
+
+
+Your website should have the ability to mark bad temperatures...
+And users on your website should have the ability to "clear" those temperatures (once they've checked them...)
+
+Finally, you may want to consider alternate solutions to the problem. Perhaps there are other devices that would enable you to make a more efficient (cost-effective) solution:
+# https://habr.com/en/post/441050/ <-- if you can read Mandarin (Chinese), there's an $80 thermal camera for RaspberryPi
+
+# how-to get latest raspbian image:
+https://www.raspberrypi.org/forums/viewtopic.php?t=206546
+curl -O http://downloads.raspberrypi.org/raspbian_full/
+
+# then, unzip the file that downloads:
+unzip raspbian_full_latest
+
+# how-to update sd-card:
+https://trendblog.net/install-raspbian-sd-card-os-x-windows/
+# i.e. on my computer after inspecting the disk and unmounting it, I used:
+balenaEtcher #, instead of dd cmd: sudo dd bs=1048576 if=~/2019-09-26-raspbian-buster-full.img of=/dev/rdisk5s1
+# see raspbian site for details on how-to get that software:
+https://www.raspberrypi.org/documentation/installation/installing-images/mac.md
+
+# once I did that I just had to get a different (5.1v) power-block because the other (5v) block kept causing the raspberry-pi to crash!
+
+# To connect raspberry pi (using ethernet cable) to mac laptop:
+https://www.youtube.com/watch?v=h3cCHN3MBvs
+
+export PI_IP=`grep ip_address /var/db/dhcpd_leases | awk -F\= '{print $2}'`
+ssh pi@$PI_IP
+
+Here's how-to wire-up your sensor (and it even includes sample "python" code, so don't look if you want to figure it out on your own :-)):
+https://thepihut.com/blogs/raspberry-pi-tutorials/18095732-sensors-temperature-with-the-1-wire-interface-and-the-ds18b20
+
+Or (better):
+http://www.circuitbasics.com/raspberry-pi-ds18b20-temperature-sensor-tutorial/
+
+GPIO -> RP pin mapping: https://images.app.goo.gl/q5Fv94g1aQsvcynT8
+
+View Chart of what Raspberry Pi is seeing (html5 & javascript):
+https://www.jayteesf.com/temperature_alerter_graph.html
+
+Ultimately you want your chart to be dynamic:
+https://canvasjs.com/javascript-charts/dynamic-spline-chart/
+
+To send email based on a (hardcoded) threshold let restdb.io do it, using codehooks:
+https://restdb.io/docs/codehooks
+
+See an example here:
+https://www.jayteesf.com/restdb_codehook.js

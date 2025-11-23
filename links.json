@@ -1,5 +1,47 @@
 [
   {
+    "link_text": "Temperature Alerter Project",
+    "url": "https://www.jayteesf.com/links/temperature_alerter_notes.txt",
+    "rating": 4,
+    "snippet": "Alert before a fire."
+    "category": "project",
+    "tags": ["learning", "project", "educational"],
+    "date_added": "2025-11-22",
+    "favorite": true,
+    "media_type": "project",
+    "platform": "GitHub",
+    "notes": "",
+    "date_created": ""
+  },
+  {
+    "link_text": "Neural Car Racing Game",
+    "url": "https://www.jayteesf.com/links/jrace.html",
+    "rating": 4,
+    "snippet": "Neural Network to drive car around track.",
+    "category": "project",
+    "tags": ["learning", "gps", "game"],
+    "date_added": "2025-11-22",
+    "favorite": true,
+    "media_type": "project",
+    "platform": "GitHub",
+    "notes": "",
+    "date_created": ""
+  },
+  {
+    "link_text": "Geo Test (your location)",
+    "url": "https://www.jayteesf.com/links/geo_test.html",
+    "rating": 4,
+    "snippet": "Get your current geo location.",
+    "category": "project",
+    "tags": ["learning", "gps", "game"],
+    "date_added": "2025-11-22",
+    "favorite": true,
+    "media_type": "project",
+    "platform": "GitHub",
+    "notes": "",
+    "date_created": ""
+  },
+  {
     "link_text": "Foosball learner",
     "url": "https://github.com/JayTeeSF/foosball_learner",
     "rating": 4,
@@ -15,7 +57,7 @@
   },
   {
     "link_text": "Cheat at Clue",
-    "url": "https://jayteesf.github.io/links/clue",
+    "url": "https://www.jayteesf.com/links/clue",
     "rating": 5,
     "snippet": "Solve the game of Clue with this tool.",
     "category": "game",
@@ -29,7 +71,7 @@
   },
   {
     "link_text": "Math Birthday",
-    "url": "https://jayteesf.github.io/links/age.html",
+    "url": "https://www.jayteesf.com/links/age.html",
     "rating": 3,
     "snippet": "Make birthdays fun with math and radix.",
     "category": "math",
@@ -43,7 +85,7 @@
   },
   {
     "link_text": "Java Fun",
-    "url": "https://jayteesf.github.io/links/java_fun/index.html",
+    "url": "https://www.jayteesf.com/links/java_fun/index.html",
     "rating": 4,
     "snippet": "Java classes for communicating with ET.",
     "category": "project",
@@ -57,7 +99,7 @@
   },
   {
     "link_text": "Word(le) Helper",
-    "url": "https://jayteesf.github.io/links/words/new",
+    "url": "https://www.jayteesf.com/links/words/new",
     "rating": 5,
     "snippet": "Tool to help you with Wordle puzzles.",
     "category": "game",
@@ -71,7 +113,7 @@
   },
   {
     "link_text": "Letterbox Solver",
-    "url": "https://jayteesf.github.io/letter_box/",
+    "url": "https://www.jayteesf.com/letter_box/",
     "rating": 5,
     "snippet": "Solve NYTimes Letterbox puzzles.",
     "category": "game",
@@ -85,7 +127,7 @@
   },
   {
     "link_text": "JJ Draw",
-    "url": "https://jayteesf.github.io/links/jj_draw.html",
+    "url": "https://www.jayteesf.com/links/jj_draw.html",
     "rating": 3,
     "snippet": "Drawing tool for creative projects.",
     "category": "art",
@@ -99,7 +141,7 @@
   },
   {
     "link_text": "Can I Have Dessert?",
-    "url": "https://jayteesf.github.io/links/can_i_have_dessert",
+    "url": "https://www.jayteesf.com/links/can_i_have_dessert",
     "rating": 4,
     "snippet": "Fun tool for deciding if dessert is allowed.",
     "category": "fun",
@@ -113,7 +155,7 @@
   },
   {
     "link_text": "Daily Planner",
-    "url": "https://jayteesf.github.io/links/planner",
+    "url": "https://www.jayteesf.com/links/planner",
     "rating": 4,
     "snippet": "Fill in and print your daily plan.",
     "category": "productivity",
@@ -127,7 +169,7 @@
   },
   {
     "link_text": "Zombie Shake & Throw",
-    "url": "https://jayteesf.github.io/links/zombie_shake_and_throw",
+    "url": "https://www.jayteesf.com/links/zombie_shake_and_throw",
     "rating": 5,
     "snippet": "A fun zombie-themed game.",
     "category": "game",
@@ -141,7 +183,7 @@
   },
   {
     "link_text": "Weekend Activity Chooser",
-    "url": "https://jayteesf.github.io/weekend_activity_chooser/",
+    "url": "https://www.jayteesf.com/weekend_activity_chooser/",
     "rating": 4,
     "snippet": "Decide what to do this weekend.",
     "category": "decision-making",
@@ -155,7 +197,7 @@
   },
   {
     "link_text": "Pascal's Triangle",
-    "url": "https://jayteesf.github.io/links/pascals_triangle",
+    "url": "https://www.jayteesf.com/links/pascals_triangle",
     "rating": 5,
     "snippet": "A nerdy math visualization tool.",
     "category": "math",
@@ -449,7 +491,7 @@
   },
   {
     "link_text": "Tree Visualizer",
-    "url": "https://jayteesf.github.io/links/tree_visualizer.html",
+    "url": "https://www.jayteesf.com/links/tree_visualizer.html",
     "rating": 5,
     "snippet": "Visualize various tree data structures interactively.",
     "category": "tool",
@@ -463,7 +505,7 @@
   },
   {
     "link_text": "Periodic Table",
-    "url": "https://jayteesf.github.io/links/periodic_table.html",
+    "url": "https://www.jayteesf.com/links/periodic_table.html",
     "rating": 5,
     "snippet": "Interactive periodic table of elements.",
     "category": "education",
@@ -477,7 +519,7 @@
   },
   {
     "link_text": "Visualization Libraries",
-    "url": "https://jayteesf.github.io/links/visualization_libraries_showcase.html",
+    "url": "https://www.jayteesf.com/links/visualization_libraries_showcase.html",
     "rating": 5,
     "snippet": "Visualization Libraries Showcase.",
     "category": "education",
@@ -490,8 +532,36 @@
     "date_created": ""
   },
   {
+    "link_text": "Anchor Texts",
+    "url": "https://www.jayteesf.com/links/anchor_texts.html",
+    "rating": 5,
+    "snippet": "Anchoring Scriptures.",
+    "category": "education",
+    "tags": ["Bible Study", "Reveal", "html", "educational"],
+    "date_added": "2025-11-22",
+    "favorite": true,
+    "media_type": "tool",
+    "platform": "GitHub Pages",
+    "notes": "",
+    "date_created": ""
+  },
+  {
+    "link_text": "GrandAnds of Scripture",
+    "url": "https://www.jayteesf.com/links/grand_ands.html",
+    "rating": 5,
+    "snippet": "Ands of Scripture.",
+    "category": "education",
+    "tags": ["Bible Study", "Reveal", "html", "educational"],
+    "date_added": "2025-11-22",
+    "favorite": true,
+    "media_type": "tool",
+    "platform": "GitHub Pages",
+    "notes": "",
+    "date_created": ""
+  },
+  {
     "link_text": "Repeating Decimal Patterns",
-    "url": "https://jayteesf.github.io/links/repeating_decimal_patterns.html",
+    "url": "https://www.jayteesf.com/links/repeating_decimal_patterns.html",
     "rating": 5,
     "snippet": "Explore repeating decimal patterns.",
     "category": "education",

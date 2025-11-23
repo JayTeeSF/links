@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+  <head>  
+    <title>Chart</title>
+    <script>
+      // https://restdb.io/blog/restdb-javascript-api
+      var gThreshold, gDataLength, gUpdateInterval, gChartObj;
+      var gData = [];
+
+      function epochToJsDate(ts) {
+	return new Date(ts*1000);
+      }
+
+      function makeIndexLabel(yValue) {
+	var indexLabel = null;
+	if (yValue >= gThreshold) {
+	  indexLabel = "alert";
+	}
+	return indexLabel;
+      }
+
+      function makeColor(yValue) {
+	var color = null;
+	if (yValue >= gThreshold) {
+	  color = "red";
+	}  
+	return color; 
+      }
+
+      function makeMarker(yValue) {
+	var marker = null;
+	if (yValue >= gThreshold) {
+	  marker = "triangle";
+	}  
+	return marker; 
+      }
+
+      function dataPoints(latestData=[]) {
+	var yValue, obj, label, indexLabel, color, marker;
+	var graphPoints = [];
+	for (var i = 0; i < latestData.length; i++) {
+	  yValue = latestData[i].yValue;
+	  console.log("DEBUG - yValue: " + yValue);
+
+	  obj = { y: yValue };
+
+	  label = latestData[i].label; // optional
+	  if (label) {
+	    obj["label"] = label
+	  }
+
+	  indexLabel = makeIndexLabel(yValue);
+	  if (indexLabel) {
+	    // obj = {...obj, indexLabel: indexLabel}; // lookup javascript's 'spread' operator to understand this line
+	    obj["indexLabel"] = indexLabel;
+	  }
+
+	  color = makeColor(yValue);
+	  if (color) {
+	    obj["markerColor"] = color;
+	  }
+
+	  marker = makeMarker(yValue);
+	  if (marker) {
+	    obj["markerType"] = marker;
+	  }
+
+	  console.log("DEBUG - " + JSON.stringify(obj));
+	  graphPoints.push(obj);
+	}
+
+	return graphPoints;
+      }
+
+      function toggleDataSeries(e) {
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible ) {
+	  e.dataSeries.visible = false;
+	} else {
+	  e.dataSeries.visible = true;
+	}
+	gChartObj.render();
+      }
+
+      // https://canvasjs.com/html5-javascript-spline-chart/
+      // chart({"devName": [{yValue: 1, label: datetime}, {yValue: 2}, {yValue: 3}, {yValue: 201}, {yValue: 38}], "otherDevName": [...]}).render();
+      function chart(latestData={}) {
+	var devices = Object.keys(latestData);
+	gData.length = 0
+	for (var i=0; i<devices.length; i++) {
+	  device = devices[i];
+	  // 'spline' could be 'line' if you prefer jagged graphs
+	  gData.push ({
+	    type: "spline",
+	    showInLegend: true,
+	    name: device,
+	    dataPoints: dataPoints(latestData[device])
+	  });
+	}
+
+	if (!gChartObj) {
+	  gChartObj = new CanvasJS.Chart("chartContainer", {
+	    exportEnabled: true,
+	    theme: "light2",
+	    title:{
+	      text: "Simple Line Chart"
+	    },
+	    axisY:{
+	      includeZero: false
+	    },
+	    legend:{
+	      itemclick: toggleDataSeries
+	    },
+	    data: gData
+	  });
+	}
+	return gChartObj;
+      }
+
+      var gApiKey = "5e26187e4327326cf1c9199f";
+      var gNamedTemperatureAndLabels;
+      function updateChart(apiKey=gApiKey) {
+	gNamedTemperatureAndLabels = {};
+	var idx;
+	gDataLength     = document.getElementById("dataLength").value;
+	gThreshold      = document.getElementById("threshold").value;
+	gUpdateInterval = document.getElementById("updateInterval").value;
+
+	var orderedTs = [];
+	var db = new restdb(apiKey);
+	var query = {}; // all
+	// var hints = {"$max": 10, "$orderby": {"_id": -1}}; // top ten, sort by creation id in descending order
+	var hints = {"$max": gDataLength, "$orderby": {"_id": -1}};
+	db.temperatures.find(query, hints, function(err, res) {
+	  if (!err) {
+	    // res is an array of temperature(s) instances
+	    console.log("plist: " + JSON.stringify(res));
+	    var re, label, ts;
+	    for (idx=res.length-1; idx>=0; idx--) { // read values in reverse-order because we received the last N-values in descending order
+	      re = res[idx];
+	      if (re["Temperature"]) {
+		// gNamedTemperatureAndLabels = {device: [], device2: [], device3: []}
+		if (! gNamedTemperatureAndLabels[re["Device"]]) {
+		  gNamedTemperatureAndLabels[re["Device"]] = []; // if we do not already have an array for this device, make one
+		}
+		ts = epochToJsDate(re["Timestamp"]);
+		label = ts.toString();
+		console.log("DEBUG - JsDate as String: " + label);
+		gNamedTemperatureAndLabels[re["Device"]].push({yValue: re["Temperature"], label: label, x: ts})
+		if (orderedTs.indexOf(ts)==-1) {
+		  orderedTs.push(ts);
+		}
+	      } else {
+		console.log("DEBUG - no temp: " + JSON.stringify(re));
+	      }
+	    }
+
+	    // added complexity from handling multiple devices per graph:
+	    var devices = Object.keys(gNamedTemperatureAndLabels);
+	    var device, tempAndLabel, preAry, postAry, removeCount;
+	    var removedTs = [];
+	    for (idx=0; idx<devices.length; idx++) {
+	      device = devices[idx];
+	      if (orderedTs.length > gDataLength) {
+		removeCount = orderedTs.length - gDataLength;
+		for (var rc=0; rc<removeCount; rc++) {
+		  removedTs.push(orderedTs[0]);
+		  orderedTs.shift() // remove 1st elements from list...
+		}
+	      }
+
+	      // remove the data from the graph-line for each device:
+	      for (var j=0; j<removedTs.length; j++) {
+		tempAndLabel = gNamedTemperatureAndLabels[device][j]
+		if ((tempAndLabel) && (tempAndLabel.label == removedTs[j].toString())) {
+		  gNamedTemperatureAndLabels[device].splice(j,1) // remove it
+		}
+	      } // 1st j-loop
+
+	      for (var j=0; j<orderedTs.length; j++) {
+		tempAndLabel = gNamedTemperatureAndLabels[device][j]
+		if (!(tempAndLabel)) {
+		  // nothing exists at this index, the array is too short, so add to it:
+		  gNamedTemperatureAndLabels[device][j] = {yValue: null, label: orderedTs[j].toString()};
+		} else if (tempAndLabel["label"] != orderedTs[j].toString()) {
+		  /** we know tempAndLabel exists ...but does it have the right xAxis label
+		    * move existing value up a spot... why cuz we are looping through the labels in order...
+		    */
+		    preAry = gNamedTemperatureAndLabels[device].slice(0,j);
+		  postAry = gNamedTemperatureAndLabels[device].slice(j);
+		  preAry.push({yValue: null, label: orderedTs[j].toString(), ts: orderedTs[j]});
+		  gNamedTemperatureAndLabels[device] = preAry.concat(postAry)
+		}
+	      } // 2nd j-loop
+	    } // idx-loop
+	  }
+	});
+
+	if ((gNamedTemperatureAndLabels) && ({} != gNamedTemperatureAndLabels)) {
+	  console.log("re-rendering chart...");
+	  chart(gNamedTemperatureAndLabels).render();
+	} else {
+	  console.log("NOT rendering chart...");
+	}
+	// setTimeout(updateChart, gUpdateInterval);
+      }
+
+      window.onload = function () {
+	updateChart();
+      }
+    </script>
+  </head>
+	      <body>
+		<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+		<p>Control(s):</p>
+		<form>
+		  Threshold (possible fire temperature in Fahrenheit):
+		  <input id="threshold" type="number" min="32" max="1000" value="200">
+		  <br>
+
+		  Graph Update Interval (ms):
+		  <input id="updateInterval" type="number" min="2500" max="15000" value="10000">
+		  <br>
+
+		  Data Length (num datapts on graph):
+		  <input id="dataLength" type="number" min="32" max="1000" value="10">
+		  <br>
+		</form>
+		<script src="https://firewire-dc22.restdb.io/assets/js/eventsource.min.js"></script>
+		<script src="https://firewire-dc22.restdb.io/rest/_jsapi.js?plainjs=true"></script>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	      </body>
+</html>

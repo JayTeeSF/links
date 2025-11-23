@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>This is a standalone file to test if your browser supports geo-location</title>
+  </head>
+
+  <body>
+    <p>Does your phone support geo location tracking?</p>
+    <script>
+      if (navigator.geolocation) {
+        alert("calling for geolocation");
+        navigator.geolocation.getCurrentPosition(function(pos){ alert("lat: " + pos.coords.latitude + "," + pos.coords.longitude); });
+      } else {
+        alert("Your browser doesn't support geo-location");
+      }
+    </script>
+  </body>
+</html>
+

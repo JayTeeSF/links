@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Can I have dessert?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      color: #222;
+      background: #f5f5f7;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 640px;
+      width: 100%;
+      padding: 24px 20px 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    #slide_text {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+    #slide_comment {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 24px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      margin: 4px 0;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+    .center {
+      text-align: center;
+    }
+    .hidden {
+      display: none;
+    }
+    #buttons a {
+      min-width: 220px;
+    }
+    #buttons br {
+      line-height: 2.4;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1 id="title">Can I have dessert?</h1>
+
+    <div id="intro-screen" class="center">
+      <p>Answer a few quick questions to see if you've earned dessert.</p>
+      <button id="start-button" class="btn btn-primary">Get Started</button>
+    </div>
+
+    <div id="question-screen" class="hidden">
+      <div id="slide">
+        <p id="slide_text"></p>
+        <div id="buttons" class="center"></div>
+        <p id="slide_comment" class="hidden"></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const Q_END = "end";
+      const Q_DONE = "done";
+
+      const dessertQuestionScope = {
+        start: {
+          m: "Can I have dessert?"
+        },
+        1: {
+          q: "Is it > 8:15pm?",
+          rh: { continue: 2 }
+        },
+        2: {
+          q: "Are any of your things in the foyer?",
+          rh: {
+            end: "Handle your bid'ness then try again.",
+            continue: 3
+          }
+        },
+        3: {
+          q: "Are there any dishes in the sink or on the counter?",
+          rh: {
+            end: "You and/or your sibling need to put them away (if clean) or properly load the dishwasher (<a href=\"http://producthelp.maytag.com/Dishwashers/Dishwasher_Tips_and_Tricks/How_to_properly_load_your_dishwasher\" target=\"_blank\" rel=\"noopener noreferrer\">MayTag Site</a>), then try again.",
+            continue: 4
+          }
+        },
+        4: {
+          q: "Do you have laundry that you need to do/complete?",
+          rh: {
+            end: "Finish your laundry then try again.",
+            continue: 5
+          }
+        },
+        5: {
+          q: "Do you need a shower?",
+          rh: {
+            end: "Take a shower then try again.",
+            continue: 6
+          }
+        },
+        6: {
+          q: "Is your bed unmade?",
+          rh: {
+            end: "Make your bed then try again.",
+            continue: 7
+          }
+        },
+        7: {
+          q: "Does your room stink?",
+          rh: {
+            end: "Clean source of stink, and remove remnants (wash &amp; dry them if nec.) then try again.",
+            continue: 8
+          }
+        },
+        8: {
+          q: "Are any of your doors or drawers open?",
+          rh: {
+            end: "Handle your bid'ness then try again.",
+            continue: 9
+          }
+        },
+        9: {
+          c: "Take your time to reflect carefully and honestly as you answer these questions -- go back, if you need to",
+          q: "Are any of your clothes not in your hamper, your drawers, or hanging in a closet?",
+          rh: {
+            end: "Handle your bid'ness then try again.",
+            continue: 10
+          }
+        },
+        10: {
+          q: "Would an honest person with a good sense of smell say the trash stinks?",
+          rh: {
+            end: "Take it out, clean the can if necess, replace the bag, and then try again.",
+            continue: 11
+          }
+        },
+        11: {
+          q: "Are there recyclable(s) on the floor (i.e. not stored neatly in an unstuffed bag)?",
+          rh: {
+            end: "Take out the recycling and place a recycling bag by the sink, then try again.",
+            continue: 12
+          }
+        },
+        12: {
+          c: "Being a responsible person, like you've shown so far, is its own reward!",
+          q: "Is there anything (other than air) on the kitchen table?",
+          rh: {
+            end: "Clean the table and try again.",
+            continue: 13
+          }
+        },
+        13: {
+          q: "Is there anything (other than air) on the dining room table?",
+          rh: {
+            end: "Clean the table and try again.",
+            continue: 14
+          }
+        },
+        14: {
+          q: "Are there crumbs (or the like) under the kitchen table or on it's chairs/bench?",
+          rh: {
+            end: "Handle your bid'ness then try again.",
+            continue: 15
+          }
+        },
+        15: {
+          q: "Are there crumbs (or the like) under the dining room table or on it's chairs/bench?",
+          rh: {
+            end: "Handle your bid'ness then try again.",
+            continue: 16
+          }
+        },
+        16: {
+          q: "Is your bag not ready (i.e. not packed & hanging on your door) for tomorrow morning?",
+          rh: {
+            end: "Get your stuff together then try again.",
+            continue: 17
+          }
+        },
+        17: {
+          c: "We appreciate your effort today",
+          q: "Did you experience any pains today, that have been left unattended, that are going to flare-up before bedtime?",
+          rh: {
+            end: "Attend to your wound now ...and try again later.",
+            continue: 18
+          }
+        },
+        18: {
+          q: "Do you have any school (or other) projects that will need to be urgently attended to between now and bedtime?",
+          rh: {
+            end: "Handle you bid'ness and try again later.",
+            continue: 19
+          }
+        },
+        19: {
+          q: "Did you handle your bid'ness yesterday?",
+          rh: {
+            end: "Think on these things...",
+            continue: Q_DONE
+          }
+        },
+        done: {
+          m: "Congratulations, you've now earned the right to ask your parents..."
+        }
+      };
+
+      const dessertQuestionCount = 19;
+      let currentDisplayedSlideId = null;
+
+      function computePacificTimeInfo() {
+        const now = new Date();
+
+        const pacificNowString = now.toLocaleString("en-US", {
+          timeZone: "America/Los_Angeles",
+          dateStyle: "medium",
+          timeStyle: "short"
+        });
+
+        const parts = new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/Los_Angeles",
+          hour: "numeric",
+          minute: "numeric",
+          hour12: false
+        }).formatToParts(now);
+
+        let hour = 0;
+        let minute = 0;
+        for (const p of parts) {
+          if (p.type === "hour") hour = parseInt(p.value, 10);
+          if (p.type === "minute") minute = parseInt(p.value, 10);
+        }
+
+        const afterCutoff = hour > 20 || (hour === 20 && minute > 15);
+
+        const pacificNowDate = new Date(
+          now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" })
+        );
+        pacificNowDate.setHours(20, 15, 0, 0);
+        const cutoffString = pacificNowDate.toLocaleString("en-US", {
+          timeZone: "America/Los_Angeles",
+          dateStyle: "medium",
+          timeStyle: "short"
+        });
+
+        return {
+          currentTime: pacificNowString,
+          cutoffTime: cutoffString,
+          afterCutoff
+        };
+      }
+
+      function responseFor(slideId, params, timeInfo) {
+        if (slideId === 1) {
+          return timeInfo.afterCutoff;
+        }
+        const resp = params.get("response");
+        return resp === null ? null : resp;
+      }
+
+      function questionResultFor(slideId, responseValue) {
+        if (slideId === 1) {
+          return responseValue ? Q_END : "continue";
+        } else if (slideId >= 2 && slideId <= 18) {
+          return /^Y/i.test(responseValue) ? Q_END : "continue";
+        } else if (slideId === 19) {
+          return /^N/i.test(responseValue) ? Q_END : "continue";
+        }
+        return "continue";
+      }
+
+      function dessertShow(params) {
+        let slideId = parseInt(params.get("id") || "1", 10);
+        if (Number.isNaN(slideId)) slideId = 1;
+
+        const timeInfo = computePacificTimeInfo();
+
+        let slideText = "";
+        let slideComment = "";
+        let showYesNo = false;
+        let tryAgain = false;
+        let effectiveSlideId = slideId;
+
+        if (slideId <= dessertQuestionCount) {
+          let questionObject = dessertQuestionScope[slideId];
+          const slideResponse = responseFor(slideId, params, timeInfo);
+
+          if (slideResponse === null) {
+            slideText = questionObject.q;
+            slideComment = questionObject.c || "";
+            showYesNo = true;
+            effectiveSlideId = slideId;
+          } else {
+            const questionResult = questionResultFor(slideId, slideResponse);
+
+            if (questionResult === Q_END) {
+              if (slideId === 1) {
+                slideText =
+                  "No, it's too late (" +
+                  timeInfo.currentTime +
+                  " > " +
+                  timeInfo.cutoffTime +
+                  "), try again tomorrow.";
+              } else {
+                slideText =
+                  (questionObject.rh && questionObject.rh[Q_END]) || "";
+              }
+              tryAgain = true;
+            } else {
+              let nextId = questionObject.rh && questionObject.rh.continue;
+              effectiveSlideId = nextId;
+
+              if (nextId === Q_DONE) {
+                const doneObject = dessertQuestionScope[Q_DONE];
+                const uuid =
+                  (window.crypto && crypto.randomUUID)
+                    ? crypto.randomUUID()
+                    : Math.random().toString(36).slice(2);
+                slideText =
+                  doneObject.m +
+                  " use this secret (unique) id: " +
+                  uuid;
+              } else if (
+                !nextId ||
+                String(nextId).match(/^D/) ||
+                Number(nextId) > dessertQuestionCount
+              ) {
+                slideText = "What cho' talkin' 'bout Willis?";
+              } else {
+                const numericId = Number(nextId);
+                effectiveSlideId = numericId;
+                questionObject = dessertQuestionScope[numericId];
+                slideText = questionObject.q;
+                slideComment = questionObject.c || "";
+                showYesNo = true;
+              }
+            }
+          }
+        } else {
+          slideText = "What cho' talkin' 'bout Willis?";
+        }
+
+        currentDisplayedSlideId = effectiveSlideId;
+        return { slideText, slideComment, showYesNo, tryAgain, effectiveSlideId };
+      }
+
+      function renderFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const hasId = params.has("id");
+
+        const intro = document.getElementById("intro-screen");
+        const questionScreen = document.getElementById("question-screen");
+        const heading = document.getElementById("title");
+
+        heading.textContent = dessertQuestionScope.start.m;
+
+        if (!hasId) {
+          intro.classList.remove("hidden");
+          questionScreen.classList.add("hidden");
+          return;
+        }
+
+        intro.classList.add("hidden");
+        questionScreen.classList.remove("hidden");
+
+        const result = dessertShow(params);
+        const slideTextEl = document.getElementById("slide_text");
+        const commentEl = document.getElementById("slide_comment");
+        const buttonsEl = document.getElementById("buttons");
+
+        slideTextEl.innerHTML = result.slideText;
+
+        if (result.slideComment) {
+          commentEl.innerHTML = result.slideComment;
+          commentEl.classList.remove("hidden");
+        } else {
+          commentEl.textContent = "";
+          commentEl.classList.add("hidden");
+        }
+
+        buttonsEl.innerHTML = "";
+
+        if (result.tryAgain) {
+          const tryAgainLink = document.createElement("a");
+          tryAgainLink.href = "/can_i_have_dessert";
+          tryAgainLink.className = "btn btn-primary";
+          tryAgainLink.textContent = "Try Again";
+          buttonsEl.appendChild(tryAgainLink);
+        } else if (result.showYesNo && currentDisplayedSlideId != null) {
+          const yesLink = document.createElement("a");
+          yesLink.href =
+            window.location.pathname +
+            "?id=" +
+            encodeURIComponent(currentDisplayedSlideId) +
+            "&response=Y";
+          yesLink.className = "btn btn-primary";
+          yesLink.textContent = "yes, uhm, yeah sort of";
+
+          const br = document.createElement("br");
+
+          const noLink = document.createElement("a");
+          noLink.href =
+            window.location.pathname +
+            "?id=" +
+            encodeURIComponent(currentDisplayedSlideId) +
+            "&response=N";
+          noLink.className = "btn btn-secondary";
+          noLink.textContent = "no";
+
+          yesLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            const url =
+              window.location.pathname +
+              "?id=" +
+              encodeURIComponent(currentDisplayedSlideId) +
+              "&response=Y";
+            history.pushState({}, "", url);
+            renderFromUrl();
+          });
+
+          noLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            const url =
+              window.location.pathname +
+              "?id=" +
+              encodeURIComponent(currentDisplayedSlideId) +
+              "&response=N";
+            history.pushState({}, "", url);
+            renderFromUrl();
+          });
+
+          buttonsEl.appendChild(yesLink);
+          buttonsEl.appendChild(br);
+          buttonsEl.appendChild(noLink);
+        }
+      }
+
+      window.addEventListener("popstate", renderFromUrl);
+
+      window.addEventListener("DOMContentLoaded", function () {
+        const startBtn = document.getElementById("start-button");
+        if (startBtn) {
+          startBtn.addEventListener("click", function () {
+            const url = window.location.pathname + "?id=1";
+            history.pushState({}, "", url);
+            renderFromUrl();
+          });
+        }
+        renderFromUrl();
+      });
+    })();
+  </script>
+</body>
+</html>

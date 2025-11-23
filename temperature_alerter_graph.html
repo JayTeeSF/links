@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<html>
+  <head>  
+    <title>Chart</title>
+    <script>
+      // https://restdb.io/blog/restdb-javascript-api
+      var gThreshold, gDataLength, gUpdateInterval, gChartObj;
+      var gData = [];
+
+      function epochToJsDate(ts) {
+	return new Date(ts*1000);
+      }
+
+      function makeIndexLabel(yValue) {
+	var indexLabel = null;
+	if (yValue >= gThreshold) {
+	  indexLabel = "alert";
+	}
+	return indexLabel;
+      }
+
+      function makeColor(yValue) {
+	var color = null;
+	if (yValue >= gThreshold) {
+	  color = "red";
+	}  
+	return color; 
+      }
+
+      function makeMarker(yValue) {
+	var marker = null;
+	if (yValue >= gThreshold) {
+	  marker = "triangle";
+	}  
+	return marker; 
+      }
+
+      function dataPoints(latestData=[]) {
+	var yValue, xValue, obj, label, indexLabel, color, marker;
+	var graphPoints = [];
+	for (var i = 0; i < latestData.length; i++) {
+	  yValue = latestData[i].yValue;
+	  console.log("DEBUG - yValue: " + yValue);
+
+	  obj = { y: yValue };
+
+	  /*
+	  xValue = latestData[i].xValue; // optional
+	  if (xValue) {
+	    obj["x"] = xValue
+	  }
+	  */
+
+	  label = latestData[i].label; // optional
+	  if (label) {
+	    obj["label"] = label
+	  }
+
+	  indexLabel = makeIndexLabel(yValue);
+	  if (indexLabel) {
+	    // obj = {...obj, indexLabel: indexLabel}; // lookup javascript's 'spread' operator to understand this line
+	    obj["indexLabel"] = indexLabel;
+	  }
+
+	  color = makeColor(yValue);
+	  if (color) {
+	    obj["markerColor"] = color;
+	  }
+
+	  marker = makeMarker(yValue);
+	  if (marker) {
+	    obj["markerType"] = marker;
+	  }
+
+	  console.log("DEBUG - " + JSON.stringify(obj));
+	  graphPoints.push(obj);
+	}
+	return graphPoints;
+      }
+
+      function toggleDataSeries(e) {
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible ) {
+	  e.dataSeries.visible = false;
+	} else {
+	  e.dataSeries.visible = true;
+	}
+	gChartObj.render();
+      }
+
+      // https://canvasjs.com/html5-javascript-spline-chart/
+      // chart( [{yValue: 1, label: datetime}, {yValue: 2}, {yValue: 3}, {yValue: 201}, {yValue: 38}]).render()
+      function chart(latestData=[]) {
+	// 'spline' could be 'line' if you prefer jagged graphs
+	// dataPoints(latestData[device])
+	var got = dataPoints(latestData);
+	if ((gData[0] == got[0]) && (gData.slice(-1) == got.slice(-1))) {
+	  // no-op
+	  console.log("no-op: data hasn't changed");
+	} else {
+	  gData.length = 0
+	  console.log("Adding Data to chart...");
+	  for (var idx=0; idx<got.length; idx++) {
+	    gData.push(got[idx]);
+	  }
+	  console.log("Data " + JSON.stringify(gData)); 
+	}
+
+	if (!gChartObj) {
+	  console.log("New gChart");
+	  /*
+	    legend:{
+	      itemclick: toggleDataSeries
+	    },
+	   */
+	  gChartObj = new CanvasJS.Chart("chartContainer", {
+	    exportEnabled: true,
+	    theme: "light2",
+	    title:{
+	      text: "Recent Temperatures"
+	    },
+	    axisY:{
+	      includeZero: false
+	    },
+	    data: [{
+	      type: "spline",
+	      dataPoints: gData
+	    }]
+	  });
+	}
+	return gChartObj;
+      }
+
+      var gApiKey = "5e26187e4327326cf1c9199f";
+      var gTempData = [];
+      function updateChart(apiKey=gApiKey) {
+	// gNamedTemperatureAndLabels = {};
+	var idx;
+	gDataLength     = document.getElementById("dataLength").value;
+	gThreshold      = document.getElementById("threshold").value;
+	gUpdateInterval = document.getElementById("updateInterval").value;
+
+	var db = new restdb(apiKey);
+	var query = {}; // all
+	// var hints = {"$max": 10, "$orderby": {"_id": -1}}; // top ten, sort by creation id in descending order
+	var hints = {"$max": gDataLength, "$orderby": {"Timestamp": -1}};
+	db.temperatures.find(query, hints, function(err, res) {
+	  if (!err) {
+	    // res is an array of temperature(s) instances
+	    console.log("plist: " + JSON.stringify(res));
+	    var re, label, ts;
+	    if ((gTempData > 0) && (gTempData[0]["_id"] == res.slice(-1)["_id"]) && (gTempData.slice(-1)["_id"] == res[0]["_id"])) {
+	      // same:
+	      console.log("first and last record[_id](s) are the same...");
+	    } else {
+	      gTempData.length = 0; // why doesn't this clear out old data ?!
+	      var numRecordsRetrieved = res.length;
+	      var offset = 1;
+	      if (numRecordsRetrieved > gDataLength) {
+	        offset += numRecordsRetrieved - gDataLength;
+	      }
+	      console.log('retrieved ' + numRecordsRetrieved + ' records; offset: ' + offset);
+	      for (idx=numRecordsRetrieved-offset; idx>=0; idx--) { // read values in reverse-order because we received the last N-values in descending order
+		re = res[idx];
+		if (re["Temperature"]) {
+		  ts = epochToJsDate(re["Timestamp"]);
+		  label = ts.toString();
+		  console.log("DEBUG - JsDate as String: " + label);
+		  gTempData.push({yValue: re["Temperature"], label: label, xValue: ts, _id: re["_id"]})
+		} else {
+		  console.log("DEBUG - no temp: " + JSON.stringify(re));
+		}
+	      }
+	      console.log("re-rendering chart...");
+	      chart(gTempData).render();
+	    } // else: different data, so re-render
+	  } // not an error
+	});
+
+	if (gUpdateInterval >= 1) {
+	  console.log("gonna updateChart again in " + gUpdateInterval + " secs");
+	  setTimeout(updateChart, gUpdateInterval);
+	} else {
+	  console.log("NOT gonna updateChart again");
+	}
+      }
+
+      window.onload = function () {
+	updateChart();
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <p>Control(s):</p>
+    Threshold (possible fire temperature in Fahrenheit):
+    <input id="threshold" type="number" min="32" max="1000" value="200">
+    <br>
+
+    Data Length (num datapts on graph):
+    <input id="dataLength" type="number" min="10" max="1000" value="10">
+    <br>
+
+    Graph Update Interval (ms -- 0 means "off"):
+    <input id="updateInterval" type="number" min="0" max="15000" value="0">
+    <br>
+
+    <button onclick="updateChart()">Update Graph</button>
+    <script src="https://firewire-dc22.restdb.io/assets/js/eventsource.min.js"></script>
+    <script src="https://firewire-dc22.restdb.io/rest/_jsapi.js?plainjs=true"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Generate Demo Data</title>
+  </head>
+  <body>
+    <input type="text" id="deviceName" value="Demo Device" size="15">
+    <br>
+    <input type="text" id="temperatures" value="272.5,72,98.6,29,201,303,500,84.6" size="40">
+    <br>
+
+    <script>
+      var gDevice      = document.getElementById("deviceName").value;
+      var temperatures = document.getElementById("temperatures").value.split(',');
+      var xhttp        = new XMLHttpRequest();
+      var gApiKey      = "5e26187e4327326cf1c9199f";
+
+      function randomTemperature() {
+        return parseFloat(temperatures[Math.floor(Math.random() * temperatures.length)]);
+      }
+
+      function currentTimestamp() {
+        // new Date().getTime() / 1000
+        return Math.round(Date.now() / 1000);
+      }
+
+      function generateData() {
+        return { "Device": gDevice, "Temperature": randomTemperature(), "Timestamp": currentTimestamp() };
+      }
+
+      function request() {
+        // "Content-Type: application/json" -H "x-apikey: ${API_KEY}" -X POST 
+        // -d "{\"Device\": \"${device}\", \"Temperature\": ${current_temperature}, \"Timestamp\": ${timestamp}}"
+        xhttp.open("POST", 'https://firewire-dc22.restdb.io/rest/temperatures', true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.setRequestHeader("x-apikey", gApiKey);
+        var d = generateData();
+        var stringifiedData = JSON.stringify(d);
+        console.log("gData: " + stringifiedData);
+        xhttp.send(stringifiedData);
+      }
+    </script>
+    <button onclick="request()">Generate Demo Data</button>
+  </body>
+</html>
