@@ -83,28 +83,28 @@
     </div>
   </main>
 
-  
-  
+  <% require "csv"; require "json" %>
+  <% rows = CSV.read(File.join(__dir__, "survey.csv"), headers: true) %>
 
   <script>
     // Data generated from survey.csv
     const surveyScreens = [
-    
+    <% rows.each_with_index do |row, idx| %>
       {
-        id: "",
-        isStart: false,
-        isDone: false,
-        inputType: "",
-        autoAction: "",
-        autoArg: "",
-        questionText: "",
-        helperText: "",
-        yesNextId: "",
-        yesMessage: "",
-        noNextId: "",
-        noMessage: ""
-      }
-    
+        id: <%= row["id"].to_s.to_json %>,
+        isStart: <%= (row["is_start"].to_s.downcase == "true").to_json %>,
+        isDone: <%= (row["is_done"].to_s.downcase == "true").to_json %>,
+        inputType: <%= row["input_type"].to_s.downcase.to_json %>,
+        autoAction: <%= row["auto_action"].to_s.to_json %>,
+        autoArg: <%= row["auto_arg"].to_s.to_json %>,
+        questionText: <%= row["question_text"].to_s.to_json %>,
+        helperText: <%= row["helper_text"].to_s.to_json %>,
+        yesNextId: <%= row["yes_next_id"].to_s.to_json %>,
+        yesMessage: <%= row["yes_message"].to_s.to_json %>,
+        noNextId: <%= row["no_next_id"].to_s.to_json %>,
+        noMessage: <%= row["no_message"].to_s.to_json %>
+      }<%= "," unless idx == rows.size - 1 %>
+    <% end %>
     ];
 
     const surveyById = Object.fromEntries(surveyScreens.map(s => [s.id, s]));

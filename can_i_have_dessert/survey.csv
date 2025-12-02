@@ -1,0 +1,23 @@
+id,is_start,is_done,input_type,auto_action,auto_arg,question_text,helper_text,yes_next_id,yes_message,no_next_id,no_message
+start,true,false,none,,,Can I have dessert?,,1,,, 
+1,false,false,auto,CHECK_AFTER_TIME,"20:15,America/Los_Angeles","Is it > 8:15pm?",,,"No, it's too late ({current_time} > {cutoff_time}), try again tomorrow.",2,
+2,false,false,yes_no,,,Are any of your things in the foyer?,,,,"Handle your bid'ness then try again.",3,
+3,false,false,yes_no,,,Are there any dishes in the sink or on the counter?,,,"You and/or your sibling need to put them away (if clean) or properly load the dishwasher (<a href='http://producthelp.maytag.com/Dishwashers/Dishwasher_Tips_and_Tricks/How_to_properly_load_your_dishwasher' target='_blank' rel='noopener noreferrer'>MayTag Site</a>), then try again.",4,
+4,false,false,yes_no,,,Do you have laundry that you need to do/complete?,,,"Finish your laundry then try again.",5,
+5,false,false,yes_no,,,Do you need a shower?,,,"Take a shower then try again.",6,
+6,false,false,yes_no,,,Is your bed unmade?,,,"Make your bed then try again.",7,
+7,false,false,yes_no,,,Does your room stink?,,,"Clean source of stink, and remove remnants (wash &amp; dry them if nec.) then try again.",8,
+8,false,false,yes_no,,,Are any of your doors or drawers open?,,,"Handle your bid'ness then try again.",9,
+9,false,false,yes_no,,,"Are any of your clothes not in your hamper, your drawers, or hanging in a closet?","Take your time to reflect carefully and honestly as you answer these questions -- go back, if you need to",,"Handle your bid'ness then try again.",10,
+10,false,false,yes_no,,,Would an honest person with a good sense of smell say the trash stinks?,,,"Take it out, clean the can if necess, replace the bag, and then try again.",11,
+11,false,false,yes_no,,,Are there recyclable(s) on the floor (i.e. not stored neatly in an unstuffed bag)?,,,"Take out the recycling and place a recycling bag by the sink, then try again.",12,
+12,false,false,yes_no,,,"Is there anything (other than air) on the kitchen table?","Being a responsible person, like you've shown so far, is its own reward!",,"Clean the table and try again.",13,
+13,false,false,yes_no,,,Is there anything (other than air) on the dining room table?,,,"Clean the table and try again.",14,
+14,false,false,yes_no,,,Are there crumbs (or the like) under the kitchen table or on it's chairs/bench?,,,"Handle your bid'ness then try again.",15,
+15,false,false,yes_no,,,Are there crumbs (or the like) under the dining room table or on it's chairs/bench?,,,"Handle your bid'ness then try again.",16,
+16,false,false,yes_no,,,Is your bag not ready (i.e. not packed & hanging on your door) for tomorrow morning?,,,"Get your stuff together then try again.",17,
+17,false,false,yes_no,,,"Did you experience any pains today, that have been left unattended, that are going to flare-up before bedtime?","We appreciate your effort today",,"Attend to your wound now ...and try again later.",18,
+18,false,false,yes_no,,,Do you have any school (or other) projects that will need to be urgently attended to between now and bedtime?,,,"Handle you bid'ness and try again later.",19,
+19,false,false,yes_no,,,Did you handle your bid'ness yesterday?,,,done,,"Think on these things..."
+done,false,true,none,,,Congratulations, you've now earned the right to ask your parents...,,,,
+
