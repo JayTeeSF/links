@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Security Scenes — Team Drill</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#f6f7fb; color:#111; }
+    header { padding: 16px 20px; background:#111; color:#fff; display:flex; gap:12px; align-items:center; justify-content:space-between; }
+    header h1 { font-size: 16px; margin:0; font-weight:650; }
+    header .meta { font-size: 12px; opacity: .9; }
+    main { max-width: 980px; margin: 18px auto; padding: 0 16px 32px; }
+    .card { background:#fff; border-radius: 14px; box-shadow: 0 8px 20px rgba(0,0,0,.06); padding: 16px; margin: 14px 0; }
+    .row { display:flex; gap: 12px; flex-wrap: wrap; }
+    label { font-size: 12px; font-weight: 650; color:#333; display:block; margin-bottom:6px; }
+    input, textarea, select, button {
+      font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid #d7dbe7; background:#fff;
+    }
+    textarea { width: 100%; min-height: 90px; }
+    button { cursor:pointer; border: 1px solid #cfd6ec; background:#f3f5ff; }
+    button.primary { background:#1b4cff; border-color:#1b4cff; color:#fff; }
+    button.danger { background:#fff1f1; border-color:#ffd0d0; }
+    .pill { display:inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; background:#eef2ff; color:#1b4cff; margin-right:6px; }
+    .muted { color:#667; font-size: 12px; }
+    .scene { border:1px solid #e7eaf5; border-radius: 12px; overflow:hidden; }
+    .scene .top { padding: 12px 12px; background:#fafbff; border-bottom:1px solid #e7eaf5; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .scene .content { padding: 14px 12px; background:#fff; }
+    .choices { display:grid; gap:10px; margin-top:12px; }
+    .choiceBtn { text-align:left; padding: 12px; background:#fff; }
+    .choiceBtn:hover { background:#f7f9ff; }
+    .result { margin-top: 12px; padding: 12px; border-radius: 12px; background:#f7f9ff; border:1px solid #e7eaf5; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background:#f2f2f6; border:1px solid #e1e1ea; padding:2px 6px; border-radius: 6px; }
+    .leaderboard { width:100%; border-collapse: collapse; }
+    .leaderboard th, .leaderboard td { padding: 8px; border-bottom: 1px solid #eef0fa; text-align:left; font-size: 13px; }
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Security Scenes — Team Drill</h1>
+    <div class="meta">Static, no backend. Seeded game code → same scenes for everyone.</div>
+  </div>
+  <div class="meta">Tip: use this as a 10–15 min monthly ritual.</div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="row">
+      <div style="flex:1; min-width:220px;">
+        <label>Your name</label>
+        <input id="playerName" placeholder="e.g., Jordan" />
+      </div>
+      <div style="flex:1; min-width:220px;">
+        <label>Game code (shared)</label>
+        <input id="gameCode" placeholder="e.g., 2026-01-phish" />
+        <div class="muted">Same code → same scene order. Use any string.</div>
+      </div>
+      <div style="flex:1; min-width:220px;">
+        <label>Mode</label>
+        <select id="mode">
+          <option value="player">Player</option>
+          <option value="host">Host (imports results)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px;">
+      <button class="primary" id="startBtn">Start / Resume</button>
+      <button id="resetBtn" class="danger">Reset my run</button>
+      <span class="muted">Nothing leaves your browser unless you copy/paste results.</span>
+    </div>
+  </div>
+
+  <div id="playerView" class="card" style="display:none;">
+    <div id="statusBar" class="muted"></div>
+    <div id="sceneWrap"></div>
+  </div>
+
+  <div id="hostView" class="card" style="display:none;">
+    <h3 style="margin:0 0 8px;">Host: Leaderboard</h3>
+    <div class="muted">Players click “Copy Results” at the end and paste them here.</div>
+    <div class="grid2" style="margin-top:12px;">
+      <div>
+        <label>Paste results JSON (one player)</label>
+        <textarea id="importBox" placeholder='{"player":"Jordan","score":7,...}'></textarea>
+        <div class="row" style="margin-top:10px;">
+          <button class="primary" id="importBtn">Import</button>
+          <button id="clearHostBtn" class="danger">Clear leaderboard</button>
+        </div>
+      </div>
+      <div>
+        <label>Leaderboard</label>
+        <table class="leaderboard" id="lbTable">
+          <thead>
+            <tr><th>Player</th><th>Score</th><th>Weakest areas</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="row" style="margin-top:10px;">
+          <button id="copyHostBtn">Copy all leaderboard JSON</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <details>
+      <summary style="cursor:pointer; font-weight:650;">Customize scenes (edit JSON in code)</summary>
+      <p class="muted">
+        Scenes are defined in <span class="kbd">SCENES</span>. Each has a category, prompt HTML, choices, scoring, and an explanation.
+        Keep it ethical: never collect real credentials; keep everything simulated.
+      </p>
+    </details>
+  </div>
+</main>
+
+<script>
+/**
+ * CONFIG: Edit/add scenes here.
+ * - category drives weakness scoring (phishing, social, mfa, data, device, ai, etc.)
+ * - points: points gained for correct choice; wrong choice can deduct
+ * - training: optional link(s) to internal wiki or external videos
+ */
+const SCENES = [
+  {
+    id: "docshare-1",
+    title: "“Shared Doc” sign-in prompt",
+    category: "phishing",
+    pointsCorrect: 2,
+    pointsWrong: -1,
+    promptHtml: `
+      <div class="pill">Email</div><div class="pill">High realism</div>
+      <h3 style="margin:10px 0 6px;">Google Drive: “Updated Q1 Plan”</h3>
+      <div class="muted">From: <b>Branscape Planning</b> &lt;drive-share@goog1e-docs.example&gt;</div>
+      <div style="margin-top:10px; border:1px solid #e7eaf5; border-radius:12px; padding:12px;">
+        <div><b>Jordan shared a document with you:</b> <span style="color:#1b4cff;">Q1_Roadmap_2026</span></div>
+        <div class="muted" style="margin:6px 0;">You need to sign in to view.</div>
+        <button disabled class="primary">View Document</button>
+      </div>
+      <p class="muted" style="margin-top:10px;">(Assume you received this unexpectedly.)</p>
+    `,
+    choices: [
+      { id:"click", label:"Click “View Document” and sign in quickly", correct:false, weaknessTags:["link-validation","domain-checking"] },
+      { id:"verify", label:"Open Drive from a known bookmark/app, then check if the doc exists there", correct:true, weaknessTags:[] },
+      { id:"reply", label:"Reply asking “is this legit?”", correct:false, weaknessTags:["channel-verification"] }
+    ],
+    explanationHtml: `
+      Best move: use a <b>known entry point</b> (your Drive app/bookmark) and look for the file there.
+      Display names lie; look closely at domains and unexpected sign-in prompts.
+    `
+  },
+  {
+    id: "mfa-fatigue-1",
+    title: "MFA push you didn’t initiate",
+    category: "mfa",
+    pointsCorrect: 2,
+    pointsWrong: -2,
+    promptHtml: `
+      <div class="pill">Auth</div><div class="pill">Reflex trap</div>
+      <h3 style="margin:10px 0 6px;">Sign-in request</h3>
+      <div style="border:1px solid #e7eaf5; border-radius:12px; padding:12px; max-width:520px;">
+        <div><b>Approve sign-in?</b></div>
+        <div class="muted">Location: Chicago, IL</div>
+        <div class="muted">Device: Windows / Chrome</div>
+        <div class="muted">Time: just now</div>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button disabled>Approve</button>
+          <button disabled>Deny</button>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:10px;">You are not trying to log in anywhere.</p>
+    `,
+    choices: [
+      { id:"approve", label:"Approve (maybe it’s a background login)", correct:false, weaknessTags:["mfa-hygiene"] },
+      { id:"deny", label:"Deny + report immediately (possible credential compromise)", correct:true, weaknessTags:[] },
+      { id:"ignore", label:"Ignore it; it’ll stop", correct:false, weaknessTags:["incident-reporting"] }
+    ],
+    explanationHtml: `
+      Unexpected MFA prompts are a <b>red alert</b>. Deny, report, and rotate passwords if needed.
+      Attackers often “push-bomb” until someone approves.
+    `
+  },
+  {
+    id: "bec-1",
+    title: "Vendor banking change (BEC)",
+    category: "bec",
+    pointsCorrect: 3,
+    pointsWrong: -2,
+    promptHtml: `
+      <div class="pill">Finance</div><div class="pill">High impact</div>
+      <h3 style="margin:10px 0 6px;">Email: “Updated payment details”</h3>
+      <div class="muted">From: <b>Acme Vendor AP</b> &lt;ap@acme-payments.example&gt;</div>
+      <p>Hi—please use our new ACH details for all future invoices effective immediately.
+      We’re closing the old account today.</p>
+      <p class="muted">Attached: <i>ACH_Update.pdf</i></p>
+    `,
+    choices: [
+      { id:"update", label:"Update ACH details immediately so payments don’t bounce", correct:false, weaknessTags:["verification","process-discipline"] },
+      { id:"verify", label:"Call the vendor using a known number + require 2-person approval", correct:true, weaknessTags:[] },
+      { id:"askEmail", label:"Email back asking them to confirm the new account number", correct:false, weaknessTags:["channel-verification"] }
+    ],
+    explanationHtml: `
+      Banking changes are classic BEC. Use <b>known contact info</b> (not the email thread),
+      and require approvals. Email back-and-forth can stay inside the attacker’s control.
+    `
+  },
+  {
+    id: "ai-voice-1",
+    title: "AI voice / urgent exec request",
+    category: "ai",
+    pointsCorrect: 2,
+    pointsWrong: -1,
+    promptHtml: `
+      <div class="pill">Phone</div><div class="pill">AI-enabled</div>
+      <h3 style="margin:10px 0 6px;">Call transcript</h3>
+      <div style="border-left:4px solid #e7eaf5; padding-left:10px;">
+        “Hey—I'm about to walk into a meeting. I need you to <b>share a one-time code</b> I’m receiving.
+        I can’t access my phone right now. It’s urgent.”
+      </div>
+      <p class="muted">The caller sounds like someone you know.</p>
+    `,
+    choices: [
+      { id:"share", label:"Share the code (helpful + urgent)", correct:false, weaknessTags:["mfa-hygiene","social-pressure"] },
+      { id:"refuse", label:"Refuse + verify via known channel (call back from directory / Slack) + report", correct:true, weaknessTags:[] },
+      { id:"delay", label:"Ask them to email you instructions", correct:false, weaknessTags:["channel-verification"] }
+    ],
+    explanationHtml: `
+      Legit people don’t need your one-time codes. Voice can be faked.
+      Move to a <b>known verification channel</b> and report.
+    `
+  }
+];
+
+// ------- Engine (seeded shuffle so everyone gets same order) -------
+function xmur3(str){ let h=1779033703^str.length; for(let i=0;i<str.length;i++){ h=Math.imul(h^str.charCodeAt(i),3432918353); h=h<<13|h>>>19; } return function(){ h=Math.imul(h^(h>>>16),2246822507); h=Math.imul(h^(h>>>13),3266489909); return (h^=h>>>16)>>>0; }; }
+function sfc32(a,b,c,d){ return function(){ a>>>=0;b>>>=0;c>>>=0;d>>>=0; let t=(a+b)|0; a=b^b>>>9; b=c+(c<<3)|0; c=(c<<21|c>>>11); d=d+1|0; t=t+d|0; c=c+t|0; return (t>>>0)/4294967296; }; }
+function seededShuffle(arr, seedStr){
+  const seed = xmur3(seedStr);
+  const rand = sfc32(seed(), seed(), seed(), seed());
+  const out = arr.slice();
+  for(let i=out.length-1;i>0;i--){
+    const j = Math.floor(rand()*(i+1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+const els = {
+  playerName: document.getElementById("playerName"),
+  gameCode: document.getElementById("gameCode"),
+  mode: document.getElementById("mode"),
+  startBtn: document.getElementById("startBtn"),
+  resetBtn: document.getElementById("resetBtn"),
+  playerView: document.getElementById("playerView"),
+  hostView: document.getElementById("hostView"),
+  statusBar: document.getElementById("statusBar"),
+  sceneWrap: document.getElementById("sceneWrap"),
+  importBox: document.getElementById("importBox"),
+  importBtn: document.getElementById("importBtn"),
+  lbTable: document.getElementById("lbTable").querySelector("tbody"),
+  clearHostBtn: document.getElementById("clearHostBtn"),
+  copyHostBtn: document.getElementById("copyHostBtn"),
+};
+
+function keyFor(player, code){ return `secScenes:v1:${code}:${player}`; }
+function hostKey(code){ return `secScenes:host:v1:${code}`; }
+
+function loadRun(player, code){
+  const raw = localStorage.getItem(keyFor(player, code));
+  return raw ? JSON.parse(raw) : null;
+}
+function saveRun(player, code, state){
+  localStorage.setItem(keyFor(player, code), JSON.stringify(state));
+}
+function resetRun(player, code){ localStorage.removeItem(keyFor(player, code)); }
+
+function scoreSummary(state){
+  const byCat = {};
+  for(const a of state.answers){
+    const scene = state.scenes.find(s => s.id === a.sceneId);
+    const cat = scene.category;
+    byCat[cat] ||= { correct:0, total:0, points:0, misses:0, weaknessTags:{} };
+    byCat[cat].total += 1;
+    byCat[cat].points += a.delta;
+    if(a.correct) byCat[cat].correct += 1;
+    else {
+      byCat[cat].misses += 1;
+      for(const t of (a.weaknessTags || [])){
+        byCat[cat].weaknessTags[t] = (byCat[cat].weaknessTags[t] || 0) + 1;
+      }
+    }
+  }
+  return byCat;
+}
+
+function weakestAreas(byCat){
+  const rows = Object.entries(byCat).map(([cat, v]) => {
+    const accuracy = v.total ? (v.correct / v.total) : 0;
+    return { cat, accuracy, misses: v.misses };
+  });
+  rows.sort((a,b) => a.accuracy - b.accuracy || b.misses - a.misses);
+  return rows.slice(0, 2).map(r => r.cat);
+}
+
+function render(){
+  const mode = els.mode.value;
+  const player = els.playerName.value.trim();
+  const code = els.gameCode.value.trim();
+
+  els.playerView.style.display = (mode === "player") ? "" : "none";
+  els.hostView.style.display = (mode === "host") ? "" : "none";
+
+  if(mode === "host"){
+    renderHost();
+    return;
+  }
+  if(!player || !code){
+    els.playerView.style.display = "none";
+    return;
+  }
+
+  const existing = loadRun(player, code);
+  const scenes = seededShuffle(SCENES, code);
+  const state = existing || {
+    v: 1,
+    player, code,
+    scenes: scenes.map(s => ({id:s.id, title:s.title, category:s.category, pointsCorrect:s.pointsCorrect, pointsWrong:s.pointsWrong, promptHtml:s.promptHtml, choices:s.choices, explanationHtml:s.explanationHtml})),
+    idx: 0,
+    score: 0,
+    answers: []
+  };
+
+  saveRun(player, code, state);
+
+  if(state.idx >= state.scenes.length){
+    renderEnd(state);
+  } else {
+    renderScene(state);
+  }
+}
+
+function renderScene(state){
+  const total = state.scenes.length;
+  const scene = state.scenes[state.idx];
+  els.statusBar.innerHTML = `Player: <b>${escapeHtml(state.player)}</b> · Game: <span class="kbd">${escapeHtml(state.code)}</span> · Scene ${state.idx+1}/${total} · Score: <b>${state.score}</b>`;
+
+  els.sceneWrap.innerHTML = `
+    <div class="scene">
+      <div class="top">
+        <div>
+          <div class="muted">${escapeHtml(scene.category.toUpperCase())}</div>
+          <div style="font-weight:750;">${escapeHtml(scene.title)}</div>
+        </div>
+        <div class="muted">Choose your response</div>
+      </div>
+      <div class="content">
+        ${scene.promptHtml}
+        <div class="choices" id="choices"></div>
+        <div id="result" class="result" style="display:none;"></div>
+      </div>
+    </div>
+  `;
+
+  const choicesDiv = document.getElementById("choices");
+  scene.choices.forEach(ch => {
+    const btn = document.createElement("button");
+    btn.className = "choiceBtn";
+    btn.textContent = ch.label;
+    btn.onclick = () => answer(state, scene, ch);
+    choicesDiv.appendChild(btn);
+  });
+}
+
+function answer(state, scene, choice){
+  const correct = !!choice.correct;
+  const delta = correct ? scene.pointsCorrect : scene.pointsWrong;
+  state.score += delta;
+
+  state.answers.push({
+    sceneId: scene.id,
+    category: scene.category,
+    choiceId: choice.id,
+    correct,
+    delta,
+    weaknessTags: choice.weaknessTags || []
+  });
+
+  // Show result
+  const result = document.getElementById("result");
+  result.style.display = "";
+  result.innerHTML = `
+    <div style="font-weight:750; margin-bottom:6px;">
+      ${correct ? "✅ Correct response" : "❌ Risky response"} — ${delta >= 0 ? "+" : ""}${delta} pts
+    </div>
+    <div>${scene.explanationHtml}</div>
+    <div class="row" style="margin-top:10px;">
+      <button class="primary" id="nextBtn">${state.idx+1 >= state.scenes.length ? "Finish" : "Next scene"}</button>
+    </div>
+  `;
+
+  // Disable choices
+  document.querySelectorAll(".choiceBtn").forEach(b => b.disabled = true);
+
+  document.getElementById("nextBtn").onclick = () => {
+    state.idx += 1;
+    saveRun(state.player, state.code, state);
+    render();
+  };
+}
+
+function renderEnd(state){
+  const byCat = scoreSummary(state);
+  const weak = weakestAreas(byCat);
+
+  const weaknessLines = Object.entries(byCat).map(([cat, v]) => {
+    const acc = Math.round((v.correct / v.total) * 100);
+    const topTag = Object.entries(v.weaknessTags).sort((a,b)=>b[1]-a[1])[0]?.[0];
+    return `<li><b>${escapeHtml(cat)}</b>: ${acc}% correct (${v.correct}/${v.total}) ${topTag ? `· common miss: <span class="kbd">${escapeHtml(topTag)}</span>` : ""}</li>`;
+  }).join("");
+
+  const payload = {
+    v: 1,
+    player: state.player,
+    code: state.code,
+    score: state.score,
+    weakestAreas: weak,
+    byCategory: byCat,
+    answers: state.answers
+  };
+
+  els.statusBar.innerHTML = `Player: <b>${escapeHtml(state.player)}</b> · Game: <span class="kbd">${escapeHtml(state.code)}</span> · Final score: <b>${state.score}</b>`;
+  els.sceneWrap.innerHTML = `
+    <div class="scene">
+      <div class="top">
+        <div style="font-weight:750;">Results</div>
+        <div class="muted">Copy your results and send to the host</div>
+      </div>
+      <div class="content">
+        <p><b>Score:</b> ${state.score}</p>
+        <p><b>Weakest areas:</b> ${weak.length ? weak.map(w=>`<span class="pill">${escapeHtml(w)}</span>`).join(" ") : "None 🎉"}</p>
+        <div>
+          <b>Breakdown</b>
+          <ul>${weaknessLines}</ul>
+        </div>
+        <div class="row" style="margin-top:10px;">
+          <button class="primary" id="copyBtn">Copy Results JSON</button>
+          <button id="restartBtn">Play again (same code)</button>
+        </div>
+        <div class="muted" style="margin-top:10px;">
+          Suggestion: if your weakest areas include <span class="kbd">phishing</span> or <span class="kbd">mfa</span>,
+          schedule a 5-minute refresher + a quick quiz.
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("copyBtn").onclick = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(payload));
+    alert("Copied results JSON to clipboard.");
+  };
+  document.getElementById("restartBtn").onclick = () => {
+    resetRun(state.player, state.code);
+    render();
+  };
+}
+
+function renderHost(){
+  const code = els.gameCode.value.trim();
+  if(!code){
+    els.hostView.style.display = "none";
+    return;
+  }
+  els.hostView.style.display = "";
+  const raw = localStorage.getItem(hostKey(code));
+  const hostState = raw ? JSON.parse(raw) : { v:1, code, players: {} };
+
+  // render table
+  els.lbTable.innerHTML = "";
+  const rows = Object.values(hostState.players).sort((a,b)=>b.score - a.score);
+  for(const r of rows){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${escapeHtml(r.player)}</td><td><b>${r.score}</b></td><td>${(r.weakestAreas||[]).map(w=>`<span class="pill">${escapeHtml(w)}</span>`).join(" ")}</td>`;
+    els.lbTable.appendChild(tr);
+  }
+
+  els.importBtn.onclick = () => {
+    try{
+      const obj = JSON.parse(els.importBox.value.trim());
+      if(!obj.player || obj.code !== code) throw new Error("Invalid payload (or game code mismatch).");
+      hostState.players[obj.player] = { player: obj.player, score: obj.score || 0, weakestAreas: obj.weakestAreas || [] };
+      localStorage.setItem(hostKey(code), JSON.stringify(hostState));
+      els.importBox.value = "";
+      renderHost();
+    } catch(e){
+      alert("Could not import. Make sure you pasted valid JSON from a player.\n\n" + e.message);
+    }
+  };
+
+  els.clearHostBtn.onclick = () => {
+    if(confirm("Clear leaderboard for this game code?")){
+      localStorage.removeItem(hostKey(code));
+      renderHost();
+    }
+  };
+
+  els.copyHostBtn.onclick = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(hostState));
+    alert("Copied leaderboard JSON.");
+  };
+}
+
+function escapeHtml(s){
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+// Wiring
+els.startBtn.onclick = render;
+els.resetBtn.onclick = () => {
+  const player = els.playerName.value.trim();
+  const code = els.gameCode.value.trim();
+  if(!player || !code) return alert("Enter name + game code first.");
+  resetRun(player, code);
+  alert("Your run was reset.");
+  render();
+};
+els.mode.onchange = render;
+els.playerName.oninput = () => { if(els.mode.value==="player") render(); };
+els.gameCode.oninput = () => render();
+
+// initial
+render();
+</script>
+</body>
+</html>
