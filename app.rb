@@ -1,66 +1,53 @@
 #!/usr/bin/env ruby
 
-require 'erb'
 require 'json'
-require 'playwright'
-require 'mini_magick'
 
 class StaticPageGenerator
-  def initialize(input_file = 'links.json')
-    @data = JSON.parse(File.read(input_file))
+  ROOT = File.expand_path(__dir__)
+  CSS_MARKER = '/*__CSS__*/'
+  JS_MARKER = '/*__JS__*/'
+  SEED_MARKER = '/*__SEED__*/'
+
+  def initialize(input_file = File.join(ROOT, 'links.json'))
+    @input_file = File.expand_path(input_file)
+    @data = JSON.parse(File.read(@input_file))
+    raise ArgumentError, 'links.json must contain an array of links' unless @data.is_a?(Array)
   end
 
-  def imageless_data
-    @data.select { |entry| entry['thumbnail'].nil? && entry['full_image'].nil? }
+  def generate_html(output_file = File.join(ROOT, 'index.html'))
+    html = File.read(File.join(ROOT, 'src', 'shell.html'))
+    replacements = {
+      CSS_MARKER => File.read(File.join(ROOT, 'src', 'styles.css')),
+      JS_MARKER => File.read(File.join(ROOT, 'src', 'app.js')),
+      SEED_MARKER => safe_json(@data)
+    }
+
+    replacements.each { |marker, content| replace_once!(html, marker, content) }
+
+    output_path = File.expand_path(output_file)
+    File.write(output_path, html)
+    output_path
   end
 
-  def generate_thumbnails
-    Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
-      browser = playwright.chromium.launch
-      context = browser.new_context(viewport: { width: 1920, height: 1080 }) # High resolution
-      imageless_data.each do |entry|
-        full_path = "./images/#{File.basename(entry['url'])}.png"
-        thumb_path = "./images/#{File.basename(entry['url'])}_thumb.png"
+  private
 
-        page = context.new_page
-        begin
-        page.goto(entry['url'])
-        page.screenshot(path: full_path)
+  def replace_once!(html, marker, content)
+    occurrences = html.scan(marker).length
+    raise "Expected one #{marker} marker in src/shell.html; found #{occurrences}" unless occurrences == 1
 
-        # Create thumbnail without affecting the full-size image
-        thumbnail = MiniMagick::Image.open(full_path)
-        thumbnail.resize("300x300")
-        thumbnail.write(thumb_path)
+    html.sub!(marker) { content }
+  end
 
-        entry['thumbnail'] = thumb_path
-        entry['full_image'] = full_path
-        rescue Playwright::Error => e
-          puts "Error: #{e}"
-        end
-      end
+  def safe_json(data)
+    JSON.generate(data).gsub(/[&<>\u2028\u2029]/) do |character|
+      format('\\u%04x', character.ord)
     end
-  end
-
-  def generate_html(output_file = 'index.html')
-    layout = File.read('./view/layout.erb')
-    index = File.read('./view/index.erb')
-    erb = ERB.new(layout)
-
-    @data.sort_by! { |entry| Date.parse(entry['date_added']) }.reverse!
-
-    File.write(output_file, erb.result_with_hash(content: ERB.new(index).result(binding)))
   end
 end
 
 if $PROGRAM_NAME == __FILE__
-  input_file = 'links.json'
-  output_file = 'index.html'
-  if ARGV.length > 0
-    input_file = ARGV[0]
-    output_file = ARGV[1] if ARGV.length > 1
-  end
-  generator = StaticPageGenerator.new(input_file)
-  generator.generate_thumbnails
-  generator.generate_html(output_file)
-  puts "Static site generated successfully."
+  input_file = ARGV[0] || File.join(StaticPageGenerator::ROOT, 'links.json')
+  output_file = ARGV[1] || File.join(StaticPageGenerator::ROOT, 'index.html')
+  output_path = StaticPageGenerator.new(input_file).generate_html(output_file)
+  puts "Wrote #{output_path} (#{File.size(output_path)} bytes)"
 end
